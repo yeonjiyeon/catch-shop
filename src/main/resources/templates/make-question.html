@@ -168,6 +168,9 @@
     <div class="container">
         <!-- Q&A 작성 폼 시작 -->
         <form action="" method="post">
+            <!-- 비밀글 설정 체크박스 -->
+            <label style="color:orange;">비밀글</label>
+            <input type="checkbox" name="secret"><br><br>
             <!-- 제목 -->
             <div class="form-group">
                 <label for="title" class="qna_label">제목</label>
@@ -187,25 +190,25 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 text-center">
                     <!-- 첨부 이미지1 -->
-                    <label for="content" class="qna_label">첨부 이미지1</label><br><br>
+                    <label for="content" class="qna_label">첨부 이미지</label><br><br>
                     <input type="file" id="img1_insert_btn" onchange="imgPreview(QnA_img_frame1, event.target.files[0])">
                     <br><br>
                     <img id="QnA_img_frame1" src="assets/img/test_img.png" style="float:left;">
                 </div>
-                <div class="col-lg-4 col-md-6 text-center">
-                    <!-- 첨부 이미지2 -->
-                    <label for="content" class="qna_label">첨부 이미지2</label><br><br>
-                    <input type="file" id="img2_insert_btn" onchange="imgPreview(QnA_img_frame2, event.target.files[0])">
-                    <br><br>
-                    <img id="QnA_img_frame2" src="assets/img/test_img.png" style="float:left;">
-                </div>
-                <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
-                    <!-- 첨부 이미지3 -->
-                    <label for="content" class="qna_label">첨부 이미지3</label><br><br>
-                    <input type="file" id="img3_insert_btn" onchange="imgPreview(QnA_img_frame3, event.target.files[0])">
-                    <br><br>
-                    <img id="QnA_img_frame3" src="assets/img/test_img.png" style="float:left;">
-                </div>
+<!--                <div class="col-lg-4 col-md-6 text-center">-->
+<!--                    &lt;!&ndash; 첨부 이미지2 &ndash;&gt;-->
+<!--                    <label for="content" class="qna_label">첨부 이미지2</label><br><br>-->
+<!--                    <input type="file" id="img2_insert_btn" onchange="imgPreview(QnA_img_frame2, event.target.files[0])">-->
+<!--                    <br><br>-->
+<!--                    <img id="QnA_img_frame2" src="assets/img/test_img.png" style="float:left;">-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">-->
+<!--                    &lt;!&ndash; 첨부 이미지3 &ndash;&gt;-->
+<!--                    <label for="content" class="qna_label">첨부 이미지3</label><br><br>-->
+<!--                    <input type="file" id="img3_insert_btn" onchange="imgPreview(QnA_img_frame3, event.target.files[0])">-->
+<!--                    <br><br>-->
+<!--                    <img id="QnA_img_frame3" src="assets/img/test_img.png" style="float:left;">-->
+<!--                </div>-->
             </div><br><br><br>
 
             <!-- Q&A 등록 버튼 시작 -->
