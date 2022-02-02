@@ -11,4 +11,26 @@ public class ProductController {
     public String makeQuestion() {
         return "make-question"; // templates/make-question.html 렌더링
     }
+
+
+
+    /**
+     * Product 기능
+     * author:김지연
+     */
+    @GetMapping("index_2")
+    public String indexTwo() {
+        return "index_2"; // templates/shoplist.html 렌더링
+    }
+
+    @GetMapping("products")
+    public String readProducts() {
+        return "shoplist"; // templates/shoplist.html 렌더링
+    }
+
+
+    /**
+     * review 기능
+     * author:김지연
+     */
 }
