@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -169,16 +169,27 @@
         <!-- Q&A 작성 폼 시작 -->
         <form action="" method="post">
             <!-- 비밀글 설정 체크박스 -->
-            <label style="color:orange;">비밀글</label>
+            <label style="color:orange;">비밀글&nbsp;&nbsp;</label>
             <input type="checkbox" name="secret"><br><br>
-            <!-- 제목 -->
-            <div class="form-group">
-                <label for="title" class="qna_label">제목</label>
-                <input type="text" class="form-control" id="title"
-                       placeholder="제목을 입력하세요" name="title"
-                       maxlength="10" required="required" pattern=".{4,15}">
-                <div id="title_cnt" style="float:right; color:orange;">0 / 10</div>
-            </div>
+
+            <!-- 카테고리 -->
+            <label for="content" class="qna_label">카테고리&nbsp;&nbsp;</label>
+            <form>
+                <select autofocus>
+                    <option>상품 문의</option>
+                    <option>배송 문의</option>
+                    <option>기타 문의</option>
+                </select>
+            </form><br>
+
+<!--            &lt;!&ndash; 제목 &ndash;&gt;-->
+<!--            <div class="form-group">-->
+<!--                <label for="title" class="qna_label">제목</label>-->
+<!--                <input type="text" class="form-control" id="title"-->
+<!--                       placeholder="제목을 입력하세요" name="title"-->
+<!--                       maxlength="10" required="required" pattern=".{4,15}">-->
+<!--                <div id="title_cnt" style="float:right; color:orange;">0 / 10</div>-->
+<!--            </div>-->
             <!-- 내용 -->
             <div class="form-group">
                 <label for="content" class="qna_label">내용</label>
