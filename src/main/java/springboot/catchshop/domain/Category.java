@@ -19,13 +19,13 @@ import static javax.persistence.FetchType.LAZY;
 public class Category {
 
     @Id @GeneratedValue
-    @Column(name = "category_id")
+    @Column(name = "category_id")//카테고리 번호
     private Long id;
 
-    @Column(name = "category_nm")
+    @Column(name = "category_nm")//카테고리명
     private String name;
 
-    @OneToMany(mappedBy = "categories")
+    @OneToMany(mappedBy = "categories")//상품 번호
     private List<Product> products = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
