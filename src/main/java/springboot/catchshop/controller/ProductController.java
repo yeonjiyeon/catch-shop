@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Log4j2
 public class ProductController {
 
-    // qna 질문 작성
+    /**
+     * 상품 Q&A 기능
+     * author: 강수민
+     */
     @GetMapping("makeQ")
     public String makeQuestion() {
         return "make-question"; // templates/make-question.html 렌더링
@@ -21,7 +24,6 @@ public class ProductController {
      * Product 기능
      * author:김지연
      */
-    //
     //상품 목록 조회
     @GetMapping("products")
     public String readProducts() {

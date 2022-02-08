@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
+<body>
+
+<!--PreLoader-->
+<div class="loader">
+	<div class="loader-inner">
+		<div class="circle"></div>
+	</div>
+</div>
+<!--PreLoader Ends-->
+
+<!-- header -->
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
 	<style>
 	.modal{
@@ -103,20 +115,7 @@
         top: 355px;
     }
 	</style>
-
 <body>
-	
-	<!--PreLoader-->
-    <div class="loader">
-        <div class="loader-inner">
-            <div class="circle"></div>
-        </div>
-    </div>
-    <!--PreLoader Ends-->
-
-	<!-- header -->
-	<div th:replace="fragments/bodyHeader :: bodyHeader"/>
-	<!-- end header -->
 
     <div class="search-area">
 		<div class="container">
