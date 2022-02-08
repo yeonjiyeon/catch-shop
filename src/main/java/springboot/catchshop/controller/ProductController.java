@@ -23,7 +23,7 @@ public class ProductController {
      */
     @GetMapping("index_2")
     public String indexTwo() {
-        return "index_2"; // templates/shoplist.html 렌더링
+        return "index"; // templates/shoplist.html 렌더링
     }
 
     @GetMapping("products")
