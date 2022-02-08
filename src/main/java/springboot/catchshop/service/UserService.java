@@ -1,6 +1,7 @@
 package springboot.catchshop.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.User;
@@ -12,6 +13,7 @@ import springboot.catchshop.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원가입
@@ -40,7 +42,8 @@ public class UserService {
      */
     public User login(String loginId, String password) {
         return userRepository.findByLoginId(loginId)
-                .filter(u -> u.getPassword().equals(password))
+                .filter(u -> passwordEncoder.matches(password, u.getPassword()))
                 .orElse(null);
+
     }
 }

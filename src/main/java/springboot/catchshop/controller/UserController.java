@@ -50,8 +50,8 @@ public class UserController {
         user.setLoginId(form.getLoginId());
 
         // 비밀번호 인코딩
-//        String password = passwordEncoder.encode(form.getPassword());
-        user.setPassword(form.getPassword());
+        String password = passwordEncoder.encode(form.getPassword());
+        user.setPassword(password);
 
         user.setName(form.getName());
         user.setTelephone(form.getTelephone());
