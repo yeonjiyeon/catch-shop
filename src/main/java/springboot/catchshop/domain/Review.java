@@ -14,23 +14,23 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Entity
 @Getter
-public class Review {
+public class Review extends BaseEntity{
     @Id
     @GeneratedValue
-    @Column(name = "review_id")
+    @Column(name = "review_id")//리뷰 번호
     private Long id;
 
-    @Column(name = "review_contents")
+    @Column(name = "review_contents")//리뷰 내용
     private String contents;
 
 
-    @Column(name = "review_img")
+    @Column(name = "review_img")//리뷰 이미지
     private String img;
 
-    @Column(name = "review_star")
+    @Column(name = "review_star")////리뷰 별점
     private String star;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id")//상품
     private Product product;
 }
