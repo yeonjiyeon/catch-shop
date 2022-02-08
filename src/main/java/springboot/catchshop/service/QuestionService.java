@@ -6,7 +6,7 @@ import springboot.catchshop.repository.QuestionRepository;
 import springboot.catchshop.repository.UserRepository;
 
 // Question Service
-// author: 강수민, created: 21.02.01
+// author: 강수민, created: 22.02.01
 @Service
 @RequiredArgsConstructor
 public class QuestionService {

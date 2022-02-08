@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 // 회원가입 폼
-// author: 강수민, last modified: 21.02.08
+// author: 강수민, last modified: 22.02.08
 @Getter
 @Data
 public class JoinDto {

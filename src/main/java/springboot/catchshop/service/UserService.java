@@ -8,7 +8,7 @@ import springboot.catchshop.domain.User;
 import springboot.catchshop.repository.UserRepository;
 
 // User Service
-// author: 강수민, last modified: 21.02.08
+// author: 강수민, last modified: 22.02.08
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -42,10 +42,21 @@ public class UserService {
      * 로그인
      * @return null이면 로그인 실패
      */
+    @Transactional(readOnly = true)
     public User login(String loginId, String password) {
         return userRepository.findByLoginId(loginId)
                 .filter(u -> passwordEncoder.matches(password, u.getPassword()))
                 .orElse(null);
 
+    }
+
+    /**
+     * 아이디 찾기
+     */
+    @Transactional(readOnly = true)
+    public User findId(String name, String telephone) {
+        return userRepository.findByName(name)
+                .filter(u -> u.getTelephone().equals(telephone))
+                .orElse(null);
     }
 }

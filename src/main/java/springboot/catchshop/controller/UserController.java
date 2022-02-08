@@ -3,10 +3,12 @@ package springboot.catchshop.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import springboot.catchshop.dto.FindIdDto;
 import springboot.catchshop.dto.JoinDto;
 import springboot.catchshop.dto.LoginDto;
 import springboot.catchshop.domain.Role;
@@ -20,7 +22,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 // User Controller
-// author: 강수민, created: 21.02.01
+// author: 강수민, created: 22.02.01
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -31,7 +33,7 @@ public class UserController {
     /**
      * 회원가입
      * author: 강수민
-     * last modified: 21.02.01
+     * last modified: 22.02.01
      */
     @GetMapping("/join")
     public String join(@ModelAttribute("joinDto") JoinDto form) {
@@ -60,7 +62,7 @@ public class UserController {
     /**
      * 로그인
      * author: 강수민
-     * last modified: 21.02.08
+     * last modified: 22.02.08
      */
     @GetMapping("/login")
     public String login(@ModelAttribute("loginDto") LoginDto form) {
@@ -92,7 +94,7 @@ public class UserController {
     /**
      * 로그아웃
      * author: 강수민
-     * last modified: 21.02.08
+     * last modified: 22.02.08
      */
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
@@ -105,8 +107,30 @@ public class UserController {
     }
 
     // 아이디, 비밀번호 찾기
-    @GetMapping("/findidpw")
-    public String findidpw() {
+    @GetMapping("/find-id-pw")
+    public String findIdPw(@ModelAttribute("findIdDto") FindIdDto form) {
         return "find-id-pw"; // templates/find-id-pw.html 렌더링
+    }
+
+    /**
+     * 아이디 찾기
+     * author: 강수민
+     * last modified: 22.02.08
+     */
+    @PostMapping("/find-id-pw")
+    public String findId(@Valid @ModelAttribute FindIdDto form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "find-id-pw";
+        }
+
+        User user = userService.findId(form.getName(), form.getTelephone());
+
+        if (user == null) {
+            bindingResult.reject("findIdFail", "일치하는 사용자가 없습니다.");
+            return "find-id-pw";
+        }
+
+        model.addAttribute("loginId", user.getLoginId());
+        return "find-id-pw";
     }
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 // 로그인 폼
-// author: 강수민, last modified: 21.02.08
+// author: 강수민, last modified: 22.02.08
 @Data
 public class LoginDto {
 
