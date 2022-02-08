@@ -7,6 +7,8 @@ import springboot.catchshop.domain.Question;
 import java.util.List;
 import java.util.Optional;
 
+// Question Repository
+// author: 강수민, created: 21.02.01
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 

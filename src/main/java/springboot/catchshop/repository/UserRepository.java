@@ -7,6 +7,8 @@ import springboot.catchshop.domain.User;
 import java.util.List;
 import java.util.Optional;
 
+// User Repository
+// author: 강수민, created: 21.02.01
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

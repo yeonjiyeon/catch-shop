@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.repository.UserRepository;
 
+// User Service
+// author: 강수민, last modified: 21.02.08
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,7 +29,7 @@ public class UserService {
     }
 
     /**
-     * 중복 검증
+     * 아이디 중복 검증
      */
     private void validateDuplicateUser(User user) {
         userRepository.findByLoginId(user.getLoginId())

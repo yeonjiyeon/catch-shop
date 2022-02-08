@@ -3,26 +3,24 @@ package springboot.catchshop.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import springboot.catchshop.form.JoinForm;
-import springboot.catchshop.form.LoginForm;
-import springboot.catchshop.domain.Address;
+import springboot.catchshop.dto.JoinDto;
+import springboot.catchshop.dto.LoginDto;
 import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.service.UserService;
 import springboot.catchshop.session.SessionConst;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
+// User Controller
+// author: 강수민, created: 21.02.01
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -33,33 +31,28 @@ public class UserController {
     /**
      * 회원가입
      * author: 강수민
+     * last modified: 21.02.01
      */
     @GetMapping("/join")
-    public String join(Model model) {
-        model.addAttribute("joinForm", new JoinForm());
+    public String join(@ModelAttribute("joinDto") JoinDto form) {
+//        model.addAttribute("joinForm", new JoinDto());
         return "join"; // templates/join.html 렌더링
     }
 
     @PostMapping("/join")
-    public String join(@Valid JoinForm form, BindingResult result) {
+    public String join(@Valid @ModelAttribute JoinDto form, BindingResult result) {
         if (result.hasErrors()) {
             return "join";
         }
 
-        User user = new User();
-        user.setLoginId(form.getLoginId());
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
 
-        // 비밀번호 인코딩
-        String password = passwordEncoder.encode(form.getPassword());
-        user.setPassword(password);
+        JoinDto joinDto = new JoinDto(form.getLoginId(), encodedPassword,
+                form.getName(), form.getTelephone(),
+                form.getRoad(), form.getDetail(), form.getPostalcode(),
+                Role.USER, LocalDateTime.now());
 
-        user.setName(form.getName());
-        user.setTelephone(form.getTelephone());
-        Address address = new Address(form.getRoad(), form.getDetail(), form.getPostalcode());
-        user.setAddress(address);
-        user.setRole(Role.USER);
-        user.setJoindate(LocalDateTime.now());
-
+        User user = joinDto.toEntity();
         userService.join(user);
         return "redirect:/";
     }
@@ -67,18 +60,21 @@ public class UserController {
     /**
      * 로그인
      * author: 강수민
+     * last modified: 21.02.08
      */
     @GetMapping("/login")
-    public String login(@ModelAttribute("loginForm") LoginForm form) {
+    public String login(@ModelAttribute("loginDto") LoginDto form) {
         return "login"; // templates/login.html 렌더링
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Valid @ModelAttribute LoginDto form, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
-        User loginUser = userService.login(form.getLoginId(), form.getPassword());
+
+        LoginDto loginDto = new LoginDto(form.getLoginId(), form.getPassword());
+        User loginUser = userService.login(loginDto.getLoginId(), loginDto.getPassword());
 
         if (loginUser == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
@@ -96,6 +92,7 @@ public class UserController {
     /**
      * 로그아웃
      * author: 강수민
+     * last modified: 21.02.08
      */
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {

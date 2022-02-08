@@ -52,7 +52,7 @@
 <div class="single-product mt-150 mb-150">
 	<div class="container">
 		<!-- 회원가입 폼 시작 -->
-		<form role="form" action="/join" th:object="${joinForm}" method="post">
+		<form action="/join" th:action th:object="${joinDto}" method="post">
 			<!-- 아이디 -->
 			<div class="form-group" style="width:300px;margin:0 auto;">
 				<label th:for="loginId">아이디</label>
