@@ -1,0 +1,6 @@
+spring: #메모리 모드
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
