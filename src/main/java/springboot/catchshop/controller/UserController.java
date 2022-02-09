@@ -8,11 +8,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import springboot.catchshop.dto.FindIdDto;
-import springboot.catchshop.dto.JoinDto;
-import springboot.catchshop.dto.LoginDto;
+import springboot.catchshop.dto.*;
 import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
+import springboot.catchshop.service.MailService;
 import springboot.catchshop.service.UserService;
 import springboot.catchshop.session.SessionConst;
 
@@ -29,6 +28,7 @@ public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     /**
      * 회원가입
@@ -106,31 +106,66 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 아이디, 비밀번호 찾기
-    @GetMapping("/find-id-pw")
-    public String findIdPw(@ModelAttribute("findIdDto") FindIdDto form) {
-        return "find-id-pw"; // templates/find-id-pw.html 렌더링
-    }
-
     /**
      * 아이디 찾기
      * author: 강수민
      * last modified: 22.02.08
      */
-    @PostMapping("/find-id-pw")
+    @GetMapping("/find-id")
+    public String findId(@ModelAttribute("findIdDto") FindIdDto form) {
+        return "find-id"; // templates/find-id.html 렌더링
+    }
+
+    @PostMapping("/find-id")
     public String findId(@Valid @ModelAttribute FindIdDto form, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "find-id-pw";
+            return "find-id";
         }
 
         User user = userService.findId(form.getName(), form.getTelephone());
 
         if (user == null) {
             bindingResult.reject("findIdFail", "일치하는 사용자가 없습니다.");
-            return "find-id-pw";
+            return "find-id";
         }
 
-        model.addAttribute("loginId", user.getLoginId());
-        return "find-id-pw";
+        model.addAttribute("userId", user.getLoginId());
+        return "find-id";
+    }
+
+    /**
+     * 비밀번호 찾기
+     * author: 강수민
+     * last modified: 22.02.08
+     */
+    @GetMapping("/find-pw")
+    public String findPw(@ModelAttribute("findPwDto") FindPwDto form) {
+        return "find-pw"; // templates/find-pw.html 렌더링
+    }
+
+    @PostMapping("/find-pw")
+    public String findPw(@Valid @ModelAttribute FindPwDto form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "find-pw";
+        }
+
+        User user = userService.findPw(form.getLoginId());
+
+        if (user == null) {
+            bindingResult.reject("findPwFail", "일치하는 사용자가 없습니다.");
+            return "find-pw";
+        }
+
+        // 임시 비밀번호 생성 및 저장
+        String newPassword = userService.updatePw(user);
+
+        // 임시 비밀번호 발급 메일 전송
+        MailDto mailDto = new MailDto(form.getEmail(),
+                "캐치샵 임시 비밀번호 발급 메일입니다.",
+                "임시 비밀번호는 " + newPassword + " 입니다.");
+        String success = mailService.sendMail(mailDto);
+
+        model.addAttribute("success", success);
+        return "find-pw";
     }
 }

@@ -27,6 +27,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
+	implementation 'org.springframework.boot:spring-boot-starter-mail' // 메일 서버 라이브러리
+
 	//implementation 'com.querydsl:querydsl-jpa'
 
 	compileOnly 'org.projectlombok:lombok'
