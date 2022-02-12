@@ -27,13 +27,13 @@ public class CartService {
 
     // 장바구니 생성
     public Long addCart(Long userId, Long productId, int count) {
-        User user = userRepository.findById(userId).orElseThrow( () -> new IllegalStateException("회원이 존재하지 않습니다."));
+        userRepository.findById(userId).orElseThrow( () -> new IllegalStateException("회원이 존재하지 않습니다."));
         Product product = productRepository.findById(productId).orElseThrow( () -> new IllegalStateException("상품이 존재하지 않습니다."));
 
-        CartDto cartDto = new CartDto(user, product, count);
-        Cart cart = cartRepository.save(cartDto.toEntity());
+        CartDto cartDto = new CartDto(userId, product, count);
+        Cart saveCart = cartRepository.save(cartDto.toEntity());
 
-        return cart.getId();
+        return saveCart.getId();
     }
 
     // 장바구니 조회

@@ -8,7 +8,7 @@ import springboot.catchshop.dto.CartDto;
 import javax.persistence.*;
 
 // Cart Entity
-// author: soohyun, last modified: 22.02.03
+// author: soohyun, last modified: 22.02.12
 
 @Entity
 @Getter
@@ -19,9 +19,7 @@ public class Cart {
     @Column(name = "cart_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -30,12 +28,12 @@ public class Cart {
     private int cartCount;
 
     // 생성 메서드
-    @Builder
-    public Cart(User user, Product product, int cartCount) {
-        this.user = user;
+    public Cart(Long userId , Product product, int cartCount) {
+        this.userId = userId;
         this.product = product;
         this.cartCount = cartCount;
     }
+
 
     // 수량 변경 메서드
     public void updateCartCount(int count) {

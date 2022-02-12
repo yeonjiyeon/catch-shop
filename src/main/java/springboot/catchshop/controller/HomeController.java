@@ -28,7 +28,7 @@ public class HomeController {
 
         // 세션에 회원 데이터가 없는 경우
         if (loginUser == null) {
-            return "index_2";
+            return "index";
         }
 
         // 세션이 유지되는 경우

@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 // CartService Test
-// author: soohyun, last modified: 22.02.04
+// author: soohyun, last modified: 22.02.12
 
 @SpringBootTest
 @Transactional
@@ -53,7 +53,7 @@ class CartServiceTest {
         Optional<Cart> findCart = cartRepository.findById(addId);
 
         assertEquals(findCart.get().getId(), addId);
-        assertEquals(findCart.get().getUser(), user);
+        assertEquals(findCart.get().getUserId(), user.getId());
         assertEquals(findCart.get().getProduct(), product);
         assertEquals(findCart.get().getCartCount(), count);
     }
@@ -86,7 +86,7 @@ class CartServiceTest {
         Optional<Cart> findCart = cartRepository.findById(updateId);
 
         assertEquals(findCart.get().getId(), updateId);
-        assertEquals(findCart.get().getUser(), user);
+        assertEquals(findCart.get().getUserId(), user.getId());
         assertEquals(findCart.get().getProduct(), product);
         assertEquals(findCart.get().getCartCount(), 2);
     }
