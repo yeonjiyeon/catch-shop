@@ -4,19 +4,17 @@ import lombok.Data;
 import lombok.Getter;
 import springboot.catchshop.domain.Cart;
 import springboot.catchshop.domain.Product;
-import springboot.catchshop.domain.User;
 
 // Cart Dto
-// author: soohyun, last modified: 22.02.12
+// author: soohyun, last modified: 22.02.13
 
 @Data
 @Getter
 public class CartDto {
 
-    //private User user;
-    private Long userId;
-    private Product product;
-    private int cartCount;
+    private Long userId; // 로그인한 사용자 번호
+    private Product product; // 상품
+    private int cartCount; // 상품 수량
 
     public CartDto(Long userId, Product product, int cartCount) {
         this.userId = userId;
@@ -25,6 +23,6 @@ public class CartDto {
     }
 
     public Cart toEntity() {
-        return new Cart(userId, product, cartCount);
+        return new Cart(product, userId, cartCount);
     }
 }
