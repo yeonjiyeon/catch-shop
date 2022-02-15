@@ -22,6 +22,7 @@ public class HomeController {
     @GetMapping("/")
     public String homeLogin(
             @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser, Model model) {
+      
         model.addAttribute("user", loginUser);
         return "index";
     }
