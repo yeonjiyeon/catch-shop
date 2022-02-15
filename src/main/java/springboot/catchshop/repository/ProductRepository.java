@@ -11,15 +11,7 @@ import javax.persistence.EntityManager;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
-    //insert
 
-    //selectAll
-
-    //selectOne
-
-    //update
-
-    //delete
 
     //paging처리
     //Page<Product> findByProductBetween(Long from, Long to, Pageable pageable);

@@ -7,15 +7,6 @@ import springboot.catchshop.domain.Product;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 
-    //insert
-
-    //selectAll
-
-    //selectOne
-    
-    //update
-
-    //delete
 
 
 }
