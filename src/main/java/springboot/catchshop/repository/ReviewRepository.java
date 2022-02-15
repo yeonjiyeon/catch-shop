@@ -9,15 +9,6 @@ import springboot.catchshop.domain.Review;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
 
-    //insert
-
-    //selectAll
-
-    //selectOne
-
-    //update
-
-    //delete
 
     //paging처리
     //Page<Review> findByReviewBetween(Long from, Long to, Pageable pageable);
