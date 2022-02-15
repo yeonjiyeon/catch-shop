@@ -76,7 +76,6 @@ public class Product extends BaseEntity{
         this.stock = restStock;
     }
 
-
     //=====값 수정 메서드(임시)
     public void changeName(String name){
         this.name = name;

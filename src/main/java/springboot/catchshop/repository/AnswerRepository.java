@@ -6,6 +6,8 @@ import springboot.catchshop.domain.Answer;
 
 import java.util.Optional;
 
+// Answer Repository
+// author: 강수민, created: 22.02.01
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
