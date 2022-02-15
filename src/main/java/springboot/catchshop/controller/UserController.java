@@ -8,58 +8,53 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import springboot.catchshop.form.JoinForm;
-import springboot.catchshop.form.LoginForm;
-import springboot.catchshop.domain.Address;
+import springboot.catchshop.dto.*;
 import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
+import springboot.catchshop.service.MailService;
 import springboot.catchshop.service.UserService;
 import springboot.catchshop.session.SessionConst;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
+// User Controller
+// author: 강수민, created: 22.02.01
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     /**
      * 회원가입
      * author: 강수민
+     * last modified: 22.02.01
      */
     @GetMapping("/join")
-    public String join(Model model) {
-        model.addAttribute("joinForm", new JoinForm());
+    public String join(@ModelAttribute("joinDto") JoinDto form) {
+//        model.addAttribute("joinForm", new JoinDto());
         return "join"; // templates/join.html 렌더링
     }
 
     @PostMapping("/join")
-    public String join(@Valid JoinForm form, BindingResult result) {
+    public String join(@Valid @ModelAttribute JoinDto form, BindingResult result) {
         if (result.hasErrors()) {
             return "join";
         }
 
-        User user = new User();
-        user.setLoginId(form.getLoginId());
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
 
-        // 비밀번호 인코딩
-        String password = passwordEncoder.encode(form.getPassword());
-        user.setPassword(password);
+        JoinDto joinDto = new JoinDto(form.getLoginId(), encodedPassword,
+                form.getName(), form.getTelephone(),
+                form.getRoad(), form.getDetail(), form.getPostalcode(),
+                Role.USER, LocalDateTime.now());
 
-        user.setName(form.getName());
-        user.setTelephone(form.getTelephone());
-        Address address = new Address(form.getRoad(), form.getDetail(), form.getPostalcode());
-        user.setAddress(address);
-        user.setRole(Role.USER);
-        user.setJoindate(LocalDateTime.now());
-
+        User user = joinDto.toEntity();
         userService.join(user);
         return "redirect:/";
     }
@@ -67,18 +62,21 @@ public class UserController {
     /**
      * 로그인
      * author: 강수민
+     * last modified: 22.02.08
      */
     @GetMapping("/login")
-    public String login(@ModelAttribute("loginForm") LoginForm form) {
+    public String login(@ModelAttribute("loginDto") LoginDto form) {
         return "login"; // templates/login.html 렌더링
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Valid @ModelAttribute LoginDto form, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
-        User loginUser = userService.login(form.getLoginId(), form.getPassword());
+
+        LoginDto loginDto = new LoginDto(form.getLoginId(), form.getPassword());
+        User loginUser = userService.login(loginDto.getLoginId(), loginDto.getPassword());
 
         if (loginUser == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
@@ -96,6 +94,7 @@ public class UserController {
     /**
      * 로그아웃
      * author: 강수민
+     * last modified: 22.02.08
      */
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
@@ -107,9 +106,66 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 아이디, 비밀번호 찾기
-    @GetMapping("/findidpw")
-    public String findidpw() {
-        return "find-id-pw"; // templates/find-id-pw.html 렌더링
+    /**
+     * 아이디 찾기
+     * author: 강수민
+     * last modified: 22.02.08
+     */
+    @GetMapping("/find-id")
+    public String findId(@ModelAttribute("findIdDto") FindIdDto form) {
+        return "find-id"; // templates/find-id.html 렌더링
+    }
+
+    @PostMapping("/find-id")
+    public String findId(@Valid @ModelAttribute FindIdDto form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "find-id";
+        }
+
+        User user = userService.findId(form.getName(), form.getTelephone());
+
+        if (user == null) {
+            bindingResult.reject("findIdFail", "일치하는 사용자가 없습니다.");
+            return "find-id";
+        }
+
+        model.addAttribute("userId", user.getLoginId());
+        return "find-id";
+    }
+
+    /**
+     * 비밀번호 찾기
+     * author: 강수민
+     * last modified: 22.02.08
+     */
+    @GetMapping("/find-pw")
+    public String findPw(@ModelAttribute("findPwDto") FindPwDto form) {
+        return "find-pw"; // templates/find-pw.html 렌더링
+    }
+
+    @PostMapping("/find-pw")
+    public String findPw(@Valid @ModelAttribute FindPwDto form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "find-pw";
+        }
+
+        User user = userService.findPw(form.getLoginId());
+
+        if (user == null) {
+            bindingResult.reject("findPwFail", "일치하는 사용자가 없습니다.");
+            return "find-pw";
+        }
+
+        // 임시 비밀번호 생성 및 저장
+        String newPassword = userService.updatePw(user);
+
+        // 임시 비밀번호 발급 메일 전송
+        MailDto mailDto = new MailDto(form.getEmail(),
+                "캐치샵 임시 비밀번호 발급 메일입니다.",
+                "임시 비밀번호는 " + newPassword + " 입니다.");
+        String success = mailService.sendMail(mailDto);
+
+        model.addAttribute("success", success);
+        return "find-pw";
     }
 }

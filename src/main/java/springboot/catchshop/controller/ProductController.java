@@ -5,10 +5,7 @@ import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 import springboot.catchshop.dto.PageRequestDTO;
 import springboot.catchshop.service.ProductService;
 
@@ -50,8 +47,8 @@ public class ProductController {
 
     //상품 개별 조회
     @GetMapping("products/{id}")
-    public void readSingleProduct(){
-
+    public String readSingleProduct(@PathVariable Long id){
+        return "single-product";
     }
 
     //상품 수정
