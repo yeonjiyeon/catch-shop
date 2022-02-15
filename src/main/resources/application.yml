@@ -14,7 +14,25 @@ spring:
         show_sql: true
         format_sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+
+server:
+  servlet:
+    session:
+      timeout: 1800
+      tracking-modes: cookie
