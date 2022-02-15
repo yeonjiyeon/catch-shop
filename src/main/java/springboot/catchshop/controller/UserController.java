@@ -14,10 +14,12 @@ import springboot.catchshop.domain.Address;
 import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.service.UserService;
+import springboot.catchshop.session.SessionConst;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
@@ -28,7 +30,10 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    // 회원가입
+    /**
+     * 회원가입
+     * author: 강수민
+     */
     @GetMapping("/join")
     public String join(Model model) {
         model.addAttribute("joinForm", new JoinForm());
@@ -45,8 +50,8 @@ public class UserController {
         user.setLoginId(form.getLoginId());
 
         // 비밀번호 인코딩
-//        String password = passwordEncoder.encode(form.getPassword());
-        user.setPassword(form.getPassword());
+        String password = passwordEncoder.encode(form.getPassword());
+        user.setPassword(password);
 
         user.setName(form.getName());
         user.setTelephone(form.getTelephone());
@@ -59,14 +64,17 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 로그인
+    /**
+     * 로그인
+     * author: 강수민
+     */
     @GetMapping("/login")
     public String login(@ModelAttribute("loginForm") LoginForm form) {
         return "login"; // templates/login.html 렌더링
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletResponse response) {
+    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
@@ -77,31 +85,26 @@ public class UserController {
             return "login";
         }
 
-        // 로그인 성공 처리
-
-        // 쿠키에 시간 정보를 주지 않으면 세션 쿠키 (브라우저 종료시 모두 종료)
-        Cookie idCookie = new Cookie("user_id", String.valueOf(loginUser.getId()));
-        response.addCookie(idCookie);
+        // 세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성
+        HttpSession session = request.getSession();
+        // 세션에 로그인 회원 정보 보관
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
         return "redirect:/";
     }
 
+    /**
+     * 로그아웃
+     * author: 강수민
+     */
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        expireCookie(request, response, "user_id");
-        return "redirect:/";
-    }
-
-    private void expireCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
-        Cookie[] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            cookies[i].setMaxAge(0);
-            response.addCookie(cookies[i]);
+    public String logout(HttpServletRequest request) {
+//        expireCookie(request, response, "user_id");
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
         }
+        return "redirect:/";
     }
 
     // 아이디, 비밀번호 찾기
