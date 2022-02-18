@@ -71,7 +71,7 @@
 				<div th:each="dto : ${result.dtoList}"  class="col-lg-4 col-md-6 text-center strawberry">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a th:href="'products/' + ${dto.id}"><img th:src="${dto.productImg}" alt=""></a>
+							<a th:href="@{/single-product(id = ${dto.id}, page = ${result.page})}"><img th:src="${dto.productImg}" alt=""></a>
 						</div>
 						<h3>[[${dto.name}]]</h3>
 						<p class="product-price"> [[${dto.price}]] </p>
@@ -86,15 +86,14 @@
 			<div class="row">
 				<div class="col-lg-12 text-center">
 					<div class="pagination-wrap">
-<<<<<<< HEAD
 						<ul class="pagination h-100 justify-content-center align-items-center">
 
 							<li class="page-item " th:if="${result.prev}">
-								<a class="page-link" th:href="@{/guestbook/list(page= ${result.start -1})}" tabindex="-1">Previous</a>
+								<a class="page-link" th:href="@{/products(page= ${result.start -1})}" tabindex="-1">Previous</a>
 							</li>
 
 							<li th:class=" 'page-item ' + ${result.page == page?'active':''} " th:each="page: ${result.pageList}">
-								<a class="page-link" th:href="@{/guestbook/list(page = ${page})}">
+								<a class="page-link" th:href="@{/products(page = ${page})}">
 									[[${page}]]
 								</a>
 							</li>
@@ -102,21 +101,7 @@
 							<li class="page-item" th:if="${result.next}">
 								<a class="page-link" th:href="@{/guestbook/list(page= ${result.end + 1})}">Next</a>
 							</li>
-
 						</ul>
-=======
-<!--						<ul class = "pagination h-100 justify-content-center align-items-center">-->
-<!--							<li class="page-item " th:if="${result.prev}">-->
-<!--								<a class=page-link" th:href = "@{/products(page = ${result.start - 1}))}" tabindex="-1">Previous</a>-->
-<!--							</li>-->
-<!--							<li th:class=" 'page-item ' + ${result.page == page? 'active':''} " th:each="page: ${result.pageList}">-->
-<!--								<a class=page-link" href = "#" >[[${page}]]</a>-->
-<!--							</li>-->
-<!--							<li class="page-item " th:if="${result.next}">-->
-<!--								<a class=page-link" href = "#">Next</a>-->
-<!--							</li>-->
-<!--						</ul>-->
->>>>>>> 527fa747ef1926c9e311e7438ae3c8961e14d8ca
 					</div>
 				</div>
 			</div>

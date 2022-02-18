@@ -35,7 +35,9 @@ public class PageResultDTO<DTO, EN> {
 
     //페이지 번호목록
     private List<Integer> pageList;
-
+    
+    
+    //초깃값 세팅
     public PageResultDTO(Page<EN> result, Function<EN, DTO> fn){
         dtoList = result.stream().map(fn).collect(Collectors.toList());
 
@@ -43,6 +45,7 @@ public class PageResultDTO<DTO, EN> {
 
         makePageList(result.getPageable());
     }
+
 
     private void makePageList(Pageable pageable) {
         this.page = pageable.getPageNumber() +1;

@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 @Transactional
 public class ProductRepositoryTest {
@@ -31,7 +33,7 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void 상품저장_테스트(){
+    public void 상품_등록(){
         //given
         Long id = 1L;
         String name ="productA";
@@ -49,41 +51,63 @@ public class ProductRepositoryTest {
         Product product = productList.get(0);
         Assertions.assertThat(product.getId()).isEqualTo(id);
         Assertions.assertThat(product.getName()).isEqualTo(name);
-
-
     }
 
     @Test
-    public void 상품_더미데이터_넣기(){
+    public void 상품_목록(){
         //given
-        Long id = 1L;
+        Product productA = productRepository.save(Product.builder()
+                .id(1L)
+                .name("productA")
+                .build());
+
+        Product productB = productRepository.save(Product.builder()
+                .id(1L)
+                .name("productB")
+                .build());
 
         //when
-        LongStream.rangeClosed(1, 100).forEach(i -> {
-            Product product =Product.builder().id((Long)i).name("kim").build();
-            productRepository.save(product);
-        });
-
-        List<Product> productList = productRepository.findAll();
+        List<Product> result = productRepository.findAll();
 
         //then
-        for(int i = 0; i < productList.size(); i++){
-            Product product = productList.get(i);
-            Assertions.assertThat(product.getId()).isEqualTo(id);
-        }
+        assertThat(result.size()).isEqualTo(2);
+
     }
 
     @Test
-    public void testQuery1(){
+    public void testQuery_작성(){
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
         QProduct qProduct = QProduct.product;
         String keyWord = "1";
         BooleanBuilder builder = new BooleanBuilder();
         BooleanExpression expression = qProduct.name.contains(keyWord);
         builder.and(expression);
-       // Page<Product> result = productRepository.findAll();
+        Page<Product> result = productRepository.findAll(builder, pageable);
     }
 
 
+    @Test
+    public void 상품_수정(){
+        //given
+
+
+        //when
+
+
+        //then
+
+    }
+
+    @Test
+    public void 상품_삭제(){
+        //given
+
+
+        //when
+
+
+        //then
+
+    }
 
 }
