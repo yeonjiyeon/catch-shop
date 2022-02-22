@@ -1,13 +1,12 @@
 package springboot.catchshop.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import springboot.catchshop.dto.*;
 import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
@@ -37,7 +36,6 @@ public class UserController {
      */
     @GetMapping("/join")
     public String join(@ModelAttribute("joinDto") JoinDto form) {
-//        model.addAttribute("joinForm", new JoinDto());
         return "join"; // templates/join.html 렌더링
     }
 
@@ -167,5 +165,29 @@ public class UserController {
 
         model.addAttribute("success", success);
         return "find-pw";
+    }
+
+    /**
+     * 마이페이지
+     * author: 강수민
+     * last modified: 22.02.15
+     */
+    @GetMapping("/mypage")
+    public String mypage(@ModelAttribute("updateUserInfoDto") JoinDto form,
+                         @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
+                         Model model) {
+        User user = userService.findById(loginUser.getId());
+        model.addAttribute("user", user);
+        return "mypage"; // templates/mypage.html 렌더링
+    }
+
+    @PostMapping("/mypage")
+    public String mypage(@Valid @ModelAttribute JoinDto form, BindingResult result) {
+
+        if (result.hasErrors()) {
+            return "/mypage";
+        }
+
+        return "redirect:/";
     }
 }

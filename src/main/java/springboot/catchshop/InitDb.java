@@ -58,7 +58,10 @@ public class InitDb {
 
             // author: soohyun last modified: 22.02.19
             // 회원 데이터 생성
-            User user1 = createUser("user1", passwordEncoder.encode("user1"), "user1", "01012345678", "road1", "detail1", "11111");
+
+            Address address1 = new Address("road1", "detail1", "11111");
+            User user1 = createUser("user1", passwordEncoder.encode("1"), "user1", "01012345678",
+                    address1, Role.USER, LocalDateTime.now());
             em.persist(user1);
 
             // 장바구니 데이터 생성
@@ -79,18 +82,12 @@ public class InitDb {
             return product;
         }
 
-        private User createUser(String loginId, String password, String name, String telephone, String road, String detail, String postalcode) {
-            User user = User.builder()
-                    .loginId(loginId)
-                    .password(password)
-                    .name(name)
-                    .telephone(telephone)
-                    .road(road)
-                    .detail(detail)
-                    .postalcode(postalcode)
-                    .role(Role.USER)
-                    .joindate(LocalDateTime.now())
-                    .build();
+        // modified by 강수민, 22.02.15 - setter 삭제
+        private User createUser(String loginId, String password, String name, String telephone,
+                                Address address, Role role, LocalDateTime joindate) {
+
+            User user = new User(loginId, password, name, telephone,
+                    address, role, joindate);
             return user;
         }
 

@@ -2,6 +2,7 @@ package springboot.catchshop.dto;
 
 import lombok.Data;
 import lombok.Getter;
+import springboot.catchshop.domain.Address;
 import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
 
@@ -60,9 +61,7 @@ public class JoinDto {
                 .password(password)
                 .name(name)
                 .telephone(telephone)
-                .road(road)
-                .detail(detail)
-                .postalcode(postalcode)
+                .address(new Address(road, detail, postalcode))
                 .role(role)
                 .joindate(joindate)
                 .build();

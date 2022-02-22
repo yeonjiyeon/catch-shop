@@ -23,7 +23,7 @@ class UserServiceTest {
     @Test
     void 회원가입() throws Exception {
         // given
-        JoinDto form = new JoinDto("user1", "1", "강유저", "010-1234-5678",
+        JoinDto form = new JoinDto("userA", "A", "강유저", "010-1234-5678",
                 "건강시 행복구 사랑동", "부자아파트", "12345",
                 Role.USER, LocalDateTime.now());
 
@@ -39,18 +39,18 @@ class UserServiceTest {
     @Test
     void 아이디중복확인() throws Exception {
         // given
-        JoinDto user1 = new JoinDto("user1", "1", "강유저", "010-1234-5678",
+        JoinDto userA = new JoinDto("userA", "A", "강유저", "010-1234-5678",
                 "건강시 행복구 사랑동", "부자아파트", "12345",
                 Role.USER, LocalDateTime.now());
 
-        JoinDto user2 = new JoinDto("user1", "1", "강유저", "010-1234-5678",
+        JoinDto userB = new JoinDto("userA", "A", "강유저", "010-1234-5678",
                 "건강시 행복구 사랑동", "부자아파트", "12345",
                 Role.USER, LocalDateTime.now());
 
         // when
-        userService.join(user1.toEntity());
+        userService.join(userA.toEntity());
         try {
-            userService.join(user2.toEntity());
+            userService.join(userB.toEntity());
         } catch (IllegalStateException e) {
             return;
         }
