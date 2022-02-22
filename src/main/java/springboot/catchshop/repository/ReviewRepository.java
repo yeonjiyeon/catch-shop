@@ -10,8 +10,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
 
 
-    //paging처리
-    //Page<Review> findByReviewBetween(Long from, Long to, Pageable pageable);
 
 
 }
