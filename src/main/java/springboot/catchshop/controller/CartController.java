@@ -4,22 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import springboot.catchshop.domain.Cart;
 import springboot.catchshop.domain.User;
-import springboot.catchshop.dto.CartDto;
-import springboot.catchshop.dto.CartListDto;
-import springboot.catchshop.dto.CartResponseDto;
+import springboot.catchshop.dto.*;
 import springboot.catchshop.service.CartService;
 import springboot.catchshop.session.SessionConst;
 
-import javax.servlet.http.HttpSession;
-
-import java.util.List;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
-
 // Cart Controller
-// author: soohyun, last modified: 22.02.14
+// author: soohyun, last modified: 22.02.21
 
 @Controller
 @RequiredArgsConstructor
@@ -30,8 +21,7 @@ public class CartController {
     // 장바구니 추가
     @PostMapping("/carts/{id}")
     public String addCart(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
-                          @PathVariable("id") Long productId,
-                          @RequestParam("count") int count) {
+                          @PathVariable("id") Long productId, @RequestParam("count") int count) {
 
         if (loginUser != null) {
             Long cartId = cartService.addCart(loginUser.getId(), productId, count);
@@ -53,15 +43,19 @@ public class CartController {
         }
     }
 
-    // 장바구니 변경
+    // 장바구니 수정
     @PutMapping("/carts/{id}")
-    public void updateCart() {
+    public String updateCart(@PathVariable("id") Long id, @RequestParam("count") int count) {
 
+        cartService.updateCart(id, count);
+        return "redirect:/carts";
     }
 
     // 장바구니 삭제
     @DeleteMapping("/carts/{id}")
-    public void deleteCart() {
+    public String deleteCart(@PathVariable("id") Long id) {
 
+        cartService.deleteCart(id);
+        return "redirect:/carts";
     }
 }

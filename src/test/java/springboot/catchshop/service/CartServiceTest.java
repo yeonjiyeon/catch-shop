@@ -3,19 +3,21 @@ package springboot.catchshop.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.Cart;
 import springboot.catchshop.domain.Product;
+import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
-import springboot.catchshop.dto.CartDto;
-import springboot.catchshop.dto.CartListDto;
 import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.repository.CartRepository;
 import springboot.catchshop.repository.ProductRepository;
 import springboot.catchshop.repository.UserRepository;
 
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,7 @@ class CartServiceTest {
     @Autowired CartService cartService;
     @Autowired UserRepository userRepository;
     @Autowired ProductRepository productRepository;
+    @Autowired EntityManager em;
 
     private User user;
     private Product product;
@@ -39,12 +42,31 @@ class CartServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        user = new User();
+        user = new User("user1", "user1", "user1", "01012345678", "road1", "detail1", "11111", Role.USER, LocalDateTime.now());
         userRepository.save(user);
         product = new Product();
         product.changePrice(10000);
         productRepository.save(product);
     }
+
+//    @DisplayName("장바구니 생성")
+//    class addCart {
+//
+//        @Test
+//        @DisplayName("성공")
+//        public void success() {
+//            // when
+//            Long addId = cartService.addCart(user.getId(), product.getId(), count);
+//
+//            // then
+//            Optional<Cart> findCart = cartRepository.findById(addId);
+//
+//            assertEquals(findCart.get().getId(), addId);
+//            assertEquals(findCart.get().getUserId(), user.getId());
+//            assertEquals(findCart.get().getProduct(), product);
+//            assertEquals(findCart.get().getCartCount(), count);
+//        }
+//    }
 
     @Test
     @DisplayName("장바구니 생성")

@@ -56,8 +56,9 @@ public class InitDb {
             Product product12 = createProduct("product12", "assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product12);
 
-            // author: soohyun last modified: 22.02.13
+            // author: soohyun last modified: 22.02.19
             // 회원 데이터 생성
+
             Address address1 = new Address("road1", "detail1", "11111");
             User user1 = createUser("user1", passwordEncoder.encode("1"), "user1", "01012345678",
                     address1, Role.USER, LocalDateTime.now());
@@ -91,7 +92,11 @@ public class InitDb {
         }
 
         private Cart createCart(Product product, Long userId, int count) {
-            Cart cart = new Cart(product, userId, count);
+            Cart cart = Cart.builder()
+                    .product(product)
+                    .userId(userId)
+                    .cartCount(count)
+                    .build();
             return cart;
         }
     }
