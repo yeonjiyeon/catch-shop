@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.Cart;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.User;
+import springboot.catchshop.dto.CartDto;
+import springboot.catchshop.dto.CartListDto;
+import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.repository.CartRepository;
 import springboot.catchshop.repository.ProductRepository;
 import springboot.catchshop.repository.UserRepository;
@@ -19,7 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 // CartService Test
-// author: soohyun, last modified: 22.02.04
+// author: soohyun, last modified: 22.02.13
 
 @SpringBootTest
 @Transactional
@@ -39,6 +42,7 @@ class CartServiceTest {
         user = new User();
         userRepository.save(user);
         product = new Product();
+        product.changePrice(10000);
         productRepository.save(product);
     }
 
@@ -53,7 +57,7 @@ class CartServiceTest {
         Optional<Cart> findCart = cartRepository.findById(addId);
 
         assertEquals(findCart.get().getId(), addId);
-        assertEquals(findCart.get().getUser(), user);
+        assertEquals(findCart.get().getUserId(), user.getId());
         assertEquals(findCart.get().getProduct(), product);
         assertEquals(findCart.get().getCartCount(), count);
     }
@@ -66,10 +70,15 @@ class CartServiceTest {
         cartService.addCart(user.getId(), product.getId(), count);
 
         // when
-        List<Cart> cartList = cartService.cartList();
+        CartResponseDto carts = cartService.cartList(user.getId());
 
         // then
-        assertEquals(cartList.size(), 1);
+        assertEquals(carts.getCartList().size(), 1);
+        assertEquals(carts.getCartList().get(0).getCartCount(), 1);
+        assertEquals(carts.getCartList().get(0).getTotalProductPrice(), 10000);
+        assertEquals(carts.getTotalAllProductPrice(), 10000);
+        assertEquals(carts.getDeliveryPrice(), 3000);
+        assertEquals(carts.getTotalPayPrice(), 13000);
     }
 
     @Test
@@ -86,7 +95,7 @@ class CartServiceTest {
         Optional<Cart> findCart = cartRepository.findById(updateId);
 
         assertEquals(findCart.get().getId(), updateId);
-        assertEquals(findCart.get().getUser(), user);
+        assertEquals(findCart.get().getUserId(), user.getId());
         assertEquals(findCart.get().getProduct(), product);
         assertEquals(findCart.get().getCartCount(), 2);
     }

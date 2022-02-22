@@ -48,11 +48,13 @@ public class Product extends BaseEntity{
 
 
     @Builder
-    public Product(Long id,String name, int price, int stock){
+    public Product(Long id,String name, String text, int price, int stock, String productImg){
         this.id = id;
         this.name = name;
+        this.text = text;
         this.price = price;
         this.stock = stock;
+        this.productImg = productImg;
     }
     //==비즈니스 로직==//
     /**
@@ -74,7 +76,6 @@ public class Product extends BaseEntity{
         this.stock = restStock;
     }
 
-
     //=====값 수정 메서드(임시)
     public void changeName(String name){
         this.name = name;
@@ -86,5 +87,9 @@ public class Product extends BaseEntity{
 
     public void changeStock(int stock){
         this.stock = stock;
+    }
+
+    public void changeProductImg(String productImg){
+        this.productImg = productImg;
     }
 }

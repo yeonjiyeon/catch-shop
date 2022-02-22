@@ -1,5 +1,8 @@
 package springboot.catchshop.domain;
-
+/**
+ * 등록일, 수정일
+ * author:김지연
+ */
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
