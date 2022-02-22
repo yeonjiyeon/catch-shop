@@ -2,15 +2,14 @@ package springboot.catchshop;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import springboot.catchshop.domain.Address;
-import springboot.catchshop.domain.Cart;
-import springboot.catchshop.domain.Product;
-import springboot.catchshop.domain.User;
+import springboot.catchshop.domain.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -29,6 +28,7 @@ public class InitDb {
     static class InitService {
 
         private final EntityManager em;
+        private final PasswordEncoder passwordEncoder;
 
         public void dbInit() {
             Product product1 = createProduct("product1", "assets/img/products/product-img-1.jpg", 10000, 100);
@@ -56,10 +56,9 @@ public class InitDb {
             Product product12 = createProduct("product12", "assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product12);
 
-            // author: soohyun last modified: 22.02.13
+            // author: soohyun last modified: 22.02.19
             // 회원 데이터 생성
-            Address address1 = new Address("road1", "detail1", "11111");
-            User user1 = createUser("user1", "$2a$10$YsLNiiVMaVSpM0y8IW7uDOMeLcyRdetIzyXgw5bAx9YDDwsEqQmKe", "user1", "01012345678", address1);
+            User user1 = createUser("user1", passwordEncoder.encode("user1"), "user1", "01012345678", "road1", "detail1", "11111");
             em.persist(user1);
 
             // 장바구니 데이터 생성
@@ -80,19 +79,27 @@ public class InitDb {
             return product;
         }
 
-        private User createUser(String loginId, String password, String name, String telephone, Address address) {
-
-            User user = new User();
-            user.setLoginId(loginId);
-            user.setPassword(password);
-            user.setName(name);
-            user.setTelephone(telephone);
-            user.setAddress(address);
+        private User createUser(String loginId, String password, String name, String telephone, String road, String detail, String postalcode) {
+            User user = User.builder()
+                    .loginId(loginId)
+                    .password(password)
+                    .name(name)
+                    .telephone(telephone)
+                    .road(road)
+                    .detail(detail)
+                    .postalcode(postalcode)
+                    .role(Role.USER)
+                    .joindate(LocalDateTime.now())
+                    .build();
             return user;
         }
 
         private Cart createCart(Product product, Long userId, int count) {
-            Cart cart = new Cart(product, userId, count);
+            Cart cart = Cart.builder()
+                    .product(product)
+                    .userId(userId)
+                    .cartCount(count)
+                    .build();
             return cart;
         }
     }
