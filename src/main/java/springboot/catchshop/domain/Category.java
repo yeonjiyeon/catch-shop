@@ -1,5 +1,6 @@
 package springboot.catchshop.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +35,12 @@ public class Category {
 
     @OneToMany(mappedBy = "parent")
     private List<Category> child = new ArrayList<>();
+
+    @Builder
+    public Category(String name, Category parent){
+        this.name = name;
+        this.parent = parent;
+    }
 
     //==연관관계 메서드==//
     public void addChildCategory(Category child) {

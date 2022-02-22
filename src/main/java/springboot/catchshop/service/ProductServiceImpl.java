@@ -1,5 +1,7 @@
 package springboot.catchshop.service;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import springboot.catchshop.domain.Product;
+import springboot.catchshop.domain.QProduct;
 import springboot.catchshop.dto.PageRequestDTO;
 import springboot.catchshop.dto.PageResultDTO;
 import springboot.catchshop.dto.ProductDTO;
@@ -43,8 +46,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public PageResultDTO<ProductDTO, Product> readProducts(PageRequestDTO requestDTO) {
         Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());//상품 정렬
-
+        
+        //BooleanBuilder booleanBuilder = getSearch(requestDTO);// 검색 조건 처리
         Page<Product> result = productRepository.findAll(pageable);
+        //Page<Product> result = productRepository.findAll(booleanBuilder, pageable);
 
         Function<Product, ProductDTO> fn = (entity -> entityToDto(entity));
         return new PageResultDTO<>(result, fn);
@@ -77,8 +82,22 @@ public class ProductServiceImpl implements ProductService{
         productRepository.deleteById(id);
     }
 
-
-
+    //상품 검색
+//    private BooleanBuilder getSearch(PageRequestDTO requestDTO){
+//        BooleanBuilder booleanBuilder = new BooleanBuilder();
+//        QProduct qProduct = QProduct.product;
+//        String keyword = requestDTO.getKeyWord();
+//        BooleanExpression expression = qProduct.id.gt(0L);
+//
+//        booleanBuilder.and(expression);
+//
+//        BooleanBuilder conditionBuilder = new BooleanBuilder();
+//        conditionBuilder.and(qProduct.name.contains(keyword));
+//
+//        booleanBuilder.and(conditionBuilder);
+//
+//        return booleanBuilder;
+//    }
 
 
 }
