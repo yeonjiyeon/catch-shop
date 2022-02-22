@@ -81,7 +81,14 @@ public class UserService {
             uuid = UUID.randomUUID().toString().replaceAll("-", "");
             uuid = uuid.substring(0, 10);
         }
-        user.setPassword(passwordEncoder.encode(uuid));
-        return uuid;
+        String encodedPassword = passwordEncoder.encode(uuid);
+        user.updatePassword(encodedPassword);
+        return encodedPassword;
+    }
+
+    @Transactional(readOnly = true)
+    public User findById(Long userId) {
+        return userRepository.findById(userId)
+                .orElse(null);
     }
 }
