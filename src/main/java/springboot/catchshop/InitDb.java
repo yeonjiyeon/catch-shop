@@ -83,11 +83,17 @@ public class InitDb {
 
             // author: soohyun last modified: 22.02.19
             // 회원 데이터 생성
-
             Address address1 = new Address("road1", "detail1", "11111");
             User user1 = createUser("user1", passwordEncoder.encode("1"), "user1", "01012345678",
-                    address1, Role.USER, LocalDateTime.now());
+                    address1, Role.USER.toString(), LocalDateTime.now());
             em.persist(user1);
+
+            // author: 강수민 created: 22.02.23
+            // 관리자 데이터 생성
+            Address address2 = new Address("road2", "detail2", "22222");
+            User admin1 = createUser("admin1", passwordEncoder.encode("1"), "admin1", "01012345678",
+                    address2, Role.ADMIN.toString(), LocalDateTime.now());
+            em.persist(admin1);
 
             // 장바구니 데이터 생성
             Cart cart1 = createCart(product1, user1.getId(), 1);
@@ -109,7 +115,7 @@ public class InitDb {
 
         // modified by 강수민, 22.02.15 - setter 삭제
         private User createUser(String loginId, String password, String name, String telephone,
-                                Address address, Role role, LocalDateTime joindate) {
+                                Address address, String role, LocalDateTime joindate) {
 
             User user = new User(loginId, password, name, telephone,
                     address, role, joindate);

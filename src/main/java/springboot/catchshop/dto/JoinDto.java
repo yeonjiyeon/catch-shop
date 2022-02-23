@@ -8,6 +8,7 @@ import springboot.catchshop.domain.User;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
 
 // 회원가입 폼
 // author: 강수민, last modified: 22.02.08
@@ -35,15 +36,17 @@ public class JoinDto {
     @NotEmpty(message = "필수 항목입니다.")
     private String postalcode;
 
-    private Role role;
+    private String role;
+
     private LocalDateTime joindate;
 
     public JoinDto() {
 
     }
+
     public JoinDto(String loginId, String password, String name, String telephone,
                    String road, String detail, String postalcode,
-                   Role role, LocalDateTime joindate) {
+                   String role, LocalDateTime joindate) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;

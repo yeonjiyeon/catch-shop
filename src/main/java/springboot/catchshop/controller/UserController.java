@@ -1,6 +1,7 @@
 package springboot.catchshop.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 // User Controller
 // author: 강수민, created: 22.02.01
 @Controller
+@Log4j2
 @RequiredArgsConstructor
 public class UserController {
 
@@ -34,6 +38,7 @@ public class UserController {
      * author: 강수민
      * last modified: 22.02.01
      */
+
     @GetMapping("/join")
     public String join(@ModelAttribute("joinDto") JoinDto form) {
         return "join"; // templates/join.html 렌더링
@@ -50,11 +55,17 @@ public class UserController {
         JoinDto joinDto = new JoinDto(form.getLoginId(), encodedPassword,
                 form.getName(), form.getTelephone(),
                 form.getRoad(), form.getDetail(), form.getPostalcode(),
-                Role.USER, LocalDateTime.now());
+                form.getRole(), LocalDateTime.now());
 
         User user = joinDto.toEntity();
         userService.join(user);
         return "redirect:/";
+    }
+
+    // 권한 설정 라디오 박스 값 전달
+    @ModelAttribute("roles")
+    public Role[] roles() {
+        return Role.values();
     }
 
     /**
@@ -96,7 +107,6 @@ public class UserController {
      */
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
-//        expireCookie(request, response, "user_id");
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
@@ -173,7 +183,7 @@ public class UserController {
      * last modified: 22.02.15
      */
     @GetMapping("/mypage")
-    public String mypage(@ModelAttribute("updateUserInfoDto") JoinDto form,
+    public String mypage(@ModelAttribute("updateUserDto") UpdateUserDto form,
                          @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
                          Model model) {
         User user = userService.findById(loginUser.getId());
@@ -182,10 +192,10 @@ public class UserController {
     }
 
     @PostMapping("/mypage")
-    public String mypage(@Valid @ModelAttribute JoinDto form, BindingResult result) {
+    public String mypage(@Valid @ModelAttribute UpdateUserDto form, BindingResult result) {
 
         if (result.hasErrors()) {
-            return "/mypage";
+            return "mypage";
         }
 
         return "redirect:/";

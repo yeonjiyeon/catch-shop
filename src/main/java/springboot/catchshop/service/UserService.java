@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.User;
+import springboot.catchshop.dto.JoinDto;
 import springboot.catchshop.repository.UserRepository;
 
 import java.util.UUID;
@@ -90,5 +91,10 @@ public class UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElse(null);
+    }
+
+    @Transactional
+    public void updateUser(JoinDto form) {
+
     }
 }

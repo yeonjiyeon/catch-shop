@@ -42,7 +42,7 @@ class CartServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        user = new User("user1", "user1", "user1", "01012345678", "road1", "detail1", "11111", Role.USER, LocalDateTime.now());
+//        user = new User("user1", "user1", "user1", "01012345678", "road1", "detail1", "11111", Role.USER, LocalDateTime.now());
         userRepository.save(user);
         product = new Product();
         product.changePrice(10000);
