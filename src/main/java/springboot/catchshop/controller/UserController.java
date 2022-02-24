@@ -1,8 +1,6 @@
 package springboot.catchshop.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 // User Controller
 // author: 강수민, created: 22.02.01
+// last modified: 22.02.24
 @Controller
-@Log4j2
 @RequiredArgsConstructor
 public class UserController {
 
@@ -33,18 +29,14 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
-    /**
-     * 회원가입
-     * author: 강수민
-     * last modified: 22.02.01
-     */
-
-    @GetMapping("/join")
-    public String join(@ModelAttribute("joinDto") JoinDto form) {
-        return "join"; // templates/join.html 렌더링
+    // 회원 전체 조회 - 관리자 기능
+    @GetMapping("users")
+    public String getAllUsers(@ModelAttribute("joinDto") JoinDto form) {
+        return "join";
     }
 
-    @PostMapping("/join")
+    // 회원 가입
+    @PostMapping("users")
     public String join(@Valid @ModelAttribute JoinDto form, BindingResult result) {
         if (result.hasErrors()) {
             return "join";
@@ -62,24 +54,47 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 권한 설정 라디오 박스 값 전달
+    // 회원 가입 페이지 - 권한 설정 라디오 박스 값 전달
     @ModelAttribute("roles")
     public Role[] roles() {
         return Role.values();
     }
 
-    /**
-     * 로그인
-     * author: 강수민
-     * last modified: 22.02.08
-     */
-    @GetMapping("/login")
-    public String login(@ModelAttribute("loginDto") LoginDto form) {
-        return "login"; // templates/login.html 렌더링
+    // 회원 정보 상세 조회
+    @GetMapping("users/{id}")
+    public String getOneUser(@ModelAttribute("updateUserDto") UpdateUserDto form,
+                             @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
+                             Model model, @PathVariable String id) {
+        model.addAttribute("user", loginUser);
+        return "mypage"; // templates/mypage.html 렌더링
     }
 
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginDto form, BindingResult bindingResult, HttpServletRequest request) {
+    // 회원 정보 수정
+    @PutMapping("users/{id}")
+    public String updateUser(@Valid @ModelAttribute UpdateUserDto form, BindingResult result,
+                             @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
+                             @PathVariable String id) {
+
+        if (result.hasErrors()) {
+            return "mypage";
+        }
+
+        userService.updateUser(loginUser, form);
+        return "redirect:/";
+    }
+
+
+//     Rest API TODO
+
+    @GetMapping("login")
+    public String login(@ModelAttribute("loginDto") LoginDto form) {
+        return "login";
+    }
+
+    // 로그인
+    @PostMapping("login")
+    public String login(@Valid @ModelAttribute LoginDto form, BindingResult bindingResult,
+                        HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
@@ -96,6 +111,8 @@ public class UserController {
         HttpSession session = request.getSession();
         // 세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+        session.setAttribute(SessionConst.ROLE, loginUser.getRole()); // 사용자 권한 정보
+        session.setAttribute(SessionConst.ID, loginUser.getId().toString()); // 사용자 ID
 
         return "redirect:/";
     }
@@ -175,29 +192,5 @@ public class UserController {
 
         model.addAttribute("success", success);
         return "find-pw";
-    }
-
-    /**
-     * 마이페이지
-     * author: 강수민
-     * last modified: 22.02.15
-     */
-    @GetMapping("/mypage")
-    public String mypage(@ModelAttribute("updateUserDto") UpdateUserDto form,
-                         @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
-                         Model model) {
-        User user = userService.findById(loginUser.getId());
-        model.addAttribute("user", user);
-        return "mypage"; // templates/mypage.html 렌더링
-    }
-
-    @PostMapping("/mypage")
-    public String mypage(@Valid @ModelAttribute UpdateUserDto form, BindingResult result) {
-
-        if (result.hasErrors()) {
-            return "mypage";
-        }
-
-        return "redirect:/";
     }
 }

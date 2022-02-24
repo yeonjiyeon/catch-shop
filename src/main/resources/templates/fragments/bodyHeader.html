@@ -10,13 +10,36 @@
             <!-- logo -->
             <div class="site-logo">
               <a href="/">
-                <img src="assets/img/logo.png" alt="">
+                <img src="/assets/img/logo.png" alt="">
               </a>
             </div>
             <!-- logo -->
 
-            <!-- menu start -->
-            <nav class="main-menu">
+            <!-- 관리자 menu start -->
+            <nav class="main-menu" th:if="${session.role == 'ADMIN'}">
+              <ul>
+                <li><a href="products">Products</a></li>
+                <li><a href="products">Orders</a></li>
+                <li><a href="products">Sale</a></li>
+                <li><a href="products">Q&A</a></li>
+                <li><a href="products">Review</a></li>
+                <li>
+                  <div class="header-icons">
+                    <a class="shopping-cart" th:if="${session.loginUser == null}" href="login"><i class="far fa-heart"></i></a>
+                    <a class="shopping-cart" th:if="${session.loginUser != null}" href="#" th:href="@{users/{id} (id=${session.id})}"><i class="far fa-heart"></i></a>
+                    <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                    <a th:if="${session.loginUser == null}" href="login">Login</a>
+                    <a th:if="${session.loginUser != null}" href="http://localhost:8080/logout">Logout</a>
+                  </div>
+                </li>
+              </ul>
+            </nav>
+            <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+            <div class="mobile-menu"></div>
+            <!-- 관리자 menu end -->
+
+            <!-- 회원/비회원 menu start -->
+            <nav class="main-menu" th:unless="${session.role == 'ADMIN'}">
               <ul>
                 <li><a href="#">goods-review</a>
                   <ul class="sub-menu">
@@ -32,7 +55,7 @@
                 <li>
                   <div class="header-icons">
                     <a class="shopping-cart" th:if="${session.loginUser == null}" href="login"><i class="far fa-heart"></i></a>
-                    <a class="shopping-cart" th:if="${session.loginUser != null}" href="mypage"><i class="far fa-heart"></i></a>
+                    <a class="shopping-cart" th:if="${session.loginUser != null}" href="#" th:href="@{users/{id} (id=${session.id})}"><i class="far fa-heart"></i></a>
                     <a class="shopping-cart" href="carts"><i class="fas fa-shopping-cart"></i></a>
                     <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                     <a th:if="${session.loginUser == null}" href="login">Login</a>
@@ -43,7 +66,8 @@
             </nav>
             <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
             <div class="mobile-menu"></div>
-            <!-- menu end -->
+            <!-- 회원/비회원 menu end -->
+
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ package springboot.catchshop.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import springboot.catchshop.dto.UpdateUserDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -52,6 +53,11 @@ public class User {
 
     public void updatePassword(String password) {
         this.password = password;
+    }
+
+    public void updateUser(UpdateUserDto dto) {
+        this.telephone = dto.getTelephone();
+        this.address = new Address(dto.getRoad(), dto.getDetail(), dto.getPostalcode());
     }
 
 }

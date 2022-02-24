@@ -55,17 +55,19 @@
         <!-- 회원정보수정 폼 시작 -->
         <h3 style="text-align: center">내 정보 수정</h3>
         <form th:object="${updateUserDto}" method="post">
+            <!-- form tag는 GET, POST만 지원하므로 PUT은 다음과 같이 사용 -->
+            <input type="hidden" name="_method" value="PUT"/>
             <!-- 아이디 -->
             <div class="form-group" style="width:300px;margin:0 auto;">
                 <label th:for="loginId">아이디</label>
                 <input type="text" class="form-control" th:placeholder="${user.loginId}"
                        readonly="readonly">
-            </div>
+            </div><br>
 
             <!-- 비밀번호 -->
             <div class="form-group" style="width:300px;margin:0 auto;">
                 <label th:for="password">비밀번호</label>
-                <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요"
+                <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요"
                        th:class="${#fields.hasErrors('password')}? 'form-control fieldError' : 'form-control'">
                 <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect date</p><br>
             </div>
@@ -75,12 +77,12 @@
                 <label th:for="name">이름</label>
                 <input type="text" class="form-control" th:placeholder="${user.name}"
                        readonly="readonly">
-            </div>
+            </div><br>
 
             <!-- 연락처 -->
             <div class="form-group" style="width:300px;margin:0 auto;">
                 <label th:for="telephone">연락처</label>
-                <input type="text" th:field="*{telephone}" class="form-control" th:placeholder="${user.telephone}"
+                <input type="text" name="telephone" class="form-control" th:value="${user.telephone}"
                        th:class="${#fields.hasErrors('telephone')}? 'form-control fieldError' : 'form-control'">
                 <p th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Incorrect date</p><br>
             </div>
@@ -88,9 +90,9 @@
             <!-- 우편번호 -->
             <div class="form-group" style="width:300px;margin:0 auto;">
                 <label th:for="postalcode">우편번호</label>
-                <input type="text" th:field="*{postalcode}" class="form-control" th:placeholder="${user.address.postalcode}"
+                <input type="text" name="postalcode" class="form-control" th:value="${user.address.postalcode}"
                        th:class="${#fields.hasErrors('postalcode')}? 'form-control fieldError' : 'form-control'"
-                       name="addr1" id="addr1" readonly="readonly">
+                       id="postalcode" readonly="readonly">
                 <p th:if="${#fields.hasErrors('postalcode')}" th:errors="*{postalcode}">Incorrect date</p>
                 <button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button><br><br>
             </div>
@@ -98,16 +100,16 @@
             <!-- 도로명 주소 -->
             <div class="form-group" style="width:300px;margin:0 auto;">
                 <label th:for="road">도로명 주소</label>
-                <input type="text" th:field="*{road}" class="form-control" th:placeholder="${user.address.road}"
+                <input type="text" name="road" class="form-control" th:value="${user.address.road}"
                        th:class="${#fields.hasErrors('road')}? 'form-control fieldError' : 'form-control'"
-                       name="addr2" id="addr2" readonly="readonly">
+                       id="road" readonly="readonly">
                 <p th:if="${#fields.hasErrors('road')}" th:errors="*{road}">Incorrect date</p><br>
             </div>
 
             <!-- 상세 주소 -->
             <div class="form-group" style="width:300px;margin:0 auto;">
                 <label th:for="detail">상세 주소</label>
-                <input type="text" th:field="*{detail}" class="form-control" th:placeholder="${user.address.detail}"
+                <input type="text" name="detail" class="form-control" th:value="${user.address.detail}"
                        th:class="${#fields.hasErrors('detail')}? 'form-control fieldError' : 'form-control'">
                 <p th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}">Incorrect date</p><br>
             </div>
@@ -132,29 +134,29 @@
 <div th:replace="fragments/footer :: footer"/>
 
 <!-- jquery -->
-<script src="assets/js/jquery-1.11.3.min.js"></script>
+<script src="/assets/js/jquery-1.11.3.min.js"></script>
 <!-- bootstrap -->
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 <!-- count down -->
-<script src="assets/js/jquery.countdown.js"></script>
+<script src="/assets/js/jquery.countdown.js"></script>
 <!-- isotope -->
-<script src="assets/js/jquery.isotope-3.0.6.min.js"></script>
+<script src="/assets/js/jquery.isotope-3.0.6.min.js"></script>
 <!-- waypoints -->
-<script src="assets/js/waypoints.js"></script>
+<script src="/assets/js/waypoints.js"></script>
 <!-- owl carousel -->
-<script src="assets/js/owl.carousel.min.js"></script>
+<script src="/assets/js/owl.carousel.min.js"></script>
 <!-- magnific popup -->
-<script src="assets/js/jquery.magnific-popup.min.js"></script>
+<script src="/assets/js/jquery.magnific-popup.min.js"></script>
 <!-- mean menu -->
-<script src="assets/js/jquery.meanmenu.min.js"></script>
+<script src="/assets/js/jquery.meanmenu.min.js"></script>
 <!-- sticker js -->
-<script src="assets/js/sticker.js"></script>
+<script src="/assets/js/sticker.js"></script>
 <!-- main js -->
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 
 <!-- 주소록 api -->
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="/resources/js/addressapi.js"></script>
-<script src="assets/js/user-address.js"></script>
+<script src="/assets/js/user-address.js"></script>
 </body>
 </html>

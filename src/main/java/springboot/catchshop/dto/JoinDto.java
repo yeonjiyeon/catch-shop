@@ -8,7 +8,6 @@ import springboot.catchshop.domain.User;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.util.List;
 
 // 회원가입 폼
 // author: 강수민, last modified: 22.02.08
