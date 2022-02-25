@@ -1,6 +1,7 @@
 package springboot.catchshop.domain;
 
 import lombok.*;
+import springboot.catchshop.admin.ProductDto;
 import springboot.catchshop.exception.NotEnoughStockException;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class Product extends BaseEntity{
     private int stock;//상품 수량
 
     private String productImg;//상품 이미지
+    private String productImgPath; // 상품 이미지 경로 - 강수민
 
 //    @Column(name = "product_reg")
 //    private Timestamp productReg;//등록일 -> baseEntitiy사용
@@ -55,6 +57,15 @@ public class Product extends BaseEntity{
         this.price = price;
         this.stock = stock;
         this.productImg = productImg;
+    }
+
+    // 관리자용 메서드 - 강수민
+    public void setProduct(ProductDto dto, String productImg, String productImgPath) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+        this.stock = dto.getStock();
+        this.productImg = productImg;
+        this.productImgPath = productImgPath;
     }
 
 
@@ -93,5 +104,9 @@ public class Product extends BaseEntity{
 
     public void changeProductImg(String productImg){
         this.productImg = productImg;
+    }
+
+    public void changeProductImgPath(String productImgPath) {
+        this.productImgPath = productImgPath;
     }
 }

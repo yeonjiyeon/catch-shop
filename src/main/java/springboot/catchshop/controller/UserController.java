@@ -30,13 +30,13 @@ public class UserController {
     private final MailService mailService;
 
     // 회원 전체 조회 - 관리자 기능
-    @GetMapping("users")
+    @GetMapping("/users")
     public String getAllUsers(@ModelAttribute("joinDto") JoinDto form) {
         return "join";
     }
 
     // 회원 가입
-    @PostMapping("users")
+    @PostMapping("/users")
     public String join(@Valid @ModelAttribute JoinDto form, BindingResult result) {
         if (result.hasErrors()) {
             return "join";
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     // 회원 정보 상세 조회
-    @GetMapping("users/{id}")
+    @GetMapping("/users/{id}")
     public String getOneUser(@ModelAttribute("updateUserDto") UpdateUserDto form,
                              @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
                              Model model, @PathVariable String id) {
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     // 회원 정보 수정
-    @PutMapping("users/{id}")
+    @PutMapping("/users/{id}")
     public String updateUser(@Valid @ModelAttribute UpdateUserDto form, BindingResult result,
                              @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
                              @PathVariable String id) {
@@ -86,13 +86,13 @@ public class UserController {
 
 //     Rest API TODO
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public String login(@ModelAttribute("loginDto") LoginDto form) {
         return "login";
     }
 
     // 로그인
-    @PostMapping("login")
+    @PostMapping("/login")
     public String login(@Valid @ModelAttribute LoginDto form, BindingResult bindingResult,
                         HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
