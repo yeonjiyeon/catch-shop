@@ -42,7 +42,7 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="breadcrumb-text">
-						<p>See more Details</p>
+						<p>Catch Shop</p>
 						<h1>Single Product</h1>
 					</div>
 				</div>
@@ -66,11 +66,15 @@
 						<p class="single-product-pricing">[[${dto.price}]]</p>
 						<p>[[${dto.text}]]</p>
 						<div class="single-product-form">
-							<form action="index.html">
-								<input type="number" placeholder="0">
+							<form th:action="@{'/carts/' + ${dto.id}}"th:method="post">
+								<input type="number" th:name="count" th:value="1" min="1">
+								&nbsp;&nbsp;
+								<button type="submit" class="btn-lg" style="border: none; color: white; background-color: #F28123FF">
+									<i class="fas fa-shopping-cart"></i>&nbsp;장바구니 담기
+								</button>
 							</form>
-							<a class="shopping-cart" href="cart.html"><i class="far fa-heart"></i></a>
-							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<a class="shopping-cart" href="cart.html"><i class="far fa-heart fa-lg"></i></a>
+							<p/>
 							<p><strong>Categories: </strong>Fruits, Organic</p>
 						</div>
 						<h4>Share:</h4>

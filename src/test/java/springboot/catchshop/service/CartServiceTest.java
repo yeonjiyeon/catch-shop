@@ -7,10 +7,7 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import springboot.catchshop.domain.Cart;
-import springboot.catchshop.domain.Product;
-import springboot.catchshop.domain.Role;
-import springboot.catchshop.domain.User;
+import springboot.catchshop.domain.*;
 import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.repository.CartRepository;
 import springboot.catchshop.repository.ProductRepository;
@@ -36,16 +33,19 @@ class CartServiceTest {
     @Autowired ProductRepository productRepository;
     @Autowired EntityManager em;
 
+    private Address address;
     private User user;
     private Product product;
     private int count = 1;
 
     @BeforeEach
     public void beforeEach() {
-        user = new User("user1", "user1", "user1", "01012345678", "road1", "detail1", "11111", Role.USER, LocalDateTime.now());
+        address = new Address("road1", "detail1", "11111");
+        user = new User("user1", "user1", "user1", "01012345678", address, Role.USER, LocalDateTime.now());
         userRepository.save(user);
         product = new Product();
         product.changePrice(10000);
+        product.changeStock(10);
         productRepository.save(product);
     }
 
