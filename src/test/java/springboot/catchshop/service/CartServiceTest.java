@@ -1,27 +1,26 @@
 package springboot.catchshop.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.*;
 import springboot.catchshop.dto.CartResponseDto;
+import springboot.catchshop.exception.NotEnoughStockException;
 import springboot.catchshop.repository.CartRepository;
 import springboot.catchshop.repository.ProductRepository;
 import springboot.catchshop.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// CartService Test
-// author: soohyun, last modified: 22.02.13
+/**
+ *  CartService Test
+ *  author: soohyun, last modified: 22.02.26
+ */
 
 @SpringBootTest
 @Transactional
@@ -36,52 +35,72 @@ class CartServiceTest {
     private Address address;
     private User user;
     private Product product;
-    private int count = 1;
+    private int count = 1; // 상품 수량
 
     @BeforeEach
     public void beforeEach() {
+        // 사용자 생성
         address = new Address("road1", "detail1", "11111");
         user = new User("user1", "user1", "user1", "01012345678", address, Role.USER, LocalDateTime.now());
         userRepository.save(user);
+
+        // 상품 생성
         product = new Product();
         product.changePrice(10000);
         product.changeStock(10);
         productRepository.save(product);
     }
 
-//    @DisplayName("장바구니 생성")
-//    class addCart {
-//
-//        @Test
-//        @DisplayName("성공")
-//        public void success() {
-//            // when
-//            Long addId = cartService.addCart(user.getId(), product.getId(), count);
-//
-//            // then
-//            Optional<Cart> findCart = cartRepository.findById(addId);
-//
-//            assertEquals(findCart.get().getId(), addId);
-//            assertEquals(findCart.get().getUserId(), user.getId());
-//            assertEquals(findCart.get().getProduct(), product);
-//            assertEquals(findCart.get().getCartCount(), count);
-//        }
-//    }
-
-    @Test
+    @Nested
     @DisplayName("장바구니 생성")
-    public void addCart() throws Exception {
+    class addCart {
 
-        // when
-        Long addId = cartService.addCart(user.getId(), product.getId(), count);
+        @Test
+        @DisplayName("성공_장바구니에 해당 상품이 없는 경우")
+        public void success1() {
 
-        // then
-        Optional<Cart> findCart = cartRepository.findById(addId);
+            // when
+            Long addId = cartService.addCart(user.getId(), product.getId(), count);
 
-        assertEquals(findCart.get().getId(), addId);
-        assertEquals(findCart.get().getUserId(), user.getId());
-        assertEquals(findCart.get().getProduct(), product);
-        assertEquals(findCart.get().getCartCount(), count);
+            // then
+            Optional<Cart> findCart = cartRepository.findById(addId);
+
+            assertEquals(findCart.get().getId(), addId);
+            assertEquals(findCart.get().getUserId(), user.getId());
+            assertEquals(findCart.get().getProduct(), product);
+            assertEquals(findCart.get().getCartCount(), 1);
+        }
+
+        @Test
+        @DisplayName("성공_장바구니에 해당 상품이 있는 경우")
+        public void success2() {
+
+            // given
+            Long cartId = cartService.addCart(user.getId(), product.getId(), count);
+
+            // when
+            Long addId = cartService.addCart(user.getId(), product.getId(), count);
+
+            // then
+            Optional<Cart> findCart = cartRepository.findById(addId);
+
+            assertEquals(findCart.get().getId(), addId);
+            assertEquals(findCart.get().getUserId(), user.getId());
+            assertEquals(findCart.get().getProduct(), product);
+            assertEquals(findCart.get().getCartCount(), 2);
+        }
+
+        @Test
+        @DisplayName("실패")
+        public void fail() throws NotEnoughStockException {
+
+            // when
+            NotEnoughStockException thrown = assertThrows(
+                    NotEnoughStockException.class, () -> cartService.addCart(user.getId(), product.getId(), 20));
+
+            // then
+            assertEquals("재고수량을 초과하였습니다.", thrown.getMessage());
+        }
     }
 
     @Test
@@ -103,23 +122,43 @@ class CartServiceTest {
         assertEquals(carts.getTotalPayPrice(), 13000);
     }
 
-    @Test
+    @Nested
     @DisplayName("장바구니 수정")
-    public void updateCart() {
+    class updateCart {
 
-        // given
-        Long cartId = cartService.addCart(user.getId(), product.getId(), count);
+        @Test
+        @DisplayName("성공")
+        public void success() {
 
-        // when
-        Long updateId = cartService.updateCart(cartId, 2);
+            // given
+            Long cartId = cartService.addCart(user.getId(), product.getId(), count);
 
-        // then
-        Optional<Cart> findCart = cartRepository.findById(updateId);
+            // when
+            Long updateId = cartService.updateCart(cartId, 2);
 
-        assertEquals(findCart.get().getId(), updateId);
-        assertEquals(findCart.get().getUserId(), user.getId());
-        assertEquals(findCart.get().getProduct(), product);
-        assertEquals(findCart.get().getCartCount(), 2);
+            // then
+            Optional<Cart> findCart = cartRepository.findById(updateId);
+
+            assertEquals(findCart.get().getId(), updateId);
+            assertEquals(findCart.get().getUserId(), user.getId());
+            assertEquals(findCart.get().getProduct(), product);
+            assertEquals(findCart.get().getCartCount(), 2);
+        }
+
+        @Test
+        @DisplayName("실패")
+        public void fail() throws NotEnoughStockException {
+
+            // given
+            Long cartId = cartService.addCart(user.getId(), product.getId(), count);
+
+            // when
+            NotEnoughStockException thrown = assertThrows(
+                    NotEnoughStockException.class, () -> cartService.updateCart(cartId, 20));
+
+            // then
+            assertEquals("재고수량을 초과하였습니다.", thrown.getMessage());
+        }
     }
 
     @Test
