@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *  CartService Test
- *  author: soohyun, last modified: 22.02.26
+ *  author: soohyun, last modified: 22.02.27
  */
 
 @SpringBootTest
@@ -115,8 +115,10 @@ class CartServiceTest {
 
         // then
         assertEquals(carts.getCartList().size(), 1);
+        assertEquals(carts.getCartList().get(0).getPrice(), 10000);
         assertEquals(carts.getCartList().get(0).getCartCount(), 1);
         assertEquals(carts.getCartList().get(0).getTotalProductPrice(), 10000);
+        assertEquals(carts.getCartList().get(0).getUnderStock(), true);
         assertEquals(carts.getTotalAllProductPrice(), 10000);
         assertEquals(carts.getDeliveryPrice(), 3000);
         assertEquals(carts.getTotalPayPrice(), 13000);

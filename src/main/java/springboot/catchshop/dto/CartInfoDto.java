@@ -2,7 +2,7 @@ package springboot.catchshop.dto;
 
 /**
  * Cart Info Dto (장바구니 정보를 담고 있는 Dto)
- * author: soohyun, last modified: 22.02.14
+ * author: soohyun, last modified: 22.02.27
  */
 
 import lombok.Data;
@@ -19,6 +19,7 @@ public class CartInfoDto {
     private String productImg; // 상품 이미지
     private int cartCount; // 상품 수량
     private Long totalProductPrice; // 상품 총 가격
+    private Boolean underStock; // 재고수량 초과 여부
 
     // 생성 메서드
     public CartInfoDto(Cart cart) {
@@ -28,5 +29,6 @@ public class CartInfoDto {
         this.productImg = cart.getProduct().getProductImg();
         this.cartCount = cart.getCartCount();
         this.totalProductPrice = Long.valueOf(price * cartCount);
+        this.underStock = cartCount <= cart.getProduct().getStock() ? true : false;
     }
 }
