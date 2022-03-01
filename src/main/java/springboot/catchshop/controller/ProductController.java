@@ -22,17 +22,6 @@ public class ProductController {
     private final ProductService productService;
 
     /**
-     * 상품 Q&A 기능
-     * author: 강수민
-     */
-    @GetMapping("makeQ")
-    public String makeQuestion() {
-        return "make-question"; // templates/make-question.html 렌더링
-    }
-
-
-
-    /**
      * Product 기능
      * author:김지연
      */

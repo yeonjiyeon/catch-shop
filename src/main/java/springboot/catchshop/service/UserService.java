@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.User;
+import springboot.catchshop.dto.UpdateUserDto;
 import springboot.catchshop.repository.UserRepository;
 
 import java.util.UUID;
@@ -86,9 +87,14 @@ public class UserService {
         return encodedPassword;
     }
 
-    @Transactional(readOnly = true)
-    public User findById(Long userId) {
-        return userRepository.findById(userId)
-                .orElse(null);
+    /**
+     * 회원정보수정
+     */
+    @Transactional
+    public void updateUser(User user, UpdateUserDto form) {
+        user.updateUser(form);
+        user.updatePassword(passwordEncoder.encode(form.getPassword()));
+        // DB 반영
+        userRepository.save(user);
     }
 }

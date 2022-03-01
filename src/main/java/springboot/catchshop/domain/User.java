@@ -3,6 +3,7 @@ package springboot.catchshop.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import springboot.catchshop.dto.UpdateUserDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,8 +30,8 @@ public class User {
 
     private LocalDateTime joindate;
 
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+//    @Enumerated(value = EnumType.STRING)
+    private String role;
 
     @OneToMany(mappedBy = "user")
     private List<Question> questions = new ArrayList<>();
@@ -40,7 +41,7 @@ public class User {
 
     @Builder
     public User(String loginId, String password, String name, String telephone,
-                Address address, Role role, LocalDateTime joindate) {
+                Address address, String role, LocalDateTime joindate) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -52,6 +53,11 @@ public class User {
 
     public void updatePassword(String password) {
         this.password = password;
+    }
+
+    public void updateUser(UpdateUserDto dto) {
+        this.telephone = dto.getTelephone();
+        this.address = new Address(dto.getRoad(), dto.getDetail(), dto.getPostalcode());
     }
 
 }
