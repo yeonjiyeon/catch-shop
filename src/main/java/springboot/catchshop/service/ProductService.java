@@ -10,6 +10,7 @@ import springboot.catchshop.dto.PageRequestDTO;
 import springboot.catchshop.dto.PageResultDTO;
 import springboot.catchshop.dto.ProductDTO;
 
+import java.util.List;
 
 
 public interface ProductService {
@@ -47,13 +48,18 @@ public interface ProductService {
     //상품 전체 조회
     PageResultDTO<ProductDTO, Product> readProducts(PageRequestDTO requestDTO);
 
+    //상품 검색
+    //List<ProductDTO> searchProducts(String keyword);
+
     //상품 개별 조회
     ProductDTO readSingleProduct(Long id);
+
 
     //상품 수정
     void updateProduct(ProductDTO dto);
 
     //상품 삭제
     void deleteProduct(Long id);
-    
+
+
 }
