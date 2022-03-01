@@ -56,6 +56,8 @@ public class Product extends BaseEntity{
         this.stock = stock;
         this.productImg = productImg;
     }
+
+
     //==비즈니스 로직==//
     /**
      * stock 증가 메서드

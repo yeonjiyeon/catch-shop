@@ -13,7 +13,7 @@ import springboot.catchshop.dto.ProductDTO;
 
 
 public interface ProductService {
-    //dtoToEntity
+    //dto->Entity
     default Product dtoToEntity(ProductDTO productDTO){
         Product entity = Product.builder()
                 .id(productDTO.getId())
@@ -26,6 +26,8 @@ public interface ProductService {
         return entity;
     }
 
+
+    //entity -> Dto
     default ProductDTO entityToDto(Product product){
         ProductDTO dto = ProductDTO.builder()
                 .id(product.getId())
@@ -46,9 +48,12 @@ public interface ProductService {
     PageResultDTO<ProductDTO, Product> readProducts(PageRequestDTO requestDTO);
 
     //상품 개별 조회
-    
+    ProductDTO readSingleProduct(Long id);
+
     //상품 수정
-    
+    void updateProduct(ProductDTO dto);
+
     //상품 삭제
+    void deleteProduct(Long id);
     
 }
