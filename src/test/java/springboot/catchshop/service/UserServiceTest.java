@@ -25,7 +25,7 @@ class UserServiceTest {
         // given
         JoinDto form = new JoinDto("userA", "A", "강유저", "010-1234-5678",
                 "건강시 행복구 사랑동", "부자아파트", "12345",
-                Role.USER, LocalDateTime.now());
+                Role.USER.toString(), LocalDateTime.now());
 
         User user = form.toEntity();
 
@@ -41,11 +41,11 @@ class UserServiceTest {
         // given
         JoinDto userA = new JoinDto("userA", "A", "강유저", "010-1234-5678",
                 "건강시 행복구 사랑동", "부자아파트", "12345",
-                Role.USER, LocalDateTime.now());
+                Role.USER.toString(), LocalDateTime.now());
 
         JoinDto userB = new JoinDto("userA", "A", "강유저", "010-1234-5678",
                 "건강시 행복구 사랑동", "부자아파트", "12345",
-                Role.USER, LocalDateTime.now());
+                Role.USER.toString(), LocalDateTime.now());
 
         // when
         userService.join(userA.toEntity());

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.session.SessionConst;
 
+
 // Home Controller
 // author: 강수민, created: 22.02.01
 @Controller
@@ -20,10 +21,7 @@ public class HomeController {
      * last modified: 22.02.08
      */
     @GetMapping("/")
-    public String homeLogin(
-            @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser, Model model) {
-
-        model.addAttribute("user", loginUser);
+    public String homeLogin() {
         return "index";
     }
 }

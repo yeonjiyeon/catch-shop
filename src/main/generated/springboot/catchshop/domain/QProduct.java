@@ -37,6 +37,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath productImg = createString("productImg");
 
+    public final StringPath productImgPath = createString("productImgPath");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 

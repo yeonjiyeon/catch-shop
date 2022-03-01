@@ -38,7 +38,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<Question, QQuestion> questions = this.<Question, QQuestion>createList("questions", Question.class, QQuestion.class, PathInits.DIRECT2);
 
-    public final EnumPath<Role> role = createEnum("role", Role.class);
+    public final StringPath role = createString("role");
 
     public final StringPath telephone = createString("telephone");
 
