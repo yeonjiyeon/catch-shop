@@ -23,8 +23,13 @@ public class Category {
     @Column(name = "category_id")//카테고리 번호
     private Long id;
 
+    @Column(nullable = false)
+    private String branch;
+
     @Column(name = "category_nm")//카테고리명
     private String name;
+
+    private Integer level;
 
     @OneToMany(mappedBy = "categories")//상품 번호
     private List<Product> products = new ArrayList<>();
@@ -33,13 +38,15 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Category> child = new ArrayList<>();
 
     @Builder
-    public Category(String name, Category parent){
+    public Category(String branch, String name, Integer level, Category parent){
+        this.branch = branch;
         this.name = name;
         this.parent = parent;
+        this.level = level;
     }
 
     //==연관관계 메서드==//

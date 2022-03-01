@@ -18,7 +18,7 @@ import org.springframework.data.domain.Sort;
 public class PageRequestDTO {
     private int page;//현재페이지
     private int size;//한 페이지에 보여질 상품 수
-    private String keyWord;
+    private String keyword;
 
     //기본값 설정
     public PageRequestDTO(){

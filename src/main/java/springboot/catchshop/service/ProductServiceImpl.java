@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.QProduct;
 import springboot.catchshop.dto.PageRequestDTO;
@@ -15,6 +16,8 @@ import springboot.catchshop.dto.PageResultDTO;
 import springboot.catchshop.dto.ProductDTO;
 import springboot.catchshop.repository.ProductRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 /**
@@ -46,14 +49,28 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public PageResultDTO<ProductDTO, Product> readProducts(PageRequestDTO requestDTO) {
         Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());//상품 정렬
-        
-        //BooleanBuilder booleanBuilder = getSearch(requestDTO);// 검색 조건 처리
+
+        //BooleanBuilder booleanBuilder = getSearch(requestDTO);
+
         Page<Product> result = productRepository.findAll(pageable);
-        //Page<Product> result = productRepository.findAll(booleanBuilder, pageable);
+
 
         Function<Product, ProductDTO> fn = (entity -> entityToDto(entity));
         return new PageResultDTO<>(result, fn);
     }
+
+//    @Override
+//    public List<ProductDTO> searchProducts(String keyword) {
+//        List<Product> products = productRepository.findByNameContaining(keyword);
+//        List<ProductDTO> productDTOList = new ArrayList<>();
+//
+//        if(products.isEmpty()) return productDTOList;
+//
+//        for(Product product : products){
+//            productDTOList.add(this.entityToDto(product));
+//        }
+//        return productDTOList;
+//    }
 
 
     //상품 개별 조회
@@ -62,6 +79,9 @@ public class ProductServiceImpl implements ProductService{
         Product product = productRepository.findById(id).orElseThrow( () -> new IllegalStateException("상품이 존재하지 않습니다."));
         return entityToDto(product);
     }
+
+
+
 
     //상품 수정
     @Override
@@ -84,19 +104,15 @@ public class ProductServiceImpl implements ProductService{
 
     //상품 검색
 //    private BooleanBuilder getSearch(PageRequestDTO requestDTO){
-//        BooleanBuilder booleanBuilder = new BooleanBuilder();
+//        BooleanBuilder builder = new BooleanBuilder();
 //        QProduct qProduct = QProduct.product;
-//        String keyword = requestDTO.getKeyWord();
-//        BooleanExpression expression = qProduct.id.gt(0L);
+//        String keyword = requestDTO.getKeyword();
 //
-//        booleanBuilder.and(expression);
-//
-//        BooleanBuilder conditionBuilder = new BooleanBuilder();
-//        conditionBuilder.and(qProduct.name.contains(keyword));
-//
-//        booleanBuilder.and(conditionBuilder);
-//
-//        return booleanBuilder;
+//        BooleanExpression expression1 = qProduct.id.gt(0L);
+//        BooleanExpression expression2 = qProduct.name.contains(keyword);
+//        builder.and(expression1);
+//        builder.and(expression2);
+//        return builder;
 //    }
 
 
