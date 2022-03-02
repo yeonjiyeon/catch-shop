@@ -8,8 +8,10 @@ import springboot.catchshop.exception.NotEnoughStockException;
 
 import javax.persistence.*;
 
-// Cart Entity
-// author: soohyun, last modified: 22.02.21
+/**
+ * Cart Entity
+ * author: soohyun, last modified: 22.02.21
+ */
 
 @Entity
 @Getter
@@ -32,7 +34,7 @@ public class Cart {
     public Cart(Product product, Long userId, int cartCount) {
         this.product = product;
         this.userId = userId;
-        this.cartCount = cartCount;
+        updateCartCount(cartCount);
     }
 
     // 수량 변경 메서드

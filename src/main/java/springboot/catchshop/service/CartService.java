@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.Cart;
 import springboot.catchshop.domain.Product;
-import springboot.catchshop.dto.CartDto;
-import springboot.catchshop.dto.CartListDto;
+import springboot.catchshop.dto.CartRequestDto;
+import springboot.catchshop.dto.CartInfoDto;
 import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.repository.CartRepository;
 import springboot.catchshop.repository.ProductRepository;
@@ -15,8 +15,10 @@ import springboot.catchshop.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Cart Service
-// author: soohyun, last modified: 22.02.14
+/**
+ * Cart Service
+ * author: soohyun, last modified: 22.02.25
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +34,16 @@ public class CartService {
         userRepository.findById(userId).orElseThrow( () -> new IllegalStateException("회원이 존재하지 않습니다."));
         Product product = productRepository.findById(productId).orElseThrow( () -> new IllegalStateException("상품이 존재하지 않습니다."));
 
-        CartDto cartDto = new CartDto(userId, product, count);
-        Cart saveCart = cartRepository.save(cartDto.toEntity()); // 장바구니 생성
+        Cart findCart = cartRepository.findByUserIdAndProduct(userId, product); // 로그인한 사용자 id로 해당 상품이 담긴 장바구니 조회
 
-        return saveCart.getId();
+        if (findCart == null) { // 해당 상품이 담긴 장바구니가 없는 경우
+            CartRequestDto cartDto = new CartRequestDto(userId, product, count);
+            Cart saveCart = cartRepository.save(cartDto.toEntity()); // 새로운 장바구니 생성
+            return saveCart.getId();
+        } else { // 해당 상품이 담긴 장바구니가 있는 경우
+            findCart.updateCartCount(findCart.getCartCount() + count); // 기존 장바구니 수량 변경
+            return findCart.getId();
+        }
     }
 
     // 장바구니 목록 조회
@@ -44,7 +52,7 @@ public class CartService {
         userRepository.findById(userId).orElseThrow( () -> new IllegalStateException("회원이 존재하지 않습니다."));
 
         List<Cart> carts = cartRepository.findByUserId(userId); // 장바구니 목록 조회
-        List<CartListDto> cartList = carts.stream().map(c -> new CartListDto(c)).collect(Collectors.toList());
+        List<CartInfoDto> cartList = carts.stream().map(c -> new CartInfoDto(c)).collect(Collectors.toList());
         CartResponseDto cartResponseDto = new CartResponseDto(cartList); // 장바구니 관련 정보 조회
 
         return cartResponseDto;
@@ -53,7 +61,7 @@ public class CartService {
     // 장바구니 수정
     public Long updateCart(Long id, int cartCount) {
         Cart cart = cartRepository.findById(id).orElseThrow( () -> new IllegalStateException("장바구니가 존재하지 않습니다."));
-        cart.updateCartCount(cartCount);
+        cart.updateCartCount(cartCount); // 상품 수량 변경
 
         return cart.getId();
     }

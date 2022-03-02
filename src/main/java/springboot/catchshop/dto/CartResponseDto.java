@@ -5,20 +5,22 @@ import lombok.Getter;
 
 import java.util.List;
 
-// Cart Response Dto (조회시 장바구니 화면 세팅에 필요한 Dto)
-// author: soohyun, last modified: 22.02.14
+/**
+ * Cart Response Dto (조회시 장바구니 전체 정보를 담고 있는 Dto)
+ * author: soohyun, last modified: 22.02.14
+ */
 
 @Data
 @Getter
 public class CartResponseDto {
 
-    private List<CartListDto> cartList; // 장바구니 목록
+    private List<CartInfoDto> cartList; // 장바구니 목록
     private Long totalAllProductPrice; // 전체 상품 가격
     private Long deliveryPrice; // 배송비
     private Long totalPayPrice; // 최종 결제 금액
 
     // 생성 메서드
-    public CartResponseDto(List<CartListDto> cartList) {
+    public CartResponseDto(List<CartInfoDto> cartList) {
         this.cartList = cartList;
         this.totalAllProductPrice = calTotalAllProductPrice();
         this.deliveryPrice = calDeliveryPrice();
@@ -29,7 +31,7 @@ public class CartResponseDto {
     private Long calTotalAllProductPrice() {
         Long price = 0L;
 
-        for (CartListDto cartListDto : cartList) {
+        for (CartInfoDto cartListDto : cartList) {
             price += cartListDto.getTotalProductPrice();
         }
 

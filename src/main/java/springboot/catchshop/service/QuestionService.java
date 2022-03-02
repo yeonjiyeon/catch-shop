@@ -2,26 +2,40 @@ package springboot.catchshop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import springboot.catchshop.domain.Product;
+import springboot.catchshop.domain.Question;
+import springboot.catchshop.domain.User;
+import springboot.catchshop.dto.QuestionDto;
+import springboot.catchshop.repository.ProductRepository;
 import springboot.catchshop.repository.QuestionRepository;
-import springboot.catchshop.repository.UserRepository;
+
+import java.io.IOException;
 
 // Question Service
 // author: 강수민, created: 22.02.01
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QuestionService {
 
+    private final ProductRepository productRepository;
     private final QuestionRepository questionRepository;
-    private final UserRepository userRepository;
+    private final FileService fileService;
 
-    /**
-     * 질문 생성 동적 쿼리
-     */
-//    public Long Question(Long userid) {
-//        // 엔티티 조회
-//        User user = userRepository.findById(userid);
-//        Question question = Question.createQuestion(user);
-//    }
+    @Transactional
+    public Question saveQuestion(User user, Long productId, QuestionDto dto) throws IOException {
+        Product product = productRepository.findById(productId).orElse(null);
 
+        Question question = new Question();
+        question.setQuestion(user, product, dto);
+
+        String imgName = fileService.uploadFile(dto.getQuestionImg());
+        question.updateImageInfo(imgName);
+
+        questionRepository.save(question);
+        return question;
+    }
 
 }

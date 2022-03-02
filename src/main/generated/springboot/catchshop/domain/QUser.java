@@ -36,8 +36,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath password = createString("password");
 
-    public final ListPath<Question, QQuestion> questions = this.<Question, QQuestion>createList("questions", Question.class, QQuestion.class, PathInits.DIRECT2);
-
     public final StringPath role = createString("role");
 
     public final StringPath telephone = createString("telephone");
