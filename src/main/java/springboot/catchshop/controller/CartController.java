@@ -23,7 +23,7 @@ public class CartController {
     // 장바구니 추가
     @PostMapping("/carts/{id}")
     public String addCart(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
-                          @PathVariable("id") Long productId, @RequestParam("count") int count) {
+                          @PathVariable("id") Long productId, @RequestParam(value="count", defaultValue="1") int count) {
 
         if (loginUser != null) { // 로그인한 경우 장바구니 추가
             Long cartId = cartService.addCart(loginUser.getId(), productId, count);

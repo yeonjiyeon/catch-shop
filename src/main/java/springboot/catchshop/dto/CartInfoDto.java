@@ -2,18 +2,17 @@ package springboot.catchshop.dto;
 
 /**
  * Cart Info Dto (장바구니 정보를 담고 있는 Dto)
- * author: soohyun, last modified: 22.02.27
+ * author: soohyun, last modified: 22.03.03
  */
 
 import lombok.Data;
-import lombok.Getter;
 import springboot.catchshop.domain.Cart;
 
 @Data
-@Getter
 public class CartInfoDto {
 
     private Long id;
+    private Long productId; // 상품 번호
     private String name; // 상품 이름
     private int price; // 상품 가격
     private String productImg; // 상품 이미지
@@ -24,6 +23,7 @@ public class CartInfoDto {
     // 생성 메서드
     public CartInfoDto(Cart cart) {
         this.id = cart.getId();
+        this.productId = cart.getProduct().getId();
         this.name = cart.getProduct().getName();
         this.price = cart.getProduct().getPrice();
         this.productImg = cart.getProduct().getProductImg();

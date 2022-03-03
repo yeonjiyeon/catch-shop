@@ -11,7 +11,6 @@ import java.util.List;
  */
 
 @Data
-@Getter
 public class CartResponseDto {
 
     private List<CartInfoDto> cartList; // 장바구니 목록

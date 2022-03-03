@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *  CartService Test
- *  author: soohyun, last modified: 22.02.27
+ *  author: soohyun, last modified: 22.03.01
  */
 
 @SpringBootTest
@@ -42,7 +42,7 @@ class CartServiceTest {
 
         // 사용자 생성
         address = new Address("road1", "detail1", "11111");
-        user = new User("user1", "user1", "user1", "01012345678", address, Role.USER, LocalDateTime.now());
+        user = new User("user1", "user1", "user1", "01012345678", address, "USER", LocalDateTime.now());
         userRepository.save(user);
 
         // 상품 생성

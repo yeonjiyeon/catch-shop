@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * Cart Service
- * author: soohyun, last modified: 22.02.25
+ * author: soohyun, last modified: 22.03.03
  */
 
 @Service
@@ -46,12 +46,24 @@ public class CartService {
         }
     }
 
-    // 장바구니 목록 조회
+    // 장바구니 전체 목록 조회
     @Transactional(readOnly = true)
     public CartResponseDto cartList(Long userId) {
         userRepository.findById(userId).orElseThrow( () -> new IllegalStateException("회원이 존재하지 않습니다."));
 
         List<Cart> carts = cartRepository.findByUserId(userId); // 장바구니 목록 조회
+        List<CartInfoDto> cartList = carts.stream().map(c -> new CartInfoDto(c)).collect(Collectors.toList());
+        CartResponseDto cartResponseDto = new CartResponseDto(cartList); // 장바구니 관련 정보 조회
+
+        return cartResponseDto;
+    }
+
+    // 주문 가능한 장바구니 목록 조회
+    @Transactional(readOnly = true)
+    public CartResponseDto orderCartList(Long userId) {
+        userRepository.findById(userId).orElseThrow( () -> new IllegalStateException("회원이 존재하지 않습니다."));
+
+        List<Cart> carts = cartRepository.orderCartList(userId); // 주문 가능한 장바구니 목록 조회
         List<CartInfoDto> cartList = carts.stream().map(c -> new CartInfoDto(c)).collect(Collectors.toList());
         CartResponseDto cartResponseDto = new CartResponseDto(cartList); // 장바구니 관련 정보 조회
 
