@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * Cart Service
- * author: soohyun, last modified: 22.03.03
+ * author: soohyun, last modified: 22.03.05
  */
 
 @Service
@@ -37,8 +37,9 @@ public class CartService {
         Cart findCart = cartRepository.findByUserIdAndProduct(userId, product); // 로그인한 사용자 id로 해당 상품이 담긴 장바구니 조회
 
         if (findCart == null) { // 해당 상품이 담긴 장바구니가 없는 경우
-            CartRequestDto cartDto = new CartRequestDto(userId, product, count);
+            CartRequestDto cartDto = new CartRequestDto(userId, product);
             Cart saveCart = cartRepository.save(cartDto.toEntity()); // 새로운 장바구니 생성
+            saveCart.updateCartCount(count);
             return saveCart.getId();
         } else { // 해당 상품이 담긴 장바구니가 있는 경우
             findCart.updateCartCount(findCart.getCartCount() + count); // 기존 장바구니 수량 변경

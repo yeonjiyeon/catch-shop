@@ -30,7 +30,6 @@ class CartServiceTest {
     @Autowired CartService cartService;
     @Autowired UserRepository userRepository;
     @Autowired ProductRepository productRepository;
-    @Autowired EntityManager em;
 
     private Address address;
     private User user;
