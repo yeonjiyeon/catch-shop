@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * Order Service
- * author: soohyun, last modified: 22.03.03
+ * author: soohyun, last modified: 22.03.07
  */
 
 @Service
@@ -27,12 +27,11 @@ public class OrderService {
     private final OrderDetailRepository orderDetailRepository;
 
     // 주문 생성
-    public Long createOrder(Order order, Long userId) {
+    public Long createOrder(Order order, Long userId, List<CartInfoDto> carts) {
         Order saveOrder = orderRepository.save(order); // 주문 생성
-        List<Cart> carts = cartRepository.orderCartList(userId); // 주문 가능한 장바구니 목록 조회
 
         // 주문 상세 생성
-        for(Cart cart: carts) {
+        for(CartInfoDto cart: carts) {
             Product product = cart.getProduct();
             OrderDetail orderDetail = new OrderDetail(saveOrder, product, cart.getCartCount(), (long) product.getPrice());
             orderDetailRepository.save(orderDetail);

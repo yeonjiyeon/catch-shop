@@ -34,6 +34,10 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final StringPath orderTel = createString("orderTel");
 
+    public final NumberPath<Long> shippingFee = createNumber("shippingFee", Long.class);
+
+    public final NumberPath<Long> totalPrice = createNumber("totalPrice", Long.class);
+
     public final QUser user;
 
     public QOrder(String variable) {

@@ -20,7 +20,7 @@ import javax.validation.Valid;
 
 /**
  * Order Controller
- * author: soohyun, last modified: 22.03.03
+ * author: soohyun, last modified: 22.03.07
  */
 
 @Controller
@@ -49,14 +49,15 @@ public class OrderController {
     public String order(Model model, @Valid @ModelAttribute("orderForm") OrderRequestDto form, BindingResult result,
                         @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
 
+        CartResponseDto carts = cartService.orderCartList(loginUser.getId()); // 주문 가능한 장바구니 목록
+
         if (result.hasErrors()) { // 주문 폼에 에러가 있는 경우
-            CartResponseDto carts = cartService.orderCartList(loginUser.getId());
             model.addAttribute("carts", carts);
             return "order";
         }
 
-        Order order = form.toEntity(loginUser);
-        orderServcie.createOrder(order, loginUser.getId());
+        Order order = form.toEntity(loginUser, carts.getTotalAllProductPrice(), carts.getShippingFee());
+        orderServcie.createOrder(order, loginUser.getId(), carts.getCartList());
         return "redirect:/";
      }
 }
