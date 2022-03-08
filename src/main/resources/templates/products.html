@@ -61,7 +61,11 @@
 						</div>
 						<h3>[[${dto.name}]]</h3>
 						<p class="product-price"> [[${dto.price}]] </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<form th:action="@{'/carts/' + ${dto.id}}"th:method="post">
+							<button type="submit" class="btn-lg" style="border: none; color: white; background-color: #F28123FF">
+								<i class="fas fa-shopping-cart"></i>&nbsp;장바구니 담기
+							</button>
+						</form>
 					</div>
 				</div>
 			</div>

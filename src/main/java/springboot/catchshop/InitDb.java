@@ -103,12 +103,13 @@ public class InitDb {
                     address2, Role.ADMIN.toString(), LocalDateTime.now());
             em.persist(admin1);
 
+            // author: soohyun last modified: 22.03.05
             // 장바구니 데이터 생성
             Cart cart1 = createCart(product1, user1.getId(), 1);
             em.persist(cart1);
             Cart cart2 = createCart(product2, user1.getId(), 2);
             em.persist(cart2);
-            Cart cart3 = createCart(product3, user1.getId(), 3);
+            Cart cart3 = createCart(product3, user1.getId(), 300);
             em.persist(cart3);
 
 
@@ -141,11 +142,7 @@ public class InitDb {
         }
 
         private Cart createCart(Product product, Long userId, int count) {
-            Cart cart = Cart.builder()
-                    .product(product)
-                    .userId(userId)
-                    .cartCount(count)
-                    .build();
+            Cart cart = new Cart(product, userId, count);
             return cart;
         }
 

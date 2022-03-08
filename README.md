@@ -20,7 +20,7 @@
   - H2
   
 #### `Front-end`
-  - Tymeleaf
+  - Thymeleaf
   
   
 #### `Tool`

@@ -51,6 +51,9 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product")//상품
     private List<Review> reviews = new ArrayList<>();
 
+//    @OneToMany(mappedBy = "product")
+//    private List<Question> questions = new ArrayList<>();
+
 
     @Builder
     public Product(Long id,String name, String text, int price, int stock, String productImg, Category categories){
@@ -64,14 +67,16 @@ public class Product extends BaseEntity{
     }
 
     // 관리자용 메서드 - 강수민
-    public void setProduct(ProductDto dto, String productImg, String productImgPath) {
+    public void setProduct(ProductDto dto) {
         this.name = dto.getName();
         this.price = dto.getPrice();
         this.stock = dto.getStock();
-        this.productImg = productImg;
-        this.productImgPath = productImgPath;
     }
 
+    public void updateImageInfo(String imgName) {
+        this.productImg = imgName;
+        this.productImgPath = "/files/" + imgName;
+    }
 
     //==비즈니스 로직==//
     /**

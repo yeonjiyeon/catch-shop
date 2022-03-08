@@ -53,43 +53,53 @@
 <div class="single-product mt-150 mb-150">
     <div class="container">
         <!-- Q&A 작성 폼 시작 -->
-        <form action="" method="post">
+        <form th:object="${questionDto}" method="post" enctype="multipart/form-data">
             <!-- 비밀글 설정 체크박스 -->
-            <label style="color:orange;">비밀글&nbsp;&nbsp;</label>
-            <input type="checkbox" name="secret"><br><br>
+            <label class="check">
+                <input type="checkbox" class="input" th:field="*{secret}">
+                <label class="check" th:for="secret">비밀글</label>
+            </label><br>
+
+            <!-- 비밀글 비밀번호 -->
+            <div style="width:300px;margin:0 auto;">
+                <label for="password">비밀번호</label>
+                <input type="text" th:field="*{password}" id="password"
+                       placeholder="비밀번호를 입력하세요.">
+            </div><br>
+
 
             <!-- 카테고리 -->
             <label for="content" class="qna_label">카테고리&nbsp;&nbsp;</label>
-            <form>
-                <select autofocus>
-                    <option>상품 문의</option>
-                    <option>배송 문의</option>
-                    <option>기타 문의</option>
-                </select>
-            </form><br>
+            <select th:field="*{category}" class="form-select">
+                <option th:each="c : ${category}" th:value="${c.name()}"
+                        th:text="${c.description}"></option>
+            </select><br>
 
             <!-- 내용 -->
             <div class="form-group">
                 <label for="content" class="qna_label">내용</label>
                 <textarea class="form-control" rows="5" id="content"
-                          name="content" placeholder="내용을 입력하세요"></textarea>
+                          name="content"  th:field="*{contents}"
+                          placeholder="내용을 입력하세요"></textarea>
                 <div id="content_cnt" style="float:right; color:orange;">0 / 200</div>
             </div><br>
 
-            <div class="row">
-                <div class="col-lg-4 col-md-6 text-center">
-                    <!-- 첨부 이미지1 -->
-                    <label for="content" class="qna_label">첨부 이미지</label><br><br>
-                    <input type="file" id="img1_insert_btn" onchange="imgPreview(QnA_img_frame1, event.target.files[0])">
-                    <br><br>
-                    <img id="QnA_img_frame1" src="/assets/img/test_img.png" style="float:left;">
-                </div>
+            <!-- 첨부 이미지 -->
+            <div class="col-lg-4 col-md-6 text-center">
+                <label for="img" class="form-label">첨부 이미지</label>
+                <input type="file" class="form-control" th:field="*{questionImg}"
+                       onchange="imgPreview(img, event.target.files[0])"><br><br>
+                <img id="img" src="/assets/img/test_img.png" style="float:left;">
             </div>
+
             <!-- Q&A 등록 버튼 시작 -->
-            <div class="hero-btns" style="margin-top:0px;">
-                <div style="width:300px;margin:0 auto;">
-                    <a class="bordered-btn" href="/" style="border-radius: 3px; margin:auto; display:block;
-                        width:30%; color:orange; text-align: center;">등록</button></a>
+            <div class="cart-buttons" style="text-align: center;">
+                <div>
+                    <a class="boxed-btn btn-lg black">
+                        <button type="submit"
+                                style="width:100%; border: hidden; text-align: center; background-color: transparent;"
+                                class="btn btn-primary">등록</button>
+                    </a>
                 </div>
             </div>
             <!-- Q&A 등록 버튼 끝 -->

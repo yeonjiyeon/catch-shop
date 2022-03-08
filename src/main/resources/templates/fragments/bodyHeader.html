@@ -20,7 +20,7 @@
               <ul>
                 <li><a href="#" th:href="@{/products/admin/{id} (id=${session.id})}">Products</a></li>
                 <li><a href="/">Orders</a></li>
-                <li><a href="/users">Members</a></li>
+                <li><a href="/members">Members</a></li>
                 <li><a href="/">Q&A</a></li>
                 <li><a href="/">Review</a></li>
                 <li>
@@ -29,7 +29,7 @@
                     <a class="shopping-cart" th:if="${session.loginUser != null}" href="#" th:href="@{/users/{id} (id=${session.id})}"><i class="far fa-heart"></i></a>
                     <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                     <a th:if="${session.loginUser == null}" href="/login">Login</a>
-                    <a th:if="${session.loginUser != null}" href="http://localhost:8080/logout">Logout</a>
+                    <a th:if="${session.loginUser != null}" href="/logout">Logout</a>
                   </div>
                 </li>
               </ul>
@@ -59,7 +59,7 @@
                     <a class="shopping-cart" href="/carts"><i class="fas fa-shopping-cart"></i></a>
                     <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                     <a th:if="${session.loginUser == null}" href="/login">Login</a>
-                    <a th:unless="${session.loginUser == null}" href="http://localhost:8080/logout">Logout</a>
+                    <a th:unless="${session.loginUser == null}" href="/logout">Logout</a>
                   </div>
                 </li>
               </ul>
