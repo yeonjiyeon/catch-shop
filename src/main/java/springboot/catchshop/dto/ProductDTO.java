@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import springboot.catchshop.domain.Category;
 
 import java.time.LocalDateTime;
 
@@ -23,4 +24,5 @@ public class ProductDTO {
     private int stock;
     private String productImg;
     private LocalDateTime regDate, modDate;
+    private Category category;
 }

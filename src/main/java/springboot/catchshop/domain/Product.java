@@ -35,6 +35,9 @@ public class Product extends BaseEntity{
     private int price;//상품 가격
     private int stock;//상품 수량
 
+    @Enumerated(value = EnumType.STRING)
+    private ProductStatus productStatus;
+
     private String productImg;//상품 이미지
     private String productImgPath; // 상품 이미지 경로 - 강수민
 
@@ -50,13 +53,14 @@ public class Product extends BaseEntity{
 
 
     @Builder
-    public Product(Long id,String name, String text, int price, int stock, String productImg){
+    public Product(Long id,String name, String text, int price, int stock, String productImg, Category categories){
         this.id = id;
         this.name = name;
         this.text = text;
         this.price = price;
         this.stock = stock;
         this.productImg = productImg;
+        this.categories = categories;
     }
 
     // 관리자용 메서드 - 강수민
@@ -108,5 +112,8 @@ public class Product extends BaseEntity{
 
     public void changeProductImgPath(String productImgPath) {
         this.productImgPath = productImgPath;
+    }
+    public void changeCategory(Category category){
+        this.categories = categories;
     }
 }
