@@ -31,53 +31,62 @@ public class InitDb {
         private final PasswordEncoder passwordEncoder;
 
         public void dbInit() {
-            Product product1 = createProduct("product1", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
+            Category strawberry = createCategory("strawberry", 1);
+            em.persist(strawberry);
+            Category berry = createCategory("berry", 1);
+            em.persist(berry);
+            Category lemon = createCategory("lemon", 1);
+            em.persist(lemon);
+            //Category category2 = createCategory("strawberry", category1, 2);
+
+
+            Product product1 = createProduct("product1", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product1);
-            Product product2 = createProduct("product2", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product2 = createProduct("product2", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product2);
-            Product product3 = createProduct("product3", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product3 = createProduct("product3", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product3);
-            Product product4 = createProduct("product4", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product4 = createProduct("product4", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
             em.persist(product4);
-            Product product5 = createProduct("product5", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product5 = createProduct("product5", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product5);
-            Product product6 = createProduct("product6", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product6 = createProduct("product6", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product6);
-            Product product7 = createProduct("product7", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product7 = createProduct("product7", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product7);
-            Product product8 = createProduct("product8", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product8 = createProduct("product8", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
             em.persist(product8);
-            Product product9 = createProduct("product9", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product9 = createProduct("product9", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product9);
-            Product product10 = createProduct("product10", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product10 = createProduct("product10", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product10);
-            Product product11 = createProduct("product11", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product11 = createProduct("product11", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product11);
-            Product product12 = createProduct("product12", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product12 = createProduct("product12", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
             em.persist(product12);
-            Product product13 = createProduct("product13", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product13 = createProduct("product13", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product13);
-            Product product14 = createProduct("product14", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product14 = createProduct("product14", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product14);
-            Product product15 = createProduct("product15", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product15 = createProduct("product15", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product15);
-            Product product16 = createProduct("product16", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product16 = createProduct("product16", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
             em.persist(product16);
-            Product product17 = createProduct("product17", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product17 = createProduct("product17", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product17);
-            Product product18 = createProduct("product18", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product18 = createProduct("product18", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product18);
-            Product product19 = createProduct("product19", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product19 = createProduct("product19", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product19);
-            Product product20 = createProduct("product20", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product20 = createProduct("product20", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
             em.persist(product20);
-            Product product21 = createProduct("product21", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product21 = createProduct("product21", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product21);
-            Product product22 = createProduct("product22", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product22 = createProduct("product22", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product22);
-            Product product23 = createProduct("product23", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product23 = createProduct("product23", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product23);
-            Product product24 = createProduct("product24", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product24 = createProduct("product24", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
             em.persist(product24);
 
             // author: soohyun last modified: 22.02.19
@@ -102,16 +111,24 @@ public class InitDb {
             em.persist(cart2);
             Cart cart3 = createCart(product3, user1.getId(), 300);
             em.persist(cart3);
+
+
+
+
         }
+        
+        
+        
 
         // modified by 강수민, 22.02.26 - 상품이미지 경로 추가
-        private Product createProduct(String name, String productImg, String productImgPath, int price, int stock) {
+        private Product createProduct(String name, String productImg, String productImgPath, int price, int stock, Category category) {
             Product product = new Product();
             product.changeName(name);
             product.changePrice(price);
             product.changeStock(stock);
             product.changeProductImg(productImg);
             product.changeProductImgPath(productImgPath);
+            product.changeCategory(category);
             return product;
         }
 
@@ -128,6 +145,24 @@ public class InitDb {
             Cart cart = new Cart(product, userId, count);
             return cart;
         }
+
+        private Category createCategory(String name, Integer level) {
+            Category category = Category.builder()
+                    .name(name)
+                    .level(level)
+                    .build();
+            return category;
+        }
+
     }
+
+//    private Category createCategory1(String name, Category parent, Integer level) {
+//        Category category = Category.builder()
+//                .name(name)
+//                .parent(parent)
+//                .level(level)
+//                .build();
+//        return category;
+//    }
 }
 

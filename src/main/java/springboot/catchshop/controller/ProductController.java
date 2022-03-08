@@ -66,7 +66,7 @@ public class ProductController {
 //
 //    }
 
-    @GetMapping({"single-product", "modify"}) //나중에 상세상품-> 관리자 모드로 들어가면 수정도 할 수 있도록 변경하기
+    @GetMapping("single-product") //나중에 상세상품-> 관리자 모드로 들어가면 수정도 할 수 있도록 변경하기
     public void readSingleProduct(long id, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model){
         ProductDTO dto = productService.readSingleProduct(id);
         model.addAttribute("dto", dto);

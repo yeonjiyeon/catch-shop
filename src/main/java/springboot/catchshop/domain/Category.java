@@ -23,8 +23,6 @@ public class Category {
     @Column(name = "category_id")//카테고리 번호
     private Long id;
 
-    @Column(nullable = false)
-    private String branch;
 
     @Column(name = "category_nm")//카테고리명
     private String name;
@@ -42,8 +40,7 @@ public class Category {
     private List<Category> child = new ArrayList<>();
 
     @Builder
-    public Category(String branch, String name, Integer level, Category parent){
-        this.branch = branch;
+    public Category(String name, Integer level, Category parent){
         this.name = name;
         this.parent = parent;
         this.level = level;
@@ -54,5 +51,6 @@ public class Category {
         this.child.add(child);
         child.setParent(this);
     }
+
 
 }

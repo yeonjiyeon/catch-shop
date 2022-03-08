@@ -23,6 +23,7 @@ public interface ProductService {
                 .price(productDTO.getPrice())
                 .stock(productDTO.getStock())
                 .productImg(productDTO.getProductImg())
+                .categories(productDTO.getCategory())
                 .build();
         return entity;
     }
@@ -37,10 +38,12 @@ public interface ProductService {
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .productImg(product.getProductImg())
+                .category(product.getCategories())
                 .build();
 
         return dto;
     }
+
 
     //상품 등록
     Long addProduct(ProductDTO productDTO);

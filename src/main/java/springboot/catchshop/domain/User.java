@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @RequiredArgsConstructor
+@Table(name = "C_USER")
 public class User {
 
     @GeneratedValue
