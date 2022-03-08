@@ -22,11 +22,11 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public static final QQuestion question = new QQuestion("question");
 
-    public final EnumPath<QuestionStatus> answered = createEnum("answered", QuestionStatus.class);
+    public final StringPath answered = createString("answered");
 
     public final ListPath<Answer, QAnswer> answers = this.<Answer, QAnswer>createList("answers", Answer.class, QAnswer.class, PathInits.DIRECT2);
 
-    public final EnumPath<QuestionCategory> category = createEnum("category", QuestionCategory.class);
+    public final StringPath category = createString("category");
 
     public final StringPath contents = createString("contents");
 
@@ -34,9 +34,15 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath imgName = createString("imgName");
+
+    public final StringPath imgPath = createString("imgPath");
+
     public final StringPath password = createString("password");
 
-    public final EnumPath<QuestionStatus> secret = createEnum("secret", QuestionStatus.class);
+    public final QProduct product;
+
+    public final StringPath secret = createString("secret");
 
     public final QUser user;
 
@@ -58,6 +64,7 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public QQuestion(Class<? extends Question> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
     }
 
