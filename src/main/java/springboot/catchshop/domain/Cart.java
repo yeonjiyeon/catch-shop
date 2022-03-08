@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 /**
  * Cart Entity
- * author: soohyun, last modified: 22.02.21
+ * author: soohyun, last modified: 22.03.05
  */
 
 @Entity
@@ -31,10 +31,16 @@ public class Cart {
 
     // 생성 메서드
     @Builder
+    public Cart(Product product, Long userId) {
+        this.product = product;
+        this.userId = userId;
+    }
+
+    @Builder
     public Cart(Product product, Long userId, int cartCount) {
         this.product = product;
         this.userId = userId;
-        updateCartCount(cartCount);
+        this.cartCount = cartCount;
     }
 
     // 수량 변경 메서드
