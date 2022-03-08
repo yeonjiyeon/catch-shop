@@ -52,80 +52,110 @@
 <!-- single product -->
 <div class="single-product mt-150 mb-150">
     <div class="container">
-        <!-- 회원정보수정 폼 시작 -->
-        <h3 style="text-align: center">내 정보 수정</h3>
-        <form th:object="${updateUserDto}" method="post">
-            <!-- form tag는 GET, POST만 지원하므로 PUT은 다음과 같이 사용 -->
-            <input type="hidden" name="_method" value="PUT"/>
-            <!-- 아이디 -->
-            <div class="form-group" style="width:300px;margin:0 auto;">
-                <label th:for="loginId">아이디</label>
-                <input type="text" class="form-control" th:placeholder="${user.loginId}"
-                       readonly="readonly">
-            </div><br>
-
-            <!-- 비밀번호 -->
-            <div class="form-group" style="width:300px;margin:0 auto;">
-                <label th:for="password">비밀번호</label>
-                <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요"
-                       th:class="${#fields.hasErrors('password')}? 'form-control fieldError' : 'form-control'">
-                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect date</p><br>
-            </div>
-
-            <!-- 이름 -->
-            <div class="form-group" style="width:300px;margin:0 auto;">
-                <label th:for="name">이름</label>
-                <input type="text" class="form-control" th:placeholder="${user.name}"
-                       readonly="readonly">
-            </div><br>
-
-            <!-- 연락처 -->
-            <div class="form-group" style="width:300px;margin:0 auto;">
-                <label th:for="telephone">연락처</label>
-                <input type="text" name="telephone" class="form-control" th:value="${user.telephone}"
-                       th:class="${#fields.hasErrors('telephone')}? 'form-control fieldError' : 'form-control'">
-                <p th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Incorrect date</p><br>
-            </div>
-
-            <!-- 우편번호 -->
-            <div class="form-group" style="width:300px;margin:0 auto;">
-                <label th:for="postalcode">우편번호</label>
-                <input type="text" name="postalcode" class="form-control" th:value="${user.address.postalcode}"
-                       th:class="${#fields.hasErrors('postalcode')}? 'form-control fieldError' : 'form-control'"
-                       id="postalcode" readonly="readonly">
-                <p th:if="${#fields.hasErrors('postalcode')}" th:errors="*{postalcode}">Incorrect date</p>
-                <button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button><br><br>
-            </div>
-
-            <!-- 도로명 주소 -->
-            <div class="form-group" style="width:300px;margin:0 auto;">
-                <label th:for="road">도로명 주소</label>
-                <input type="text" name="road" class="form-control" th:value="${user.address.road}"
-                       th:class="${#fields.hasErrors('road')}? 'form-control fieldError' : 'form-control'"
-                       id="road" readonly="readonly">
-                <p th:if="${#fields.hasErrors('road')}" th:errors="*{road}">Incorrect date</p><br>
-            </div>
-
-            <!-- 상세 주소 -->
-            <div class="form-group" style="width:300px;margin:0 auto;">
-                <label th:for="detail">상세 주소</label>
-                <input type="text" name="detail" class="form-control" th:value="${user.address.detail}"
-                       th:class="${#fields.hasErrors('detail')}? 'form-control fieldError' : 'form-control'">
-                <p th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}">Incorrect date</p><br>
-            </div>
-
-            <!-- 회원정보수정 버튼 -->
-            <div class="hero-btns" style="margin-top:0px;">
-                <div style="width:300px;margin:0 auto;">
-                    <a style="border-radius: 3px;width:100%;" class="boxed-btn">
-                        <button type="submit"
-                                style="width:100%; border: hidden; text-align: center; background-color: transparent;"
-                                class="btn btn-primary">Update</button>
-                    </a>
+        <div class="row">
+            <!-- 사이드 메뉴 시작 -->
+            <div class="col-2">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-user-list" data-toggle="list" href="#list-user" role="tab" aria-controls="user">회원 정보 수정</a>
+                    <a class="list-group-item list-group-item-action" id="list-order-list" data-toggle="list" href="#list-order" role="tab" aria-controls="order">주문 내역</a>
+                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages</a>
+                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
                 </div>
             </div>
-        </form>
-        <!-- 회원정보수정 폼 끝-->
+            <!-- 사이드 메뉴 끝 -->
+
+            <!-- 사이드 메뉴 내용 시작 -->
+            <div class="col-10">
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- 회원정보수정 폼 시작 -->
+                    <div class="tab-pane fade show active" id="list-user" role="tabpanel" aria-labelledby="list-user-list">
+                        <h3 style="text-align: center">내 정보 수정</h3>
+                        <form th:object="${updateUserDto}" method="post">
+                            <!-- form tag는 GET, POST만 지원하므로 PUT은 다음과 같이 사용 -->
+                            <input type="hidden" name="_method" value="PUT"/>
+                            <!-- 아이디 -->
+                            <div class="form-group" style="width:300px;margin:0 auto;">
+                                <label th:for="loginId">아이디</label>
+                                <input type="text" class="form-control" th:placeholder="${user.loginId}"
+                                       readonly="readonly">
+                            </div><br>
+
+                            <!-- 비밀번호 -->
+                            <div class="form-group" style="width:300px;margin:0 auto;">
+                                <label th:for="password">비밀번호</label>
+                                <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요"
+                                       th:class="${#fields.hasErrors('password')}? 'form-control fieldError' : 'form-control'">
+                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect date</p><br>
+                            </div>
+
+                            <!-- 이름 -->
+                            <div class="form-group" style="width:300px;margin:0 auto;">
+                                <label th:for="name">이름</label>
+                                <input type="text" class="form-control" th:placeholder="${user.name}"
+                                       readonly="readonly">
+                            </div><br>
+
+                            <!-- 연락처 -->
+                            <div class="form-group" style="width:300px;margin:0 auto;">
+                                <label th:for="telephone">연락처</label>
+                                <input type="text" name="telephone" class="form-control" th:value="${user.telephone}"
+                                       th:class="${#fields.hasErrors('telephone')}? 'form-control fieldError' : 'form-control'">
+                                <p th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Incorrect date</p><br>
+                            </div>
+
+                            <!-- 우편번호 -->
+                            <div class="form-group" style="width:300px;margin:0 auto;">
+                                <label th:for="postalcode">우편번호</label>
+                                <input type="text" name="postalcode" class="form-control" th:value="${user.address.postalcode}"
+                                       th:class="${#fields.hasErrors('postalcode')}? 'form-control fieldError' : 'form-control'"
+                                       id="postalcode" readonly="readonly">
+                                <p th:if="${#fields.hasErrors('postalcode')}" th:errors="*{postalcode}">Incorrect date</p>
+                                <button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button><br><br>
+                            </div>
+
+                            <!-- 도로명 주소 -->
+                            <div class="form-group" style="width:300px;margin:0 auto;">
+                                <label th:for="road">도로명 주소</label>
+                                <input type="text" name="road" class="form-control" th:value="${user.address.road}"
+                                       th:class="${#fields.hasErrors('road')}? 'form-control fieldError' : 'form-control'"
+                                       id="road" readonly="readonly">
+                                <p th:if="${#fields.hasErrors('road')}" th:errors="*{road}">Incorrect date</p><br>
+                            </div>
+
+                            <!-- 상세 주소 -->
+                            <div class="form-group" style="width:300px;margin:0 auto;">
+                                <label th:for="detail">상세 주소</label>
+                                <input type="text" name="detail" class="form-control" th:value="${user.address.detail}"
+                                       th:class="${#fields.hasErrors('detail')}? 'form-control fieldError' : 'form-control'">
+                                <p th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}">Incorrect date</p><br>
+                            </div>
+
+                            <!-- 회원정보수정 버튼 -->
+                            <div class="hero-btns" style="margin-top:0px;">
+                                <div style="width:300px;margin:0 auto;">
+                                    <a style="border-radius: 3px;width:100%;" class="boxed-btn">
+                                        <button type="submit"
+                                                style="width:100%; border: hidden; text-align: center; background-color: transparent;"
+                                                class="btn btn-primary">Update</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 회원정보수정 폼 끝-->
+
+                    <!-- 주문 내역 시작 -->
+                    <div class="tab-pane fade" id="list-order" role="tabpanel" aria-labelledby="list-order-list">
+                        주문 내역
+                    </div>
+                    <!-- 주문 내역 끝 -->
+
+                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
+                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+                </div>
+                <!-- 사이드 메뉴 내용 끝 -->
+            </div>
+        </div>
     </div>
 </div>
 <!-- end single product -->

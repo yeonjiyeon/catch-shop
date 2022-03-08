@@ -11,7 +11,7 @@ import java.util.List;
  * author: soohyun, last modified: 22.02.25
  */
 
-public interface CartRepository extends JpaRepository<Cart, Long> {
+public interface CartRepository extends JpaRepository<Cart, Long>, CartRepositoryCustom {
 
     // 로그인한 사용자 id로 장바구니 목록 조회
     List<Cart> findByUserId(Long userId);
