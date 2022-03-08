@@ -8,10 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import springboot.catchshop.domain.Product;
 import springboot.catchshop.dto.PageRequestDTO;
+import springboot.catchshop.dto.PageResultDTO;
 import springboot.catchshop.dto.ProductDTO;
 import springboot.catchshop.service.ProductService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,7 +43,14 @@ public class ProductController {
     @GetMapping("products")
     public void readProducts(PageRequestDTO pageRequestDTO, Model model) {
         log.info("list : " + pageRequestDTO);
-        model.addAttribute("result", productService.readProducts(pageRequestDTO));
+        PageResultDTO<ProductDTO, Product> result = productService.readProducts(pageRequestDTO);
+        List<String> categoryNameList = new ArrayList<>();
+        log.info("category :" + result.getDtoList().get(1).getCategory().getName());
+//        for(int i = 0; i < result.getSize(); i++){
+//            categoryNameList.add(result.getDtoList().get(i).getCategory().getName());
+//        }
+        model.addAttribute("result", result);
+        //model.addAttribute("categoryname", categoryNameList);
     }
 
 

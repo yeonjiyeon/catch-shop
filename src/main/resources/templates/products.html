@@ -53,12 +53,14 @@
             </div>
 
 			<div class="row product-lists">
-				<div th:each="dto : ${result.dtoList}"  class="col-lg-4 col-md-6 text-center strawberry">
-					<!--div th:each="dto : ${result.dtoList}"  th:class="col-lg-4 col-md-6 text-center ${dto.category}"-->
+				<!-- div th:each="dto : ${result.dtoList}"  class="col-lg-4 col-md-6 text-center strawberry"-->
+				<div th:each="dto : ${result.dtoList}"  class="col-lg-4 col-md-6 text-center" th:attrappend="class=' ${dto.category.name}'">
+
 					<div class="single-product-item">
 						<div class="product-image">
 							<a th:href="@{/single-product(id = ${dto.id}, page = ${result.page})}"><img th:src="${dto.productImg}" alt=""></a>
 						</div>
+						<!--h3>[[${dto.category.name}]]</h3-->
 						<h3>[[${dto.name}]]</h3>
 						<p class="product-price"> [[${dto.price}]] </p>
 						<form th:action="@{'/carts/' + ${dto.id}}"th:method="post">

@@ -31,13 +31,15 @@ public class InitDb {
         private final PasswordEncoder passwordEncoder;
 
         public void dbInit() {
-            Category strawberry = createCategory("strawberry", 1);
+//            Category fruit = createCategory("fruit", 0);
+//            em.persist(fruit);
+            Category strawberry = createCategory("strawberry",1);
             em.persist(strawberry);
             Category berry = createCategory("berry", 1);
             em.persist(berry);
-            Category lemon = createCategory("lemon", 1);
+            Category lemon = createCategory("lemon",1);
             em.persist(lemon);
-            //Category category2 = createCategory("strawberry", category1, 2);
+
 
 
             Product product1 = createProduct("product1", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
@@ -56,9 +58,9 @@ public class InitDb {
             em.persist(product7);
             Product product8 = createProduct("product8", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
             em.persist(product8);
-            Product product9 = createProduct("product9", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
+            Product product9 = createProduct("product9", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100, strawberry);
             em.persist(product9);
-            Product product10 = createProduct("product10", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
+            Product product10 = createProduct("product10", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100, berry);
             em.persist(product10);
             Product product11 = createProduct("product11", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product11);
@@ -66,7 +68,7 @@ public class InitDb {
             em.persist(product12);
             Product product13 = createProduct("product13", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product13);
-            Product product14 = createProduct("product14", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
+            Product product14 = createProduct("product14", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100, berry);
             em.persist(product14);
             Product product15 = createProduct("product15", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product15);

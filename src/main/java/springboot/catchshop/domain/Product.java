@@ -118,7 +118,8 @@ public class Product extends BaseEntity{
     public void changeProductImgPath(String productImgPath) {
         this.productImgPath = productImgPath;
     }
+
     public void changeCategory(Category category){
-        this.categories = categories;
+        this.categories = category;
     }
 }
