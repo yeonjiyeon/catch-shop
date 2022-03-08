@@ -9,8 +9,10 @@ import springboot.catchshop.dto.*;
 import springboot.catchshop.service.CartService;
 import springboot.catchshop.session.SessionConst;
 
-// Cart Controller
-// author: soohyun, last modified: 22.02.21
+/**
+ * Cart Controller
+ * author: soohyun, last modified: 22.02.25
+ */
 
 @Controller
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class CartController {
     public String addCart(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
                           @PathVariable("id") Long productId, @RequestParam("count") int count) {
 
-        if (loginUser != null) {
+        if (loginUser != null) { // 로그인한 경우 장바구니 추가
             Long cartId = cartService.addCart(loginUser.getId(), productId, count);
         }
 

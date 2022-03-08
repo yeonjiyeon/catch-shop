@@ -31,63 +31,68 @@ public class InitDb {
         private final PasswordEncoder passwordEncoder;
 
         public void dbInit() {
-            Product product1 = createProduct("product1", "assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product1 = createProduct("product1", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
             em.persist(product1);
-            Product product2 = createProduct("product2", "assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product2 = createProduct("product2", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
             em.persist(product2);
-            Product product3 = createProduct("product3", "assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product3 = createProduct("product3", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
             em.persist(product3);
-            Product product4 = createProduct("product4", "assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product4 = createProduct("product4", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product4);
-            Product product5 = createProduct("product5", "assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product5 = createProduct("product5", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
             em.persist(product5);
-            Product product6 = createProduct("product6", "assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product6 = createProduct("product6", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
             em.persist(product6);
-            Product product7 = createProduct("product7", "assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product7 = createProduct("product7", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
             em.persist(product7);
-            Product product8 = createProduct("product8", "assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product8 = createProduct("product8", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product8);
-            Product product9 = createProduct("product9", "assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product9 = createProduct("product9", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
             em.persist(product9);
-            Product product10 = createProduct("product10", "assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product10 = createProduct("product10", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
             em.persist(product10);
-            Product product11 = createProduct("product11", "assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product11 = createProduct("product11", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
             em.persist(product11);
-            Product product12 = createProduct("product12", "assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product12 = createProduct("product12", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product12);
-            Product product13 = createProduct("product13", "assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product13 = createProduct("product13", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
             em.persist(product13);
-            Product product14 = createProduct("product14", "assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product14 = createProduct("product14", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
             em.persist(product14);
-            Product product15 = createProduct("product15", "assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product15 = createProduct("product15", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
             em.persist(product15);
-            Product product16 = createProduct("product16", "assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product16 = createProduct("product16", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product16);
-            Product product17 = createProduct("product17", "assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product17 = createProduct("product17", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
             em.persist(product17);
-            Product product18 = createProduct("product18", "assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product18 = createProduct("product18", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
             em.persist(product18);
-            Product product19 = createProduct("product19", "assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product19 = createProduct("product19", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
             em.persist(product19);
-            Product product20 = createProduct("product20", "assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product20 = createProduct("product20", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product20);
-            Product product21 = createProduct("product21", "assets/img/products/product-img-1.jpg", 10000, 100);
+            Product product21 = createProduct("product21", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100);
             em.persist(product21);
-            Product product22 = createProduct("product22", "assets/img/products/product-img-2.jpg", 10000, 100);
+            Product product22 = createProduct("product22", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100);
             em.persist(product22);
-            Product product23 = createProduct("product23", "assets/img/products/product-img-3.jpg", 10000, 100);
+            Product product23 = createProduct("product23", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100);
             em.persist(product23);
-            Product product24 = createProduct("product24", "assets/img/products/product-img-4.jpg", 10000, 100);
+            Product product24 = createProduct("product24", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100);
             em.persist(product24);
-
 
             // author: soohyun last modified: 22.02.19
             // 회원 데이터 생성
-
             Address address1 = new Address("road1", "detail1", "11111");
             User user1 = createUser("user1", passwordEncoder.encode("1"), "user1", "01012345678",
-                    address1, Role.USER, LocalDateTime.now());
+                    address1, Role.USER.toString(), LocalDateTime.now());
             em.persist(user1);
+
+            // author: 강수민 created: 22.02.23
+            // 관리자 데이터 생성
+            Address address2 = new Address("road2", "detail2", "22222");
+            User admin1 = createUser("admin1", passwordEncoder.encode("1"), "admin1", "01012345678",
+                    address2, Role.ADMIN.toString(), LocalDateTime.now());
+            em.persist(admin1);
 
             // 장바구니 데이터 생성
             Cart cart1 = createCart(product1, user1.getId(), 1);
@@ -98,18 +103,20 @@ public class InitDb {
             em.persist(cart3);
         }
 
-        private Product createProduct(String name, String productImg, int price, int stock) {
+        // modified by 강수민, 22.02.26 - 상품이미지 경로 추가
+        private Product createProduct(String name, String productImg, String productImgPath, int price, int stock) {
             Product product = new Product();
             product.changeName(name);
             product.changePrice(price);
             product.changeStock(stock);
             product.changeProductImg(productImg);
+            product.changeProductImgPath(productImgPath);
             return product;
         }
 
         // modified by 강수민, 22.02.15 - setter 삭제
         private User createUser(String loginId, String password, String name, String telephone,
-                                Address address, Role role, LocalDateTime joindate) {
+                                Address address, String role, LocalDateTime joindate) {
 
             User user = new User(loginId, password, name, telephone,
                     address, role, joindate);

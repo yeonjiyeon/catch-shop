@@ -1,5 +1,6 @@
 package springboot.catchshop.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
@@ -11,23 +12,14 @@ import springboot.catchshop.dto.PageRequestDTO;
 import springboot.catchshop.dto.ProductDTO;
 import springboot.catchshop.service.ProductService;
 
+import java.util.List;
+
 @Controller
 @Log4j2
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-
-    /**
-     * 상품 Q&A 기능
-     * author: 강수민
-     */
-    @GetMapping("makeQ")
-    public String makeQuestion() {
-        return "make-question"; // templates/make-question.html 렌더링
-    }
-
-
 
     /**
      * Product 기능
@@ -50,14 +42,23 @@ public class ProductController {
         log.info("list : " + pageRequestDTO);
         model.addAttribute("result", productService.readProducts(pageRequestDTO));
     }
-    
 
+
+
+//    @GetMapping("/fragments/searchProduct")
+//    public String searchProduct(@RequestParam(value = "keyword") String keyword, Model model){
+//        List<ProductDTO> productDTOList = productService.searchProducts(keyword);
+//        model.addAttribute("result", productDTOList);
+//        return "/products";
+//    }
     //상품 개별 조회
     //products/{id}로 설정하면 static에 있는 리소스들을 못읽음-> 원인찾아보기
     //나중에 restful하게 수정예정
 //    @GetMapping("products/{id}")
-//    public void readSingleProduct(@PathVariable Long id){
-//        //return "";
+//    public String readSingleProduct(@PathVariable Long id, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model){
+//        ProductDTO dto = productService.readSingleProduct(id);
+//        model.addAttribute("dto", dto);
+//        return "/single-product";
 //    }
     //상품 수정
 //    @PutMapping("products/{id}")

@@ -15,6 +15,10 @@ public class LoginDto {
     @NotEmpty
     private String password;
 
+    public LoginDto() {
+
+    }
+
     public LoginDto(String loginId, String password) {
         this.loginId = loginId;
         this.password = password;

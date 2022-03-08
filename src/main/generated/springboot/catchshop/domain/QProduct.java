@@ -5,9 +5,7 @@ import static com.querydsl.core.types.PathMetadataFactory.*;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
-import javax.annotation.Generated;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
+
 
 
 /**
@@ -36,6 +34,8 @@ public class QProduct extends EntityPathBase<Product> {
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final StringPath productImg = createString("productImg");
+
+    public final StringPath productImgPath = createString("productImgPath");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
