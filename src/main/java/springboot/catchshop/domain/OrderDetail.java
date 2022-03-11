@@ -1,5 +1,6 @@
 package springboot.catchshop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +40,6 @@ public class OrderDetail {
         this.product = product;
         this.orderCount = orderCount;
         this.orderPrice = orderPrice;
+        order.getOrderDetailList().add(this);
     }
 }
