@@ -15,11 +15,17 @@ import java.time.LocalDateTime;
 public class ReviewDTO {
     private Long id;
 
+    private Long pid;//productid
+
+    private String uid;//userid
+
+    private String name;
+
+    private String loginId;
+
+    private int star;
+
     private String contents;
-
-    private String img;
-
-    private String star;
 
     private LocalDateTime regDate, modDate;
 }

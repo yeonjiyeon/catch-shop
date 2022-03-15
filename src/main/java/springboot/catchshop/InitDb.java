@@ -39,6 +39,8 @@ public class InitDb {
             em.persist(berry);
             Category lemon = createCategory("lemon",1);
             em.persist(lemon);
+            Category kiwi = createCategory("kiwi",1);
+            em.persist(kiwi);
 
 
 
@@ -48,7 +50,7 @@ public class InitDb {
             em.persist(product2);
             Product product3 = createProduct("product3", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product3);
-            Product product4 = createProduct("product4", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
+            Product product4 = createProduct("product4", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,kiwi);
             em.persist(product4);
             Product product5 = createProduct("product5", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product5);
@@ -56,7 +58,7 @@ public class InitDb {
             em.persist(product6);
             Product product7 = createProduct("product7", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product7);
-            Product product8 = createProduct("product8", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
+            Product product8 = createProduct("product8", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,kiwi);
             em.persist(product8);
             Product product9 = createProduct("product9", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100, strawberry);
             em.persist(product9);
@@ -64,7 +66,7 @@ public class InitDb {
             em.persist(product10);
             Product product11 = createProduct("product11", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product11);
-            Product product12 = createProduct("product12", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
+            Product product12 = createProduct("product12", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,kiwi);
             em.persist(product12);
             Product product13 = createProduct("product13", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product13);
@@ -72,7 +74,7 @@ public class InitDb {
             em.persist(product14);
             Product product15 = createProduct("product15", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product15);
-            Product product16 = createProduct("product16", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
+            Product product16 = createProduct("product16", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,kiwi);
             em.persist(product16);
             Product product17 = createProduct("product17", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product17);
@@ -80,7 +82,7 @@ public class InitDb {
             em.persist(product18);
             Product product19 = createProduct("product19", "/assets/img/products/product-img-2.jpg", "/assets/img/products/product-img-2.jpg", 10000, 100,berry);
             em.persist(product19);
-            Product product20 = createProduct("product20", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
+            Product product20 = createProduct("product20", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,kiwi);
             em.persist(product20);
             Product product21 = createProduct("product21", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry);
             em.persist(product21);
@@ -88,7 +90,7 @@ public class InitDb {
             em.persist(product22);
             Product product23 = createProduct("product23", "/assets/img/products/product-img-3.jpg", "/assets/img/products/product-img-3.jpg", 10000, 100,lemon);
             em.persist(product23);
-            Product product24 = createProduct("product24", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,strawberry);
+            Product product24 = createProduct("product24", "/assets/img/products/product-img-4.jpg", "/assets/img/products/product-img-4.jpg", 10000, 100,kiwi);
             em.persist(product24);
 
             // author: soohyun last modified: 22.02.19
