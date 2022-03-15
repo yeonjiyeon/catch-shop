@@ -30,9 +30,10 @@ public class QuestionService {
 
         Question question = new Question();
         question.setQuestion(user, product, dto);
-
-        String imgName = fileService.uploadFile(dto.getQuestionImg());
-        question.updateImageInfo(imgName);
+        if (dto.getQuestionImg() != null) {
+            String imgName = fileService.uploadFile(dto.getQuestionImg());
+            question.updateImageInfo(imgName);
+        }
 
         questionRepository.save(question);
         return question;

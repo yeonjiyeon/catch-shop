@@ -116,6 +116,9 @@ public class InitDb {
             Cart cart3 = createCart(product3, user1.getId(), 300);
             em.persist(cart3);
 
+            Question question = createQuestion(user1, product24, "상품문의", "상품 문의입니다");
+            em.persist(question);
+
             // author: soohyun last modified: 22.03.11
             // 주문 데이터 생성
             Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 30000L, 3000L);
@@ -166,7 +169,11 @@ public class InitDb {
                     .build();
             return category;
         }
-
+      
+        private Question createQuestion(User user, Product product, String category, String contents) {
+            Question question = new Question(user, product, category, contents);
+            return question;
+          
         private Order createOrder(User user, String orderName, String orderTel, Address address, Long totalPrice, Long shippingFee) {
             Order order = new Order(user, orderName, orderTel, address, totalPrice, shippingFee);
             return order;

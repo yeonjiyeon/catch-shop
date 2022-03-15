@@ -83,4 +83,15 @@ public class Question {
         this.imgName = imgName;
         this.imgPath = "/files/" + imgName;
     }
+
+    public Question() {
+
+    }
+
+    public Question(User user, Product product, String category, String contents) {
+        this.user = user;
+        this.product = product;
+        this.category =category;
+        this.contents = contents;
+    }
 }

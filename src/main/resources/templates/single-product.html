@@ -196,7 +196,8 @@
 	<ul>
 		<li>
 			<a href="#goods-review">후기</a>
-			<a href="#" th:href="@{/products/{id}/questions (id=${dto.id})}">문의</a>
+			<a href="#goods-question">문의</a>
+			<a href="#" th:href="@{/products/{id}/questions (id=${dto.id})}">문의 작성하기</a>
 		</li>
 	</ul>
 	<div class="goods-review">	
@@ -247,7 +248,35 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="goods-question">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-md-12">
+					<div class="cart-table-wrap">
+						<table class="cart-table">
+							<thead>
+							<tr>
+								<th>번호</th>
+								<th>카테고리</th>
+								<th>작성자</th>
+								<th>내용</th>
+								<th></th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="question : ${questions}">
+								<td th:text="${question.id}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+								<td th:text="${question.category}"></td>
+								<td th:text="${question.user.loginId}"></td>
+								<td th:text="${question.contents}"></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 

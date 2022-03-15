@@ -3,7 +3,6 @@ package springboot.catchshop.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.repository.ProductRepository;
 import springboot.catchshop.service.FileService;
@@ -27,8 +26,10 @@ public class ProductServiceForAdmin {
         Product product = new Product();
         product.setProduct(dto);
 
-        String imgName = fileService.uploadFile(dto.getProductImg()); // 이미지 파일 업로드
-        product.updateImageInfo(imgName);
+        if (dto.getProductImg() != null) {
+            String imgName = fileService.uploadFile(dto.getProductImg()); // 이미지 파일 업로드
+            product.updateImageInfo(imgName);
+        }
 
         productRepository.save(product);
     }
@@ -44,5 +45,9 @@ public class ProductServiceForAdmin {
         productRepository.save(product);
     }
 
+    // 상품 삭제
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
+    }
 
 }

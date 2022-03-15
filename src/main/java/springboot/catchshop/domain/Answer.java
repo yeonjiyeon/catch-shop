@@ -32,11 +32,11 @@ public class Answer {
     private String contents;
     private LocalDateTime date;
 
-    //==연관 관계 편의 메서드==//
-    public void setUser(User user) {
-        this.user = user;
-        user.getAnswers().add(this);
-    }
+//    //==연관 관계 편의 메서드==//
+//    public void setUser(User user) {
+//        this.user = user;
+//        user.getAnswers().add(this);
+//    }
 
     //==생성 메서드==//
     public static Answer createAnswer(User user) {

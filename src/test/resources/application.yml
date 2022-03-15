@@ -3,8 +3,8 @@ spring: #메모리 모드
   mail:
     host: smtp.gmail.com
     port: 587
-    username: airosk.official
-    password: tlschstntnwl2201!
+    username:
+    password:
     properties:
       mail:
         smtp:

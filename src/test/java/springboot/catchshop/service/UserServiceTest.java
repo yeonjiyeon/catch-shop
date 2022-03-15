@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+// author: 강수민
 @SpringBootTest
 @Transactional
 class UserServiceTest {
