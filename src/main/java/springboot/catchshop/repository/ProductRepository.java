@@ -1,6 +1,9 @@
 package springboot.catchshop.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 import springboot.catchshop.domain.Product;
@@ -15,4 +18,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Queryds
     @Override
     List<Product> findAll();
     Optional<Product> findById(Long id);
+
+    @Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p group by p")
+    Page<Object[]> getListPage(Pageable pageable);
+
+
 }
