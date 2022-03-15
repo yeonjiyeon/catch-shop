@@ -41,11 +41,7 @@
             <!-- 회원/비회원 menu start -->
             <nav class="main-menu" th:unless="${session.role == 'ADMIN'}">
               <ul>
-                <li><a href="#">goods-review</a>
-                  <ul class="sub-menu">
-                    <li><a href="review.html">review</a></li>
-                    <li><a href="#">Shop</a></li>
-                  </ul>
+                <li><a href="/products">전체 상품</a>
                 </li>
                 <li><a href="/products">신상품</a>
                 </li>
