@@ -112,8 +112,8 @@ public class InitDb {
             Cart cart3 = createCart(product3, user1.getId(), 300);
             em.persist(cart3);
 
-
-
+            Question question = createQuestion(user1, product24, "상품문의", "상품 문의입니다");
+            em.persist(question);
 
         }
         
@@ -152,6 +152,11 @@ public class InitDb {
                     .level(level)
                     .build();
             return category;
+        }
+
+        private Question createQuestion(User user, Product product, String category, String contents) {
+            Question question = new Question(user, product, category, contents);
+            return question;
         }
 
     }
