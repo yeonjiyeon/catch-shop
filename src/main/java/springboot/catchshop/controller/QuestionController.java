@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import springboot.catchshop.admin.AnswerRepository;
 import springboot.catchshop.domain.Question;
 import springboot.catchshop.domain.QuestionCategory;
 import springboot.catchshop.domain.User;
@@ -22,6 +23,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     @GetMapping("/products/{id}/questions")
     public String questionForm(@ModelAttribute("questionDto") QuestionDto questionDto,
@@ -53,6 +55,7 @@ public class QuestionController {
         }
         Optional<Question> question = questionRepository.findById(questionId);
         model.addAttribute("question", question);
+        model.addAttribute("answers", answerRepository.findAllByQuestionId(questionId));
 
         return "single-question";
     }

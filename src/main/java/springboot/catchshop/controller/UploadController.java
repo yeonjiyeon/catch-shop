@@ -1,7 +1,6 @@
 package springboot.catchshop.controller;
 
 import lombok.extern.log4j.Log4j2;
-import org.graalvm.compiler.nodes.memory.MemoryCheckpoint;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;

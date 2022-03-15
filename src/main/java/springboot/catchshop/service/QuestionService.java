@@ -24,6 +24,7 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final FileService fileService;
 
+    // 질문 생성
     @Transactional
     public Question saveQuestion(User user, Long productId, QuestionDto dto) throws IOException {
         Product product = productRepository.findById(productId).orElse(null);

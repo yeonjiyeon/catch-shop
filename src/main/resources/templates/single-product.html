@@ -252,7 +252,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8 col-md-12">
-					<div class="cart-table-wrap">
+					<div>
 						<table class="cart-table">
 							<thead>
 							<tr>
@@ -260,15 +260,21 @@
 								<th>카테고리</th>
 								<th>작성자</th>
 								<th>내용</th>
-								<th></th>
+								<th>작성 날짜</th>
 							</tr>
 							</thead>
-							<tbody>
-							<tr th:each="question : ${questions}">
+							<tbody th:each="question : ${questions}">
+							<tr>
 								<td th:text="${question.id}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
 								<td th:text="${question.category}"></td>
 								<td th:text="${question.user.loginId}"></td>
 								<td th:text="${question.contents}"></td>
+								<td th:text="${#temporals.format(question.date, 'yyyy-MM-dd HH:mm:ss')}"></td>
+<!--								<td th:if="${question.secret == 'secret'}" th:text="비밀 글입니다."></td>-->
+<!--								<td th:unless="${question.secret == 'secret'}" th:text="${question.contents}"></td>-->
+							</tr>
+							<tr th:each="answer : ${question.answers}">
+								<td th:text="|Re: ${answer.contents}|" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
 							</tr>
 							</tbody>
 						</table>

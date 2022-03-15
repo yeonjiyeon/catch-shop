@@ -116,8 +116,37 @@ public class InitDb {
             Cart cart3 = createCart(product3, user1.getId(), 300);
             em.persist(cart3);
 
-            Question question = createQuestion(user1, product24, "상품문의", "상품 문의입니다");
-            em.persist(question);
+            // author: 강수민 created: 22.03.15
+            // question 데이터 생성
+            Question question1 = createQuestion(user1, product24, "상품문의", "상품 문의입니다", "secret", "답변 완료");
+            em.persist(question1);
+            Question question2 = createQuestion(user1, product24, "배송문의", "배송 문의입니다", "secret", "미답변");
+            em.persist(question2);
+            Question question3 = createQuestion(user1, product24, "주문문의", "주문 문의입니다", "secret", "답변 완료");
+            em.persist(question3);
+            Question question4 = createQuestion(user1, product23, "상품문의", "상품 문의입니다", "secret", "답변 완료");
+            em.persist(question4);
+            Question question5 = createQuestion(user1, product23, "배송문의", "배송 문의입니다", "secret", "답변 완료");
+            em.persist(question5);
+
+            // author: 강수민 created: 22.03.16
+            // answer 데이터 생성
+            Answer answer1 = createAnswer(admin1, question1, "답변입니다.");
+            em.persist(answer1);
+            Answer answer2 = createAnswer(admin1, question1, "답변입니다.");
+            em.persist(answer2);
+            Answer answer3 = createAnswer(admin1, question1, "답변입니다.");
+            em.persist(answer3);
+            Answer answer4 = createAnswer(admin1, question3, "답변입니다.");
+            em.persist(answer4);
+            Answer answer5 = createAnswer(admin1, question4, "답변입니다.");
+            em.persist(answer5);
+            Answer answer6 = createAnswer(admin1, question5, "답변입니다.");
+            em.persist(answer6);
+            Answer answer7 = createAnswer(admin1, question5, "답변입니다.");
+            em.persist(answer7);
+
+
 
             // author: soohyun last modified: 22.03.11
             // 주문 데이터 생성
@@ -170,10 +199,17 @@ public class InitDb {
             return category;
         }
       
-        private Question createQuestion(User user, Product product, String category, String contents) {
-            Question question = new Question(user, product, category, contents);
+        private Question createQuestion(User user, Product product, String category, String contents,
+                                        String secret, String answered) {
+            Question question = new Question(user, product, category, contents, secret, answered);
             return question;
-          
+        }
+
+        private Answer createAnswer(User user, Question question, String contents) {
+            Answer answer = new Answer(user, question, contents);
+            return answer;
+        }
+
         private Order createOrder(User user, String orderName, String orderTel, Address address, Long totalPrice, Long shippingFee) {
             Order order = new Order(user, orderName, orderTel, address, totalPrice, shippingFee);
             return order;

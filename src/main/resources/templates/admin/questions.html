@@ -48,13 +48,12 @@
 </div>
 <!-- end breadcrumb section -->
 
-<!-- single product -->
 <div class="single-product mt-150 mb-150">
     <div class="container">
 
-        <!-- 전체 상품 조회 시작  -->
+        <!-- 전체 qna 조회 시작  -->
         <div>
-            <table class="table table-striped">
+            <table class="cart-table">
                 <thead>
                 <tr>
                     <th>번호</th>
@@ -66,24 +65,26 @@
                     <th></th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr th:each="question : ${questions}">
-                    <td th:text="${question.id}"></td>
+                <tbody th:each="question : ${questions}">
+                <tr>
+                    <td th:text="${question.id}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
                     <td th:text="${question.category}"></td>
                     <td th:text="${question.user.name}"></td>
                     <td th:text="${question.user.loginId}"></td>
                     <td th:text="${question.contents}"></td>
                     <td th:text="${question.answered}"></td>
                     <td>
-                        <a href="#" class="btn btn-primary" role="button">답변하기</a>
+                        <a href="#" th:href="@{/questions/{id}/answers (id=${question.id})}" class="btn btn-primary" role="button">답변하기</a>
                     </td>
+                </tr>
+                <tr th:each="answer : ${question.answers}">
+                    <td th:text="|Re: ${answer.contents}|" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
                 </tr>
                 </tbody>
             </table><br>
-            <!-- 전체 상품 조회 끝 -->
+            <!-- 전체 qna 조회 끝 -->
         </div>
     </div>
-    <!-- end single product -->
 
     <!-- footer -->
     <div th:replace="fragments/footer :: footer"/>
