@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @RequiredArgsConstructor
+@Table(name = "C_USER")
 public class User {
 
     @GeneratedValue
@@ -29,12 +30,10 @@ public class User {
     private Address address;
 
     private LocalDateTime joindate;
-
-//    @Enumerated(value = EnumType.STRING)
     private String role;
 
-    @OneToMany(mappedBy = "user")
-    private List<Question> questions = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Question> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Answer> answers = new ArrayList<>();

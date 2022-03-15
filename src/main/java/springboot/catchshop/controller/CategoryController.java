@@ -2,10 +2,13 @@ package springboot.catchshop.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import springboot.catchshop.dto.CategoryDTO;
+import springboot.catchshop.dto.PageRequestDTO;
 import springboot.catchshop.service.CategoryService;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -20,17 +23,17 @@ public class CategoryController {
     }
 
     //카테고리 조회
-    @GetMapping("/categories/{branch}")
+    @GetMapping("/categories/{name}")
     @ResponseBody
-    public void getCategoryByBranch (@PathVariable String branch) {
-
-        //eturn categoryService.getCategoryByBranch(branch);
+    public void getCategory (@PathVariable String name, Model model) {
+        model.addAttribute("result", categoryService.getCategory(name));
     }
 
+
     //카테고리 삭제
-    @DeleteMapping("/categories/{branch}")
+    @DeleteMapping("/categories/{name}")
     @ResponseBody
-    public void deleteCategory (@PathVariable String branch) {
+    public void deleteCategory (@PathVariable String name) {
 
     }
 

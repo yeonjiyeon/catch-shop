@@ -8,7 +8,9 @@ import springboot.catchshop.dto.CategoryDTO;
 import springboot.catchshop.repository.CategoryRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,27 +22,26 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Long saveCategory(CategoryDTO categoryDTO) {
         Category category = categoryDTO.toEntity();
-        if (categoryDTO.getParent() == null){
-            if(categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName())){
-                throw new RuntimeException("branch와 name이 같을 수 없습니다.");
+        if (categoryDTO.getParent() == null){//부모 카테고리가 없는 경우
+            if(!categoryRepository.existsByName(categoryDTO.getName())){
+                throw new RuntimeException("해당 카테고리가 존재하지 않습니다.");
             }
 
-            Category rootCategory = categoryRepository.findByBranchAndName(categoryDTO.getBranch(), "ROOT")
+            Category rootCategory = categoryRepository.findByName("fruit")
                     .orElseGet(() ->
                                     Category.builder()
-                                            .name("ROOT")
-                                            .branch(categoryDTO.getBranch())
+                                            .name("fruit")
                                             .level(0)
                                             .build()
                             );
-            if (!categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), "ROOT")){
+            if (!categoryRepository.existsByName("fruit")){
                 categoryRepository.save(rootCategory);
             }
             category.setParent(rootCategory);
             category.setLevel(1);
-        }else {
+        }else {//부모 카테고리가 있는 경우
             String parent = categoryDTO.getParent();
-            Category parentCategory = categoryRepository.findByBranchAndName(categoryDTO.getBranch(), parent)
+            Category parentCategory = categoryRepository.findByName(parent)
                     .orElseThrow(() -> new IllegalStateException("부모 카테고리 없음 예외"));
             category.setParent(parentCategory);
             parentCategory.getChild().add(category);
@@ -52,21 +53,25 @@ public class CategoryServiceImpl implements CategoryService {
 
     //카테고리 조회
     @Override
-    public Map<String, CategoryDTO> getCategoryByBranch(String branch) {
-        Category category = categoryRepository.findByBranchAndName(branch, "ROOT")
-                .orElseThrow(() -> new IllegalArgumentException("찾는 대분류가 없습니다"));
+    public List<CategoryDTO> getCategory(String name) {
+        List<Category> categories = (List<Category>) categoryRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("카테고리 없음 예외"));
 
-        CategoryDTO categoryDTO = new CategoryDTO(category);
+        List<CategoryDTO>  categoryDTOList = categories.stream().map(c -> new CategoryDTO(c)).collect(Collectors.toList());
 
-        Map <String, CategoryDTO> data = new HashMap<>();
-        data.put(categoryDTO.getName(), categoryDTO);
+        return categoryDTOList;
 
-        return data;
+
     }
+
 
     private Category findCategory (Long id) {
         return categoryRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
+
+
+
+
 
     //카테고리 삭제
     @Override
@@ -74,13 +79,13 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = findCategory(id);
         if (category.getChild().size() == 0){
             Category parentCategory = findCategory(category.getParent().getId());
-            if (!parentCategory.getName().equals("ROOT")){
+            if (!parentCategory.getName().equals("fruit")){
                 parentCategory.getChild().remove(category);
             }
             categoryRepository.deleteById(category.getId());
         }else {
             Category parentCategory = findCategory(category.getParent().getId());
-            if (!parentCategory.getName().equals("ROOT")){
+            if (!parentCategory.getName().equals("fruit")){
                 parentCategory.getChild().remove(category);
             }
             category.setName("Deleted category");

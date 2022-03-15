@@ -19,18 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *  CartService Test
- *  author: soohyun, last modified: 22.02.27
+ *  author: soohyun, last modified: 22.03.07
  */
 
 @SpringBootTest
 @Transactional
 class CartServiceTest {
 
+    @Autowired EntityManager em;
     @Autowired CartRepository cartRepository;
     @Autowired CartService cartService;
-    @Autowired UserRepository userRepository;
-    @Autowired ProductRepository productRepository;
-    @Autowired EntityManager em;
 
     private Address address;
     private User user;
@@ -39,17 +37,16 @@ class CartServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-
         // 사용자 생성
         address = new Address("road1", "detail1", "11111");
-        user = new User("user1", "user1", "user1", "01012345678", address, Role.USER, LocalDateTime.now());
-        userRepository.save(user);
+        user = new User("user1", "user1", "user1", "01012345678", address, "USER", LocalDateTime.now());
+        em.persist(user);
 
         // 상품 생성
         product = new Product();
         product.changePrice(10000);
         product.changeStock(10);
-        productRepository.save(product);
+        em.persist(product);
     }
 
     @Nested
@@ -116,12 +113,13 @@ class CartServiceTest {
 
         // then
         assertEquals(carts.getCartList().size(), 1);
-        assertEquals(carts.getCartList().get(0).getPrice(), 10000);
+        assertEquals(carts.getCartList().get(0).getProduct(), product);
+        assertEquals(carts.getCartList().get(0).getProduct().getPrice(), 10000);
         assertEquals(carts.getCartList().get(0).getCartCount(), 1);
         assertEquals(carts.getCartList().get(0).getTotalProductPrice(), 10000);
         assertEquals(carts.getCartList().get(0).getUnderStock(), true);
         assertEquals(carts.getTotalAllProductPrice(), 10000);
-        assertEquals(carts.getDeliveryPrice(), 3000);
+        assertEquals(carts.getShippingFee(), 3000);
         assertEquals(carts.getTotalPayPrice(), 13000);
     }
 
