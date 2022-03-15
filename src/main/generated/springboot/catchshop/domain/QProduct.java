@@ -39,6 +39,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath productImgPath = createString("productImgPath");
 
+    public final EnumPath<ProductStatus> productStatus = createEnum("productStatus", ProductStatus.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
