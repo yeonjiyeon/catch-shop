@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.*;
 import springboot.catchshop.dto.CartInfoDto;
-import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.dto.OrderRequestDto;
+import springboot.catchshop.dto.OrderResponseDto;
 import springboot.catchshop.repository.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Order Service
@@ -22,7 +22,6 @@ import java.util.Optional;
 @Transactional
 public class OrderService {
 
-    private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
 
@@ -47,5 +46,13 @@ public class OrderService {
         order.updateOrderStatus(status);
 
         return order.getId();
+    }
+
+    // 주문 조회
+    public List<OrderResponseDto> orderList(User loginUser) {
+        List<Order> orders = orderRepository.orderList(loginUser); // 로그인한 사용자로 주문 조회
+        List<OrderResponseDto> orderList = orders.stream().map(o -> new OrderResponseDto(o)).collect(Collectors.toList());
+
+        return orderList;
     }
 }

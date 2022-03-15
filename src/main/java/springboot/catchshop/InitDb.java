@@ -115,10 +115,22 @@ public class InitDb {
             Question question = createQuestion(user1, product24, "상품문의", "상품 문의입니다");
             em.persist(question);
 
+            // author: soohyun last modified: 22.03.11
+            // 주문 데이터 생성
+            Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 30000L, 3000L);
+            em.persist(order1);
+            OrderDetail orderDetail1 = createOrderDetail(order1, product1, 1, (long) product1.getPrice());
+            em.persist(orderDetail1);
+            OrderDetail orderDetail2 = createOrderDetail(order1, product2, 2, (long) product2.getPrice());
+            em.persist(orderDetail2);
+
+            Order order2 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 70000L, 0L);
+            em.persist(order2);
+            OrderDetail orderDetail3 = createOrderDetail(order2, product3, 3, (long) product3.getPrice());
+            em.persist(orderDetail3);
+            OrderDetail orderDetail4 = createOrderDetail(order2, product4, 4, (long) product4.getPrice());
+            em.persist(orderDetail4);
         }
-        
-        
-        
 
         // modified by 강수민, 22.02.26 - 상품이미지 경로 추가
         private Product createProduct(String name, String productImg, String productImgPath, int price, int stock, Category category) {
@@ -153,10 +165,19 @@ public class InitDb {
                     .build();
             return category;
         }
-
+      
         private Question createQuestion(User user, Product product, String category, String contents) {
             Question question = new Question(user, product, category, contents);
             return question;
+          
+        private Order createOrder(User user, String orderName, String orderTel, Address address, Long totalPrice, Long shippingFee) {
+            Order order = new Order(user, orderName, orderTel, address, totalPrice, shippingFee);
+            return order;
+        }
+
+        private OrderDetail createOrderDetail(Order order, Product product, int orderCount, Long orderPrice) {
+            OrderDetail orderDetail = new OrderDetail(order, product, orderCount, orderPrice);
+            return orderDetail;
         }
 
     }
