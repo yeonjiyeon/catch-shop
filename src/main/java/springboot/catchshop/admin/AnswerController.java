@@ -8,6 +8,9 @@ import springboot.catchshop.domain.Answer;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.session.SessionConst;
 
+// Answer Controller
+// author: 강수민, created: 22.03.15
+// last modified: 22.03.15
 @Controller
 @RequiredArgsConstructor
 public class AnswerController {
@@ -43,4 +46,6 @@ public class AnswerController {
         answerService.updateAnswer(answerId, form);
         return "redirect:/";
     }
+
+    // TODO 삭제
 }
