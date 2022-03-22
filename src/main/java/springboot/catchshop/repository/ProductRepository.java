@@ -8,7 +8,6 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 import springboot.catchshop.domain.Product;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 

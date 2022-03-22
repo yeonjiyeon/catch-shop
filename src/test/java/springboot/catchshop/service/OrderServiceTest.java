@@ -2,12 +2,15 @@ package springboot.catchshop.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.*;
 import springboot.catchshop.dto.CartResponseDto;
+import springboot.catchshop.dto.OrderDetailDto;
+import springboot.catchshop.dto.OrderResponseDto;
 import springboot.catchshop.repository.*;
 
 import javax.persistence.EntityManager;
@@ -19,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * OrderService Test
- * author: soohyun, last modified: 22.03.07
+ * author: soohyun, last modified: 22.03.11
  */
 
 @SpringBootTest
@@ -77,9 +80,8 @@ class OrderServiceTest {
         Long saveId = orderService.createOrder(order, userId, carts.getCartList());
 
         // then
+        // 주문
         Optional<Order> findOrder = orderRepository.findById(saveId);
-        List<OrderDetail> findOrderDetail = orderDetailRepository.findByOrderId(saveId);
-
         assertEquals(findOrder.get().getId(), saveId);
         assertEquals(findOrder.get().getUser(), user);
         assertEquals(findOrder.get().getOrderName(), "name1");
@@ -88,14 +90,85 @@ class OrderServiceTest {
         assertEquals(findOrder.get().getOrderStatus(), OrderStatus.READY);
         assertEquals(findOrder.get().getTotalPrice(), 10000);
         assertEquals(findOrder.get().getShippingFee(), 3000);
+        assertEquals(findOrder.get().getOrderDetailList().size(), 1);
 
+        // 주문 상세
+        List<OrderDetail> findOrderDetail = findOrder.get().getOrderDetailList();
         assertEquals(findOrderDetail.size(), 1);
         assertEquals(findOrderDetail.get(0).getOrder(), findOrder.get());
         assertEquals(findOrderDetail.get(0).getProduct(), product1);
+        assertEquals(findOrderDetail.get(0).getProduct().getStock(), 9); // 재고 수량 감소
         assertEquals(findOrderDetail.get(0).getOrderCount(), 1);
         assertEquals(findOrderDetail.get(0).getOrderPrice(), 10000);
     }
 
+    @Test
+    @DisplayName("주문 조회")
+    public void orderList() {
 
+        // given
+        CartResponseDto carts = cartService.orderCartList(user.getId());
+        Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
+        orderService.createOrder(order, user.getId(), carts.getCartList());
 
+        // when
+        List<OrderResponseDto> orders = orderService.orderList(user);
+
+        // then
+        // 주문
+        assertEquals(orders.size(), 1);
+        assertEquals(orders.get(0).getOrderName(), "name1");
+        assertEquals(orders.get(0).getOrderTel(), "01012345678");
+        assertEquals(orders.get(0).getAddress(), address);
+        assertEquals(orders.get(0).getOrderStatus(), OrderStatus.READY);
+        assertEquals(orders.get(0).getTotalPrice(), 10000);
+        assertEquals(orders.get(0).getShippingFee(), 3000);
+
+        // 주문 상세
+        List<OrderDetailDto> orderDetailList = orders.get(0).getOrderDetailList();
+        assertEquals(orderDetailList.size(), 1);
+        assertEquals(orderDetailList.get(0).getProduct(), product1);
+        assertEquals(orderDetailList.get(0).getOrderCount(), 1);
+        assertEquals(orderDetailList.get(0).getOrderPrice(), 10000);
+    }
+
+    @Nested
+    @DisplayName("주문 취소")
+    class cancelOrder {
+
+        @Test
+        @DisplayName("성공")
+        public void success() {
+
+            // given
+            CartResponseDto carts = cartService.orderCartList(user.getId());
+            Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
+            orderService.createOrder(order, user.getId(), carts.getCartList());
+
+            // when
+            Long cancelId = orderService.cancelOrder(order.getId());
+
+            // then
+            assertEquals(cancelId, order.getId());
+            assertEquals(order.getOrderStatus(), OrderStatus.CANCEL);
+        }
+
+        @Test
+        @DisplayName("실패")
+        public void fail() {
+
+            // given
+            CartResponseDto carts = cartService.orderCartList(user.getId());
+            Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
+            orderService.createOrder(order, user.getId(), carts.getCartList());
+            order.updateOrderStatus(OrderStatus.DELIVERY);
+
+            // when
+            Long cancelId = orderService.cancelOrder(order.getId());
+
+            // then
+            assertEquals(cancelId, order.getId());
+            assertEquals(order.getOrderStatus(), OrderStatus.DELIVERY);
+        }
+    }
 }

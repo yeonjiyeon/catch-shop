@@ -116,13 +116,55 @@ public class InitDb {
             Cart cart3 = createCart(product3, user1.getId(), 300);
             em.persist(cart3);
 
+            // author: 강수민 created: 22.03.15
+            // question 데이터 생성
+            Question question1 = createQuestion(user1, product24, "상품문의", "상품 문의입니다", "secret", "답변 완료");
+            em.persist(question1);
+            Question question2 = createQuestion(user1, product24, "배송문의", "배송 문의입니다", "secret", "미답변");
+            em.persist(question2);
+            Question question3 = createQuestion(user1, product24, "주문문의", "주문 문의입니다", "secret", "답변 완료");
+            em.persist(question3);
+            Question question4 = createQuestion(user1, product23, "상품문의", "상품 문의입니다", "secret", "답변 완료");
+            em.persist(question4);
+            Question question5 = createQuestion(user1, product23, "배송문의", "배송 문의입니다", "secret", "답변 완료");
+            em.persist(question5);
+
+            // author: 강수민 created: 22.03.16
+            // answer 데이터 생성
+            Answer answer1 = createAnswer(admin1, question1, "답변입니다.");
+            em.persist(answer1);
+            Answer answer2 = createAnswer(admin1, question1, "답변입니다.");
+            em.persist(answer2);
+            Answer answer3 = createAnswer(admin1, question1, "답변입니다.");
+            em.persist(answer3);
+            Answer answer4 = createAnswer(admin1, question3, "답변입니다.");
+            em.persist(answer4);
+            Answer answer5 = createAnswer(admin1, question4, "답변입니다.");
+            em.persist(answer5);
+            Answer answer6 = createAnswer(admin1, question5, "답변입니다.");
+            em.persist(answer6);
+            Answer answer7 = createAnswer(admin1, question5, "답변입니다.");
+            em.persist(answer7);
 
 
 
+            // author: soohyun last modified: 22.03.19
+            // 주문 데이터 생성
+            Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 30000L, 3000L);
+            em.persist(order1);
+            OrderDetail orderDetail1 = createOrderDetail(order1, product1, 1, (long) product1.getPrice());
+            em.persist(orderDetail1);
+            OrderDetail orderDetail2 = createOrderDetail(order1, product2, 2, (long) product2.getPrice());
+            em.persist(orderDetail2);
+
+            Order order2 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 70000L, 0L);
+            order2.updateOrderStatus(OrderStatus.DELIVERY);
+            em.persist(order2);
+            OrderDetail orderDetail3 = createOrderDetail(order2, product3, 3, (long) product3.getPrice());
+            em.persist(orderDetail3);
+            OrderDetail orderDetail4 = createOrderDetail(order2, product4, 4, (long) product4.getPrice());
+            em.persist(orderDetail4);
         }
-        
-        
-        
 
         // modified by 강수민, 22.02.26 - 상품이미지 경로 추가
         private Product createProduct(String name, String productImg, String productImgPath, int price, int stock, Category category,ProductStatus productStatus) {
@@ -157,6 +199,27 @@ public class InitDb {
                     .level(level)
                     .build();
             return category;
+        }
+      
+        private Question createQuestion(User user, Product product, String category, String contents,
+                                        String secret, String answered) {
+            Question question = new Question(user, product, category, contents, secret, answered);
+            return question;
+        }
+
+        private Answer createAnswer(User user, Question question, String contents) {
+            Answer answer = new Answer(user, question, contents);
+            return answer;
+        }
+
+        private Order createOrder(User user, String orderName, String orderTel, Address address, Long totalPrice, Long shippingFee) {
+            Order order = new Order(user, orderName, orderTel, address, totalPrice, shippingFee);
+            return order;
+        }
+
+        private OrderDetail createOrderDetail(Order order, Product product, int orderCount, Long orderPrice) {
+            OrderDetail orderDetail = new OrderDetail(order, product, orderCount, orderPrice);
+            return orderDetail;
         }
 
     }

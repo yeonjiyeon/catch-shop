@@ -69,10 +69,10 @@ public class Question {
         this.contents = dto.getContents();
 
         if (dto.getSecret()) {
-            this.secret = "비밀글";
+            this.secret = "secret";
             this.password = dto.getPassword();
         } else {
-            this.secret = "공개글";
+            this.secret = "open";
         }
 
         this.date = LocalDateTime.now();
@@ -82,5 +82,23 @@ public class Question {
     public void updateImageInfo(String imgName) {
         this.imgName = imgName;
         this.imgPath = "/files/" + imgName;
+    }
+
+    public Question() {
+
+    }
+
+    public Question(User user, Product product, String category, String contents, String secret, String answered) {
+        this.user = user;
+        this.product = product;
+        this.category =category;
+        this.contents = contents;
+        this.secret = secret;
+        this.answered = answered;
+        this.date = LocalDateTime.now();
+    }
+
+    public void updateAnswered() {
+        this.answered = "답변 완료";
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Order Entity
@@ -30,6 +32,9 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 주문한 사용자
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetail> orderDetailList = new ArrayList<>(); // 주문 상세 리스트
 
     private String orderName; // 수령자 이름
     private String orderTel; // 수령자 전화번호
@@ -59,7 +64,7 @@ public class Order {
     }
 
     // 주문 상태 변경
-    public void updateOrderStatus(OrderStatus status) {
-        this.orderStatus = status;
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }
