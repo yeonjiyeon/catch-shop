@@ -148,7 +148,7 @@ public class InitDb {
 
 
 
-            // author: soohyun last modified: 22.03.11
+            // author: soohyun last modified: 22.03.19
             // 주문 데이터 생성
             Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 30000L, 3000L);
             em.persist(order1);
@@ -158,6 +158,7 @@ public class InitDb {
             em.persist(orderDetail2);
 
             Order order2 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 70000L, 0L);
+            order2.updateOrderStatus(OrderStatus.DELIVERY);
             em.persist(order2);
             OrderDetail orderDetail3 = createOrderDetail(order2, product3, 3, (long) product3.getPrice());
             em.persist(orderDetail3);

@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import springboot.catchshop.domain.Order;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.dto.CartResponseDto;
@@ -22,7 +19,7 @@ import java.util.List;
 
 /**
  * Order Controller
- * author: soohyun, last modified: 22.03.07
+ * author: soohyun, last modified: 22.03.19
  */
 
 @Controller
@@ -60,7 +57,7 @@ public class OrderController {
 
         Order order = form.toEntity(loginUser, carts.getTotalAllProductPrice(), carts.getShippingFee());
         orderServcie.createOrder(order, loginUser.getId(), carts.getCartList());
-        return "redirect:/";
+        return "redirect:/orders";
     }
 
     // 주문 내역 조회
@@ -73,5 +70,12 @@ public class OrderController {
         } else { // 로그인하지 않은 사용자라면 로그인 화면으로
             return "redirect:/login";
         }
+    }
+
+    // 주문 취소
+    @GetMapping("/orders/{id}")
+    public String cancelOrder(@PathVariable("id") Long orderId) {
+        orderServcie.cancelOrder(orderId);
+        return "redirect:/orders";
     }
 }
