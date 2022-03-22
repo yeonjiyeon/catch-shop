@@ -43,13 +43,9 @@ public class ProductController {
     @GetMapping("products")
     public void readProducts(PageRequestDTO pageRequestDTO, Model model) {
         log.info("list : " + pageRequestDTO);
-        PageResultDTO<ProductDTO, Product> result = productService.readProducts(pageRequestDTO);
-        List<String> categoryNameList = new ArrayList<>();
-        log.info("category :" + result.getDtoList().get(1).getCategory().getName());
-//        for(int i = 0; i < result.getSize(); i++){
-//            categoryNameList.add(result.getDtoList().get(i).getCategory().getName());
-//        }
-        model.addAttribute("result", result);
+        //PageResultDTO<ProductDTO, Object[]> result = productService.readProducts(pageRequestDTO);
+
+        model.addAttribute("result", productService.readProducts(pageRequestDTO));
         //model.addAttribute("categoryname", categoryNameList);
     }
 

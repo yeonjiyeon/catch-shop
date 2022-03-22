@@ -38,6 +38,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Answer> answers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
+
     @Builder
     public User(String loginId, String password, String name, String telephone,
                 Address address, String role, LocalDateTime joindate) {

@@ -26,12 +26,14 @@ import java.util.function.Function;
  */
 @Service
 @Log4j2
+@Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
 
 
     //상품 등록
+
     @Override
     public Long addProduct(ProductDTO productDTO) {
         log.info("DTO====================");
@@ -47,15 +49,19 @@ public class ProductServiceImpl implements ProductService{
 
     //상품 전체 조회
     @Override
-    public PageResultDTO<ProductDTO, Product> readProducts(PageRequestDTO requestDTO) {
+    public PageResultDTO<ProductDTO, Object[]> readProducts(PageRequestDTO requestDTO) {
         Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());//상품 정렬
 
         //BooleanBuilder booleanBuilder = getSearch(requestDTO);
 
-        Page<Product> result = productRepository.findAll(pageable);
+        Page<Object[]> result = productRepository.getListPage(pageable);
 
 
-        Function<Product, ProductDTO> fn = (entity -> entityToDto(entity));
+        Function<Object[], ProductDTO> fn = (arr -> entityToDto(
+            (Product)arr[0],
+            (Double)arr[1],
+            (Long)arr[2]
+        ));
         return new PageResultDTO<>(result, fn);
     }
 
@@ -76,8 +82,12 @@ public class ProductServiceImpl implements ProductService{
     //상품 개별 조회
     @Override
     public ProductDTO readSingleProduct(Long id) {
-        Product product = productRepository.findById(id).orElseThrow( () -> new IllegalStateException("상품이 존재하지 않습니다."));
-        return entityToDto(product);
+        List<Object[]> result = productRepository.getMovieWithAll(id);
+        Product product = (Product) result.get(0)[0];
+        Double avg = (Double) result.get(0)[1];
+        Long reviewCnt = (Long) result.get(0)[2];
+
+        return entityToDto(product, avg, reviewCnt);
     }
 
 

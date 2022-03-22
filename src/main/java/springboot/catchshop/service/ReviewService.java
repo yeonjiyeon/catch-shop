@@ -27,7 +27,7 @@ public interface ReviewService {
         Review productReview = Review.builder()
                 .id(productReviewDTO.getId())
                 .product(Product.builder().id(productReviewDTO.getPid()).build())
-                .user(User.builder().loginId(productReviewDTO.getUid()).build())
+                .user(User.builder().loginId(productReviewDTO.getLoginId()).build())
                 .star(productReviewDTO.getStar())
                 .contents(productReviewDTO.getContents())
                 .build();
@@ -39,7 +39,6 @@ public interface ReviewService {
         ReviewDTO productReviewDTO = ReviewDTO.builder()
                 .id(productReview.getId())
                 .pid(productReview.getProduct().getId())
-                .uid(productReview.getUser().getLoginId())
                 .name(productReview.getUser().getName())
                 .loginId(productReview.getUser().getLoginId())
                 .star(productReview.getStar())
