@@ -64,7 +64,7 @@ public class Order {
     }
 
     // 주문 상태 변경
-    public void updateOrderStatus(OrderStatus status) {
-        this.orderStatus = status;
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

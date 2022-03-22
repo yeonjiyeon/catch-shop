@@ -119,7 +119,7 @@ public class InitDb {
             Question question = createQuestion(user1, product24, "상품문의", "상품 문의입니다");
             em.persist(question);
 
-            // author: soohyun last modified: 22.03.11
+            // author: soohyun last modified: 22.03.19
             // 주문 데이터 생성
             Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 30000L, 3000L);
             em.persist(order1);
@@ -129,6 +129,7 @@ public class InitDb {
             em.persist(orderDetail2);
 
             Order order2 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 70000L, 0L);
+            order2.updateOrderStatus(OrderStatus.DELIVERY);
             em.persist(order2);
             OrderDetail orderDetail3 = createOrderDetail(order2, product3, 3, (long) product3.getPrice());
             em.persist(orderDetail3);
@@ -173,6 +174,7 @@ public class InitDb {
         private Question createQuestion(User user, Product product, String category, String contents) {
             Question question = new Question(user, product, category, contents);
             return question;
+        }
           
         private Order createOrder(User user, String orderName, String orderTel, Address address, Long totalPrice, Long shippingFee) {
             Order order = new Order(user, orderName, orderTel, address, totalPrice, shippingFee);

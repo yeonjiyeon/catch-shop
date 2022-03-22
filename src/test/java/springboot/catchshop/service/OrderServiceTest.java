@@ -2,6 +2,7 @@ package springboot.catchshop.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -131,5 +132,43 @@ class OrderServiceTest {
         assertEquals(orderDetailList.get(0).getOrderPrice(), 10000);
     }
 
+    @Nested
+    @DisplayName("주문 취소")
+    class cancelOrder {
 
+        @Test
+        @DisplayName("성공")
+        public void success() {
+
+            // given
+            CartResponseDto carts = cartService.orderCartList(user.getId());
+            Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
+            orderService.createOrder(order, user.getId(), carts.getCartList());
+
+            // when
+            Long cancelId = orderService.cancelOrder(order.getId());
+
+            // then
+            assertEquals(cancelId, order.getId());
+            assertEquals(order.getOrderStatus(), OrderStatus.CANCEL);
+        }
+
+        @Test
+        @DisplayName("실패")
+        public void fail() {
+
+            // given
+            CartResponseDto carts = cartService.orderCartList(user.getId());
+            Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
+            orderService.createOrder(order, user.getId(), carts.getCartList());
+            order.updateOrderStatus(OrderStatus.DELIVERY);
+
+            // when
+            Long cancelId = orderService.cancelOrder(order.getId());
+
+            // then
+            assertEquals(cancelId, order.getId());
+            assertEquals(order.getOrderStatus(), OrderStatus.DELIVERY);
+        }
+    }
 }
