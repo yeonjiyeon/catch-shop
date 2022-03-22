@@ -40,7 +40,7 @@
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="breadcrumb-text">
                     <p>Catch Shop</p>
-                    <h1>Q&A</h1>
+                    <h1>주문</h1>
                 </div>
             </div>
         </div>
@@ -51,38 +51,37 @@
 <div class="single-product mt-150 mb-150">
     <div class="container">
 
-        <!-- 전체 qna 조회 시작  -->
+        <!-- 전체 주문 조회 시작  -->
         <div>
             <table class="cart-table">
                 <thead>
                 <tr>
                     <th>번호</th>
-                    <th>카테고리</th>
-                    <th>작성자 아이디</th>
-                    <th>작성자 이름</th>
-                    <th>내용</th>
-                    <th>답변 여부</th>
+                    <th>주문자</th>
+                    <th>금액</th>
+                    <th>주문 일시</th>
+                    <th>주문 상태</th>
+                    <th></th>
                     <th></th>
                 </tr>
                 </thead>
-                <tbody th:each="question : ${questions}">
+                <tbody th:each="order : ${orders}">
                 <tr>
-                    <td th:text="${question.id}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
-                    <td th:text="${question.category}"></td>
-                    <td th:text="${question.user.name}"></td>
-                    <td th:text="${question.user.loginId}"></td>
-                    <td th:text="${question.contents}"></td>
-                    <td th:text="${question.answered}"></td>
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.user.loginId}"></td>
+                    <td th:text="${order.totalPrice}"></td>
+                    <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${order.orderStatus}"></td>
                     <td>
-                        <a href="#" th:href="@{/questions/{id}/answers (id=${question.id})}" class="btn btn-primary" role="button">답변하기</a>
+                        <a href="#" th:href="@{/orders/{id} (id=${order.id})}" class="btn btn-primary" role="button">주문 상세</a>
                     </td>
-                </tr>
-                <tr th:each="answer : ${question.answers}">
-                    <td th:text="|Re: ${answer.contents}|" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+                    <td>
+                        <a href="#" class="btn btn-primary" role="button">주문 취소</a>
+                    </td>
                 </tr>
                 </tbody>
             </table><br>
-            <!-- 전체 qna 조회 끝 -->
+            <!-- 전체 주문 조회 끝 -->
         </div>
     </div>
 

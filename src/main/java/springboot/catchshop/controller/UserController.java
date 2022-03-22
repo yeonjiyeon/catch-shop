@@ -193,4 +193,6 @@ public class UserController {
         model.addAttribute("success", success);
         return "find-pw";
     }
+
+    // TODO 회원탈퇴
 }

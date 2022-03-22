@@ -19,7 +19,7 @@
             <nav class="main-menu" th:if="${session.role == 'ADMIN'}">
               <ul>
                 <li><a href="#" th:href="@{/products/admin/{id} (id=${session.id})}">Products</a></li>
-                <li><a href="/">Orders</a></li>
+                <li><a href="#" th:href="@{/orders/admin}">Orders</a></li>
                 <li><a href="/members">Members</a></li>
                 <li><a href="#" th:href="@{/questions}">Q&A</a></li>
                 <li><a href="/">Review</a></li>
