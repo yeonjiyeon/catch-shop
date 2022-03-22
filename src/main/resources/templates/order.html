@@ -60,9 +60,10 @@
                 <button th:if="${order.orderStatus.toString().equals('READY')}" style="border: none; color: white; background-color: #F28123FF">배송 준비 중</button>
                 <button th:if="${order.orderStatus.toString().equals('DELIVERY')}" style="border: none; color: white; background-color: #F28123FF">배송 완료</button>
                 <button th:if="${order.orderStatus.toString().equals('CANCEL')}" style="border: none; color: white; background-color: #F28123FF">주문 취소</button>
-                <div class="float-right" th:if="${order.orderStatus.toString().equals('READY')}">
-                    <a th:href="@{'/orders/' + ${order.id}}" class="btn" style="color: white; background-color: red">주문 취소</a>
-                </div>
+                <form class="float-right" th:if="${order.orderStatus.toString().equals('READY')}" th:action="@{'/orders/' + ${order.id}}" th:method="post">
+                    <input type="hidden" name="_method" value="patch">
+                    <button style="color: white; background-color: red">주문 취소</button>
+                </form>
             </div>
             <div class="card-body">
                 <h6>[배송 정보]</h6>

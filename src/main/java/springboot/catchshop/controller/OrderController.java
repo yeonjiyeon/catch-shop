@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * Order Controller
- * author: soohyun, last modified: 22.03.19
+ * author: soohyun, last modified: 22.03.22
  */
 
 @Controller
@@ -27,7 +27,7 @@ import java.util.List;
 public class OrderController {
 
     private final CartService cartService;
-    private final OrderService orderServcie;
+    private final OrderService orderService;
 
     // 주문 작성 페이지
     @GetMapping("/order")
@@ -56,7 +56,7 @@ public class OrderController {
         }
 
         Order order = form.toEntity(loginUser, carts.getTotalAllProductPrice(), carts.getShippingFee());
-        orderServcie.createOrder(order, loginUser.getId(), carts.getCartList());
+        orderService.createOrder(order, loginUser.getId(), carts.getCartList());
         return "redirect:/orders";
     }
 
@@ -64,7 +64,7 @@ public class OrderController {
     @GetMapping("/orders")
     public String orderList(Model model, @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
         if (loginUser != null) { // 로그인한 사용자라면 주문 내역 화면으로
-            List<OrderResponseDto> orders = orderServcie.orderList(loginUser);
+            List<OrderResponseDto> orders = orderService.orderList(loginUser);
             model.addAttribute("orders", orders);
             return "order";
         } else { // 로그인하지 않은 사용자라면 로그인 화면으로
@@ -73,9 +73,9 @@ public class OrderController {
     }
 
     // 주문 취소
-    @GetMapping("/orders/{id}")
+    @PatchMapping("/orders/{id}")
     public String cancelOrder(@PathVariable("id") Long orderId) {
-        orderServcie.cancelOrder(orderId);
+        orderService.cancelOrder(orderId);
         return "redirect:/orders";
     }
 }
