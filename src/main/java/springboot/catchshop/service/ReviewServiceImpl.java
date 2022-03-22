@@ -2,6 +2,7 @@ package springboot.catchshop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.Review;
 import springboot.catchshop.dto.ReviewDTO;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ReviewServiceImpl implements ReviewService{
 

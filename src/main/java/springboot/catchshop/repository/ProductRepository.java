@@ -21,5 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Queryds
     @Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p group by p")
     Page<Object[]> getListPage(Pageable pageable);
 
+    @Query("select p, avg(coalesce(r.star, 0)), count(r) from Product p left outer join Review r on r.product = p where p.id = :id group by p")
+    List<Object[]> getMovieWithAll(Long id);
 
 }

@@ -30,7 +30,7 @@ public interface ProductService {
 
 
     //entity -> Dto
-    default ProductDTO entityToDto(Product product){
+    default ProductDTO entityToDto(Product product, double avg, Long reviewCnt){
         ProductDTO dto = ProductDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -41,6 +41,9 @@ public interface ProductService {
                 .category(product.getCategories())
                 .build();
 
+        dto.setAvg(avg);
+        dto.setReviewCnt(reviewCnt);
+
         return dto;
     }
 
@@ -49,7 +52,7 @@ public interface ProductService {
     Long addProduct(ProductDTO productDTO);
 
     //상품 전체 조회
-    PageResultDTO<ProductDTO, Product> readProducts(PageRequestDTO requestDTO);
+    PageResultDTO<ProductDTO, Object[]> readProducts(PageRequestDTO requestDTO);
 
     //상품 검색
     //List<ProductDTO> searchProducts(String keyword);

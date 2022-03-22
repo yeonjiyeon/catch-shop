@@ -37,7 +37,7 @@ public class ProductServiceTest {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();
 
         //when
-        PageResultDTO<ProductDTO, Product> resultDTO = productService.readProducts(pageRequestDTO);
+        PageResultDTO<ProductDTO, Object[]> resultDTO = productService.readProducts(pageRequestDTO);
 
         //then
         for(ProductDTO productDTO : resultDTO.getDtoList()){

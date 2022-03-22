@@ -17,7 +17,7 @@ public class ReviewDTO {
 
     private Long pid;//productid
 
-    private String uid;//userid
+   // private String uid;//userid
 
     private String name;
 
