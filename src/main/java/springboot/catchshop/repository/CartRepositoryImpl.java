@@ -11,7 +11,7 @@ import static springboot.catchshop.domain.QProduct.product;
 
 /**
  * Cart Repository Impl
- * author: soohyun, last modified: 22.03.03
+ * author: soohyun, last modified: 22.03.26
  */
 public class CartRepositoryImpl implements CartRepositoryCustom {
 
@@ -19,6 +19,15 @@ public class CartRepositoryImpl implements CartRepositoryCustom {
 
     public CartRepositoryImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    // 로그인한 사용자 id로 장바구니 목록 조회
+    public List<Cart> cartList(Long userId) {
+        return queryFactory
+                .selectFrom(cart)
+                .join(cart.product, product).fetchJoin()
+                .where(cart.userId.eq(userId))
+                .fetch();
     }
 
     // 로그인한 사용자 id로 주문 가능한 장바구니 목록 조회

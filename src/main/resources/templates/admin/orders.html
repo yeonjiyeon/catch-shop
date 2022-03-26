@@ -62,7 +62,7 @@
                     <th>주문 일시</th>
                     <th>주문 상태</th>
                     <th>주문 취소</th>
-                    <th></th>
+                    <th>주문 상세</th>
                 </tr>
                 </thead>
                 <tbody th:each="order : ${orders}">
@@ -77,6 +77,9 @@
                             <input type="hidden" name="_method" value="patch">
                             <button class="btn btn-primary">주문 취소</button>
                         </form>
+                    </td>
+                    <td>
+                        <a th:href="@{'/orders/' + ${order.id} + '/admin'}"><button class="btn btn-primary">주문 상세</button></a>
                     </td>
                 </tr>
                 </tbody>
