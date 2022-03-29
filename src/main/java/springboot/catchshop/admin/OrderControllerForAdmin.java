@@ -43,30 +43,24 @@ public class OrderControllerForAdmin {
         model.addAttribute("orderDetails", orderDetails);
         return "admin/orderDetails";
     }
+
 //     public String getOrderDetails(Model model, @PathVariable("id") Long orderId) {
 //         Order order = orderRepository.findById(orderId).orElse(null);
 //         model.addAttribute("order", order);
 //         return "admin/orderDetails";
 //     }
 
-//     // 주문 취소
-//     @PatchMapping("/orders/{id}/admin")
-//     public String cancelOrderForAdmin(@PathVariable("id") Long orderId) {
-//         orderServiceForAdmin.cancelOrder(orderId);
-//         return "redirect:/orders/admin";
-//     }
+     // 주문 취소
+     @PatchMapping("/orders/{id}/admin")
+     public String cancelOrderForAdmin(@PathVariable("id") Long orderId) {
+         orderServiceForAdmin.cancelOrder(orderId);
+         return "redirect:/orders/admin";
+     }
 
-//     // 주문 상태 변경
-//     @PatchMapping("/orders/{id}/admin/status")
-//     public String updateOrderStatusForAdmin(@PathVariable("id") Long orderId) {
-//         orderServiceForAdmin.updateOrderStatus(orderId);
-//         return "redirect:/orders/admin";
-//     }
-
-    // 주문 취소
-    @PatchMapping("/orders/{id}/admin")
-    public String cancelOrderForAdmin(@PathVariable("id") Long orderId) {
-        orderService.cancelOrder(orderId);
-        return "redirect:/orders/admin";
-    }
+     // 주문 상태 변경
+     @PatchMapping("/orders/{id}/admin/status")
+     public String updateOrderStatusForAdmin(@PathVariable("id") Long orderId) {
+         orderServiceForAdmin.updateOrderStatus(orderId);
+         return "redirect:/orders/admin";
+     }
 }
