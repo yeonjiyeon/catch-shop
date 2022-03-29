@@ -36,6 +36,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath password = createString("password");
 
+    public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
+
     public final StringPath role = createString("role");
 
     public final StringPath telephone = createString("telephone");

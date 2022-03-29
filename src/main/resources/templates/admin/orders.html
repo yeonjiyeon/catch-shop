@@ -73,7 +73,7 @@
                     <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td>
-                        <a href="#" th:href="@{/orders/{id} (id=${order.id})}" class="btn btn-primary" role="button">주문 상세</a>
+                        <a href="#" th:href="@{/orders/{id}/admin (id=${order.id})}" class="btn btn-primary" role="button">주문 상세</a>
                     </td>
                     <td>
                         <a href="#" class="btn btn-primary" role="button">주문 취소</a>

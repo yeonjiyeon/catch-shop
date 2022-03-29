@@ -73,7 +73,7 @@ public class OrderController {
     }
 
     // 주문 취소
-    @GetMapping("/orders/{id}")
+    @DeleteMapping("/orders/{id}")
     public String cancelOrder(@PathVariable("id") Long orderId) {
         orderServcie.cancelOrder(orderId);
         return "redirect:/orders";

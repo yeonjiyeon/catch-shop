@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import springboot.catchshop.domain.Order;
 import springboot.catchshop.repository.OrderRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 public class OrderControllerForAdmin {
 
     private final OrderRepository orderRepository;
+    private final OrderServiceForAdmin orderServiceForAdmin;
 
     // 전체 주문 조회
     @GetMapping("/orders/admin")
@@ -28,12 +30,25 @@ public class OrderControllerForAdmin {
     }
 
     // 주문 상세
-    @GetMapping("/orders/{id}")
+    @GetMapping("/orders/{id}/admin")
     public String getOrderDetails(Model model, @PathVariable("id") Long orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         model.addAttribute("order", order);
         return "admin/orderDetails";
     }
 
-    // TODO 주문 취소, 상태 변경
+    // 주문 취소
+    @PatchMapping("/orders/{id}/admin")
+    public String cancelOrderForAdmin(@PathVariable("id") Long orderId) {
+        orderServiceForAdmin.cancelOrder(orderId);
+        return "redirect:/orders/admin";
+    }
+
+    // 주문 상태 변경
+    @PatchMapping("/orders/{id}/admin/status")
+    public String updateOrderStatusForAdmin(@PathVariable("id") Long orderId) {
+        orderServiceForAdmin.updateOrderStatus(orderId);
+        return "redirect:/orders/admin";
+    }
+
 }

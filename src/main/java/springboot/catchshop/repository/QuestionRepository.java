@@ -16,4 +16,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByAnswered(String answered);
     List<Question> findAll();
     List<Question> findByProductId(Long id);
+    List<Question> findByProductName(String name);
 }
