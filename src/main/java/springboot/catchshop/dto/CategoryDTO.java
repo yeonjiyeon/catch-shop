@@ -26,7 +26,7 @@ public class CategoryDTO {
         this.name = entity.getName();
         this.level = entity.getLevel();
         if(entity.getParent() == null){
-            this.parent = "과일";
+            this.parent = "fruit";
         }else{
             this.parent = entity.getParent().getName();//부모가 과일 아니면 다음 level의 카테고리명으로 이동
         }

@@ -31,7 +31,9 @@ public class CartResponseDto {
         Long price = 0L;
 
         for (CartInfoDto cartListDto : cartList) {
-            price += cartListDto.getTotalProductPrice();
+            if (cartListDto.getUnderStock()) {
+                price += cartListDto.getTotalProductPrice();
+            }
         }
 
         return  price;

@@ -5,14 +5,20 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 30MB
 
   jpa:
     hibernate:
       ddl-auto: create
     properties:
+      default_batch_fetch_size:1000:
       hibernate:
         #show_sql: true
         format_sql: true
+
 
   mail:
     host: smtp.gmail.com

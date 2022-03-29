@@ -32,18 +32,34 @@ public class Answer {
     private String contents;
     private LocalDateTime date;
 
-    //==연관 관계 편의 메서드==//
-    public void setUser(User user) {
-        this.user = user;
-        user.getAnswers().add(this);
-    }
+//    //==연관 관계 편의 메서드==//
+//    public void setUser(User user) {
+//        this.user = user;
+//        user.getAnswers().add(this);
+//    }
 
     //==생성 메서드==//
-    public static Answer createAnswer(User user) {
-        Answer answer = new Answer();
-        answer.setUser(user);
-        answer.setDate(LocalDateTime.now());
-        return answer;
+    public void setAnswer(User user, Question question, String contents) {
+        this.user = user;
+        this.question = question;
+        this.contents = contents;
+        this.date = LocalDateTime.now();
+    }
+
+    public Answer() {
+
+    }
+
+    public Answer(User user, Question question, String contents) {
+        this.user = user;
+        this.question = question;
+        this.contents = contents;
+        this.date = LocalDateTime.now();
+    }
+
+    public void updateAnswer(String contents) {
+        this.contents = contents;
+        this.date = LocalDateTime.now();
     }
 
 }

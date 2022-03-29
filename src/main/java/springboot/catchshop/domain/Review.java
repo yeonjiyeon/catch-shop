@@ -1,8 +1,6 @@
 package springboot.catchshop.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,8 @@ import static javax.persistence.FetchType.LAZY;
  * author:김지연
  */
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Getter
 public class Review extends BaseEntity{
@@ -28,9 +28,23 @@ public class Review extends BaseEntity{
     private String img;
 
     @Column(name = "review_star")////리뷰 별점
-    private String star;
+    private int star;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")//상품
     private Product product;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")//유저
+    private User user;
+
+
+    public void changeStar(int star){
+        this.star = star;
+    }
+
+    public void changeContents(String contents){
+        this.contents = contents;
+    }
+
 }

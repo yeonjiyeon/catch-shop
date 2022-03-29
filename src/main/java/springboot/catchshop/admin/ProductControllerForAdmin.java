@@ -77,4 +77,16 @@ public class ProductControllerForAdmin {
         productServiceForAdmin.updateProduct(productId, dto);
         return "redirect:/";
     }
+
+    // 상품 삭제
+    @DeleteMapping("/products/admin/{id}")
+    public String deleteProductForAdmin(@SessionAttribute(name = SessionConst.ROLE, required = false) String role,
+                                        @PathVariable("id") Long productId) {
+        if (!Objects.equals(role, "ADMIN")) { // 권한없음
+            return "admin/products";
+        }
+
+        productServiceForAdmin.deleteProduct(productId);
+        return "redirect:/";
+    }
 }

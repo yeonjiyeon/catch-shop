@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
-
+<style>
+	/*tab css*/
+	.tab{float:left; width:900px; }
+	.tabnav{font-size:0; width:900px; border:1px solid #ddd;}
+	.tabnav li{display: inline-block;  height:46px; text-align:center; border-right:1px solid #ddd;}
+	.tabnav li a:before{content:""; position:absolute; left:0; top:0px; width:100%; height:3px; }
+	.tabnav li a.active:before{background:#7ea21e;}
+	.tabnav li a.active{border-bottom:1px solid #fff;}
+	.tabnav li a{ position:relative; display:block; background: #f8f8f8; color: #000; padding:0 30px; line-height:46px; text-decoration:none; font-size:16px;}
+	.tabnav li a:hover,
+	.tabnav li a.active{background:#fff; color:#7ea21e; }
+	.tabcontent{padding: 20px; height:244px; border:1px solid #ddd; border-top:none;}
+</style>
 <body>
 
 <!--PreLoader-->
 <div class="loader">
-	<div class="loader-inner">
-		<div class="circle"></div>
-	</div>
+  <div class="loader-inner">
+    <div class="circle"></div>
+  </div>
 </div>
 <!--PreLoader Ends-->
 
@@ -17,81 +29,203 @@
 <!-- end header -->
 
 
-	<!-- search area -->
-	<div class="search-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<span class="close-btn"><i class="fas fa-window-close"></i></span>
-					<div class="search-bar">
-						<div class="search-bar-tablecell">
-							<h3>Search For:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search <i class="fas fa-search"></i></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end search arewa -->
-	
-	<!-- breadcrumb-section -->
-	<div class="breadcrumb-section breadcrumb-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="breadcrumb-text">
-						<p>Catch Shop</p>
-						<h1>Single Product</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end breadcrumb section -->
+<!-- search area -->
+<div class="search-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="close-btn"><i class="fas fa-window-close"></i></span>
+        <div class="search-bar">
+          <div class="search-bar-tablecell">
+            <h3>Search For:</h3>
+            <input type="text" placeholder="Keywords">
+            <button type="submit">Search <i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end search arewa -->
 
-	<!-- single product -->
-	<div class="single-product mt-150 mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-5">
-					<div class="single-product-img">
-						<img th:src="${dto.productImg}" alt="">
-					</div>
-				</div>
-				<div class="col-md-7">
-					<div class="single-product-content">
-						<h3>[[${dto.name}]]</h3>
-						<p class="single-product-pricing">[[${dto.price}]]</p>
-						<p>[[${dto.text}]]</p>
-						<div class="single-product-form">
-							<form th:action="@{'/carts/' + ${dto.id}}"th:method="post">
-								<input type="number" th:name="count" th:value="1" min="1">
-								&nbsp;&nbsp;
-								<button type="submit" class="btn-lg" style="border: none; color: white; background-color: #F28123FF">
-									<i class="fas fa-shopping-cart"></i>&nbsp;장바구니 담기
-								</button>
-							</form>
-							<a class="shopping-cart" href="cart.html"><i class="far fa-heart fa-lg"></i></a>
-							<p/>
-							<p><strong>Categories: </strong>Fruits, Organic</p>
-						</div>
-						<h4>Share:</h4>
-						<ul class="product-share">
-							<li><a href=""><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href=""><i class="fab fa-twitter"></i></a></li>
-							<li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
-							<li><a href=""><i class="fab fa-linkedin"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end single product -->
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2 text-center">
+        <div class="breadcrumb-text">
+          <p>Catch Shop</p>
+          <h1>Single Product</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end breadcrumb section -->
 
-	<!-- more products -->
+<!-- single product -->
+<div class="single-product mt-150 mb-150">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="single-product-img">
+          <img th:src="${dto.productImg}" alt="">
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="single-product-content">
+          <h3>[[${dto.name}]]</h3>
+          <p class="single-product-pricing">[[${dto.price}]]</p>
+          <p>[[${dto.text}]]</p>
+          <div class="single-product-form">
+            <form th:action="@{'/carts/' + ${dto.id}}" th:method="post">
+              <input type="number" th:name="count" th:value="1" min="1">
+              &nbsp;&nbsp;
+              <button type="submit" class="btn-lg"
+                      style="border: none; color: white; background-color: #F28123FF">
+                <i class="fas fa-shopping-cart"></i>&nbsp;장바구니 담기
+              </button>
+            </form>
+            <p>[[${dto.avg}]]</p>
+            <p/>
+            <p><strong>Categories: </strong>[[${dto.category.name}]]</p>
+          </div>
+          <h4>Share:</h4>
+          <ul class="product-share">
+            <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href=""><i class="fab fa-twitter"></i></a></li>
+            <li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+            <li><a href=""><i class="fab fa-linkedin"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end single product -->
+
+<!-- 모달창 추가 -->
+<div class="reviewModal modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Movie Review</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Reviewer ID</label>
+          <input type="text" class="form-control" name="loginId">
+        </div>
+        <div class="form-group">
+          <label>Grade <span class="grade"></span></label>
+          <div class='starrr'></div>
+        </div>
+        <div class="form-group">
+          <label>Review Text</label>
+          <input type="text" class="form-control" name="text" placeholder="상품 리뷰 작성">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary reviewSaveBtn">Save changes</button>
+        <button type="button" class="btn btn-warning modifyBtn">Modify</button>
+        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="imageModal modal " tabindex="-2" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Picture</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="assets/js/jquery-1.11.3.min.js"></script>
+<script  src="assets/js/starrr.js"></script>
+<link href="assets/css/starrr.css" rel="stylesheet">
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+
+<script>
+  $(document).ready(function(e) {
+
+                var star = 0;
+                var id = [[${dto.id}]];
+
+                $('.starrr').starrr({
+                    rating: star,
+                    change: function(e, value){
+                        if (value) {
+                            console.log(value);
+                            star = value;
+                        }
+                    }
+                });
+
+                //$(".reviewModal").modal("show"); //미리 보기용
+                var reviewModal = $(".reviewModal");
+                var inputLoginId = $('input[name="loginId"]');
+                var inputText = $('input[name="text"]');
+
+
+                $(".addReviewBtn").click(function () {
+                    inputLoginId.val("");
+                    inputText.val("");
+
+                    $(".removeBtn ,  .modifyBtn").hide();
+                    $(".reviewSaveBtn").show();
+
+                    reviewModal.modal('show');
+                });
+
+
+                 $('.reviewSaveBtn').click(function() {
+
+                    var data = {id:id, star:star, text:inputText.val(), loginId:inputLoginId.val() };
+
+                    console.log(data);
+
+                    $.ajax({
+                        url:'/reviews/'+id,
+                        type:"POST",
+                        data:JSON.stringify(data),
+                        contentType:"application/json; charset=utf-8",
+                        dataType:"text",
+                        success: function(result){
+                            console.log("result: " + result);
+
+                            self.location.reload();
+
+                        }
+                    })
+                    reviewModal.modal('hide');
+
+                });
+            });
+
+
+</script>
+
+
+<!-- more products -->
+
 	<div class="more-products mb-150">
 		<div class="container">
 			<div class="row">
@@ -133,75 +267,183 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<!-- end more products -->
 
-
-	<!--게시판 모음 -->
-	<ul>
-		<li>
-			<a href="#goods-review">후기</a>
-			<a href="#" th:href="@{/products/{id}/questions (id=${dto.id})}">문의</a>
-		</li>
-	</ul>
-	<div class="goods-review">	
-		<div class="container">
+			<!--게시판 모음 -->
 			<div class="row">
-				<div class="col-lg-8 col-md-12">
-					<div class="cart-table-wrap">
-						<table class="cart-table">
-							<thead class="cart-table-head">
-								<tr class="table-head-row">
-									<th class="product-image">번호</th>
-									<th class="product-name">제목</th>
-									<th class="product-price">작성자</th>
-									<th class="product-quantity">작성일</th>
-									<th class="product-total">도움</th>
-									<th>조회</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="table-body-row">
-									<td class="product-name">1</td>
-									<td class="product-price">1</td>
-									<td class="product-quantity">1</td>
-									<td class="product-total">1</td>
-									<td>1</td>
-									<td>1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-name">1</td>
-									<td class="product-price">1</td>
-									<td class="product-quantity">1</td>
-									<td class="product-total">1</td>
-									<td>1</td>
-									<td>1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-name">1</td>
-									<td class="product-price">1</td>
-									<td class="product-quantity">1</td>
-									<td class="product-total">1</td>
-									<td>1</td>
-									<td>1</td>
-								</tr>
-							</tbody>
-						</table>
+				<div class="tab">
+					<ul class="tabnav">
+						<li><a href="#goods-review">후기</a></li>
+						<li><a href="#goods-question">문의</a></li>
+					</ul>
+					<div class="tabcontent">
+						<div class="goods-review" id="goods-review">
+							<div class="container">
+								<div class="row">
+									<div class="col-lg-8 col-md-12">
+										<div class="cart-table-wrap">
+											<table class="cart-table">
+												<thead class="cart-table-head">
+												<tr class="table-head-row">
+													<th class="product-image">번호</th>
+													<th class="product-name">제목</th>
+													<th class="product-price">작성자</th>
+													<th class="product-quantity">작성일</th>
+													<th class="product-total">도움</th>
+													<th>조회</th>
+												</tr>
+												</thead>
+												<tbody>
+												<tr class="table-body-row">
+													<td class="product-name">1</td>
+													<td class="product-price">1</td>
+													<td class="product-quantity">1</td>
+													<td class="product-total">1</td>
+													<td>1</td>
+													<td>1</td>
+												</tr>
+												<tr class="table-body-row">
+													<td class="product-name">1</td>
+													<td class="product-price">1</td>
+													<td class="product-quantity">1</td>
+													<td class="product-total">1</td>
+													<td>1</td>
+													<td>1</td>
+												</tr>
+												<tr class="table-body-row">
+													<td class="product-name">1</td>
+													<td class="product-price">1</td>
+													<td class="product-quantity">1</td>
+													<td class="product-total">1</td>
+													<td>1</td>
+													<td>1</td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="goods-question" id="goods-question">
+							<div class="container">
+								<div class="row">
+									<div class="col-lg-8 col-md-12">
+										<!-- 문의 등록 페이지 이동 버튼 -->
+										<div class="cart-buttons" style="text-align: center; float: right;">
+											<a href="#" th:href="@{/products/{id}/questions (id=${dto.id})}" class="boxed-btn btn-lg black">+</a>
+										</div><br><br>
+
+										<div>
+											<table class="cart-table">
+												<thead>
+												<tr>
+													<th>번호</th>
+													<th>카테고리</th>
+													<th>작성자</th>
+													<th>내용</th>
+													<th>작성 날짜</th>
+												</tr>
+												</thead>
+												<tbody th:each="question : ${questions}">
+												<tr>
+													<td th:text="${question.id}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+													<td th:text="${question.category}"></td>
+													<td th:text="${question.user.loginId}"></td>
+													<td th:text="${question.contents}"></td>
+													<td th:text="${#temporals.format(question.date, 'yyyy-MM-dd HH:mm:ss')}"></td>
+													<!--								<td th:if="${question.secret == 'secret'}" th:text="비밀 글입니다."></td>-->
+													<!--								<td th:unless="${question.secret == 'secret'}" th:text="${question.contents}"></td>-->
+												</tr>
+												<tr th:each="answer : ${question.answers}">
+													<td th:text="|Re: ${answer.contents}|" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- end more products -->
 
 
+
+
+<!--게시판 모음 -->
+<ul>
+  <li>
+    <button type="button" class="btn btn-primary">
+      Review Count <span class="badge badge-light">[[${dto.reviewCnt}]]</span>
+    </button>
+    <button type="button" class="btn btn-info addReviewBtn">
+      Review Register
+    </button>
+    <div class="list-group reviewList">
+
+    </div>
+    <a href="#" th:href="@{/products/{id}/questions (id=${dto.id})}">문의</a>
+  </li>
+</ul>
+<!--div class="goods-review">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-12">
+        <div class="cart-table-wrap">
+          <table class="cart-table">
+            <thead class="cart-table-head">
+              <tr class="table-head-row">
+                <th class="product-image">번호</th>
+                <th class="product-name">제목</th>
+                <th class="product-price">작성자</th>
+                <th class="product-quantity">작성일</th>
+                <th class="product-total">도움</th>
+                <th>조회</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-body-row">
+                <td class="product-name">1</td>
+                <td class="product-price">1</td>
+                <td class="product-quantity">1</td>
+                <td class="product-total">1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr class="table-body-row">
+                <td class="product-name">1</td>
+                <td class="product-price">1</td>
+                <td class="product-quantity">1</td>
+                <td class="product-total">1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr class="table-body-row">
+                <td class="product-name">1</td>
+                <td class="product-price">1</td>
+                <td class="product-quantity">1</td>
+                <td class="product-total">1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div -->
 
 
 <!-- footer -->
 <div th:replace="fragments/footer :: footer"/>
 
 <!-- jquery -->
-<script src="assets/js/jquery-1.11.3.min.js"></script>
+
 <!-- bootstrap -->
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <!-- count down -->
@@ -220,6 +462,16 @@
 <script src="assets/js/sticker.js"></script>
 <!-- main js -->
 <script src="assets/js/main.js"></script>
-
+<script>
+	$(function(){
+		$('.tabcontent > div').hide();
+		$('.tabnav a').click(function () {
+			$('.tabcontent > div').hide().filter(this.hash).fadeIn();
+			$('.tabnav a').removeClass('active');
+			$(this).addClass('active');
+			return false;
+		}).filter(':eq(0)').click();
+	});
+</script>
 </body>
 </html>
