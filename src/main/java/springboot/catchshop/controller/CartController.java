@@ -46,7 +46,7 @@ public class CartController {
     }
 
     // 장바구니 수정
-    @PutMapping("/carts/{id}")
+    @PatchMapping("/carts/{id}")
     public String updateCart(@PathVariable("id") Long id, @RequestParam("count") int count) {
 
         cartService.updateCart(id, count);

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * Order Service
- * author: soohyun, last modified: 22.03.19
+ * author: soohyun, last modified: 22.03.26
  */
 
 @Service
@@ -44,6 +44,7 @@ public class OrderService {
     }
 
     // 주문 조회
+    @Transactional(readOnly = true)
     public List<OrderResponseDto> orderList(User loginUser) {
         List<Order> orders = orderRepository.orderList(loginUser); // 로그인한 사용자로 주문 조회
         List<OrderResponseDto> orderList = orders.stream().map(o -> new OrderResponseDto(o)).collect(Collectors.toList());
