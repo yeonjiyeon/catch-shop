@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<head th:replace="fragments/header :: header"/>
 <style>
 	/*tab css*/
 	.tab{float:left; width:900px; }
@@ -13,6 +13,7 @@
 	.tabnav li a:hover,
 	.tabnav li a.active{background:#fff; color:#7ea21e; }
 	.tabcontent{padding: 20px; height:244px; border:1px solid #ddd; border-top:none;}
+
 </style>
 <body>
 
@@ -117,16 +118,12 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Reviewer ID</label>
-          <input type="text" class="form-control" name="loginId">
-        </div>
-        <div class="form-group">
-          <label>Grade <span class="grade"></span></label>
+          <label>Star <span class="grade"></span></label>
           <div class='starrr'></div>
         </div>
         <div class="form-group">
           <label>Review Text</label>
-          <input type="text" class="form-control" name="text" placeholder="상품 리뷰 작성">
+          <input type="text" class="form-control" name="contents" placeholder="상품 리뷰 작성">
         </div>
       </div>
       <div class="modal-footer">
@@ -159,15 +156,16 @@
   </div>
 </div>
 <script src="assets/js/jquery-1.11.3.min.js"></script>
-<script  src="assets/js/starrr.js"></script>
+<script src="assets/js/starrr.js"></script>
 <link href="assets/css/starrr.css" rel="stylesheet">
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+      href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
 
 <script>
   $(document).ready(function(e) {
 
                 var star = 0;
-                var id = [[${dto.id}]];
+                var pId = [[${dto.id}]];
 
                 $('.starrr').starrr({
                     rating: star,
@@ -179,15 +177,14 @@
                     }
                 });
 
-                //$(".reviewModal").modal("show"); //미리 보기용
+
                 var reviewModal = $(".reviewModal");
-                var inputLoginId = $('input[name="loginId"]');
-                var inputText = $('input[name="text"]');
+                var inputContents = $('input[name="contents"]');
 
 
                 $(".addReviewBtn").click(function () {
-                    inputLoginId.val("");
-                    inputText.val("");
+
+                    inputContents.val("");
 
                     $(".removeBtn ,  .modifyBtn").hide();
                     $(".reviewSaveBtn").show();
@@ -198,12 +195,12 @@
 
                  $('.reviewSaveBtn').click(function() {
 
-                    var data = {id:id, star:star, text:inputText.val(), loginId:inputLoginId.val() };
+                    var data = {pId:pId, star:star, contents:inputContents.val()};
 
                     console.log(data);
 
                     $.ajax({
-                        url:'/reviews/'+id,
+                        url:'/products/'+pId +'/reviews',
                         type:"POST",
                         data:JSON.stringify(data),
                         contentType:"application/json; charset=utf-8",
@@ -218,14 +215,119 @@
                     reviewModal.modal('hide');
 
                 });
+
+                //페이지가 열리면 바로 리뷰 데이터들을 가져와서 사용한다.
+                function getMovieReviews() {
+
+                    function formatTime(str){
+                        var date = new Date(str);
+
+                        return date.getFullYear() + '-' +
+                            (date.getMonth() + 1) + '-' +
+                            date.getDate() + ' ' +
+                            date.getHours() + ':' +
+                            date.getMinutes();
+                    }
+
+                    $.getJSON("/products/"+ pId +"/reviews", function(arr){
+                        var str ="";
+
+                        $.each(arr, function(idx, review){
+
+                            console.log(review);
+
+                            str += '    <tr class="card-body" data-id='+review.id+' data-loginId='+review.loginId+'>';
+                            str += '    <td class="card-title">'+review.contents+'</td>';
+                            str += '    <td class="card-subtitle mb-2 text-muted1">'+ review.star+'</td>';
+                            str += '    <td class="card-subtitle mb-2 text-muted">'+review.name+'</td>';
+                            str += '    <td class="card-text">'+ formatTime(review.regDate) +'</td>';
+                            str += '    </tr>';
+                        });
+
+                        $(".reviewList").html(str);
+                    });
+                }
+
+                getMovieReviews();
+
+                 //modify reveiw
+
+                var id;
+
+                $(".reviewList").on("click", ".card-title", function() {
+
+                    $(".reviewSaveBtn").hide();
+                    $(".removeBtn , .modifyBtn").show();
+
+
+                    var targetReview = $(this);
+
+                    id = targetReview.data("id");
+                    console.log("id: "+ id);
+
+                    inputContents.val(targetReview.find('.card-title').clone().children().remove().end().text());
+
+                    var star = targetReview.find('.card-subtitle mb-2 text-muted1').html();
+                    $(".starrr a:nth-child("+star+")").trigger('click');
+
+                    $('.reviewModal').modal('show');
+                });
+
+
+                $(".modifyBtn").on("click", function(){
+
+                    var data = {id: id, pId:pId, star:star, contents:inputContents.val()};
+
+                    console.log(data);
+
+                    $.ajax({
+                        url:'/products/'+pId +'/reviews/'+ id,
+                        type:"PUT",
+                        data:JSON.stringify(data),
+                        contentType:"application/json; charset=utf-8",
+                        dataType:"text",
+                        success: function(result){
+
+                            console.log("result: " + result);
+
+                            self.location.reload();
+
+                        }
+                    })
+                    reviewModal.modal('hide');
+                });
+
+                $(".removeBtn").on("click", function(){
+
+                    var data = {id: id};
+
+                    console.log(data);
+
+                    $.ajax({
+                        url:'/products/'+pId +'/reviews/'+ id ,
+                        type:"DELETE",
+                        contentType:"application/json; charset=utf-8",
+                        dataType:"text",
+                        success: function(result){
+
+                            console.log("result: " + result);
+
+                            self.location.reload();
+
+                        }
+                    })
+                    reviewModal.modal('hide');
+                });
+
+
             });
+
 
 
 </script>
 
 
 <!-- more products -->
-
 	<div class="more-products mb-150">
 		<div class="container">
 			<div class="row">
@@ -374,6 +476,7 @@
 		</div>
 	</div>
 	<!-- end more products -->
+
 
 <!-- footer -->
 <div th:replace="fragments/footer :: footer"/>

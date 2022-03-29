@@ -10,6 +10,7 @@ import springboot.catchshop.domain.Product;
 
 import java.util.List;
 import java.util.Optional;
+import springboot.catchshop.domain.ProductStatus;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, QuerydslPredicateExecutor<Product>{
@@ -17,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Queryds
     @Override
     List<Product> findAll();
     Optional<Product> findById(Long id);
+
+    List<Product> findByProductStatus(ProductStatus productStatus);
 
     @Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p group by p")
     Page<Object[]> getListPage(Pageable pageable);

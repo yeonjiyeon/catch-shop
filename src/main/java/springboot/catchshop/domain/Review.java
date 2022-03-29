@@ -38,7 +38,17 @@ public class Review extends BaseEntity{
     @JoinColumn(name = "user_id")//유저
     private User user;
 
+    public Review(User user, Product product, String contents, int star) {
+        this.user = user;
+        this.product = product;
+        this.contents = contents;
+        this.star = star;
+    }
 
+
+    public void changeUser(User user){
+        this.user = user;
+    }
     public void changeStar(int star){
         this.star = star;
     }

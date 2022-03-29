@@ -12,10 +12,10 @@ import java.util.List;
 public interface ReviewService {
 
     //모든 상품리뷰 가져오기
-    List<ReviewDTO> getListOfProduct(Long pid);
+    List<ReviewDTO> getListOfProduct(Long pId);
 
     //상품리뷰 추가
-    Long register(ReviewDTO productReviewDTO);
+    Long register(ReviewDTO productReviewDTO, User user, Long productId);
 
     //상품리뷰 수정
     void modify(ReviewDTO productReviewDTO);
@@ -26,7 +26,7 @@ public interface ReviewService {
     default Review dtoToEntity(ReviewDTO productReviewDTO){
         Review productReview = Review.builder()
                 .id(productReviewDTO.getId())
-                .product(Product.builder().id(productReviewDTO.getPid()).build())
+                .product(Product.builder().id(productReviewDTO.getPId()).build())
                 .user(User.builder().loginId(productReviewDTO.getLoginId()).build())
                 .star(productReviewDTO.getStar())
                 .contents(productReviewDTO.getContents())
@@ -38,7 +38,7 @@ public interface ReviewService {
     default ReviewDTO entityToDTO(Review productReview){
         ReviewDTO productReviewDTO = ReviewDTO.builder()
                 .id(productReview.getId())
-                .pid(productReview.getProduct().getId())
+                .pId(productReview.getProduct().getId())
                 .name(productReview.getUser().getName())
                 .loginId(productReview.getUser().getLoginId())
                 .star(productReview.getStar())
