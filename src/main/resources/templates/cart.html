@@ -79,8 +79,8 @@
 									<td class="product-name" th:text="${cart.product.name}"></td>
 									<td class="product-price" th:text="${cart.product.price} + '원'"></td>
 									<td class="product-quantity">
-										<form th:action="@{'/carts/' + ${cart.id}}"th:method="post">
-											<input type="hidden" name="_method" value="put">
+										<form th:action="@{'/carts/' + ${cart.id}}" th:method="post">
+											<input type="hidden" name="_method" value="patch">
 											<input type="number" th:name="count" th:value="${cart.cartCount}" min="1">
 											<p class="mt-3" th:if="${not cart.underStock}" style="color: red;">재고 수량을 초과하였습니다</p>
 										</form>

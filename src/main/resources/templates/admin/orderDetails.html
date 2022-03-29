@@ -55,14 +55,14 @@
         <div class="mt-5">
             <div class="card">
                 <div class="card-header">
-                    <span th:text="${'주문 번호 - ' + order.id}" style="font-weight: bold"></span>&nbsp;&nbsp;
-                    <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    <span th:text="${'주문 번호 - ' + orderDetails[0].order.id}" style="font-weight: bold"></span>&nbsp;&nbsp;
+                    <span th:text="${#temporals.format(orderDetails[0].order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                 </div>
                 <div class="card-body">
                     <h6>[배송 정보]</h6>
-                    <span th:text="${'수령자 이름: ' + order.orderName}"></span><br/>
-                    <span th:text="${'수령자 전화번호: ' + order.orderTel}"></span><br/>
-                    <span th:text="${'배송 주소: (' + order.address.postalcode + ') ' + order.address.road + ' ' + order.address.detail}"></span><br/><br/>
+                    <span th:text="${'수령자 이름: ' + orderDetails[0].order.orderName}"></span><br/>
+                    <span th:text="${'수령자 전화번호: ' + orderDetails[0].order.orderTel}"></span><br/>
+                    <span th:text="${'배송 주소: (' + orderDetails[0].order.address.postalcode + ') ' + orderDetails[0].order.address.road + ' ' + orderDetails[0].order.address.detail}"></span><br/><br/>
 
                     <h6>[주문 상품]</h6>
                     <div class="total-section">
@@ -77,7 +77,7 @@
                             </tr>
                             </thead>
                             <tbody class="total-data" th:align="center">
-                            <tr class="total-section" th:each="detail : ${order.orderDetailList}">
+                            <tr class="total-section" th:each="detail : ${orderDetails}">
                                 <td class="product-image"><a th:href="@{'/single-product?id=' + ${detail.product.id}}"><img th:src="${detail.product.productImg}" alt=""></a></td>
                                 <td class="product-name" th:text="${detail.product.name}"></td>
                                 <td class="product-price" th:text="${detail.orderPrice} + '원'"></td>
@@ -89,8 +89,8 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                <span th:text="${'전체 상품 금액 (' + order.totalPrice + '원) + 배송비 (' + order.shippingFee + '원) = '
-                + (order.totalPrice + order.shippingFee)} + '원'"></span>
+                <span th:text="${'전체 상품 금액 (' + orderDetails[0].order.totalPrice + '원) + 배송비 (' + orderDetails[0].order.shippingFee + '원) = '
+                + (orderDetails[0].order.totalPrice + orderDetails[0].order.shippingFee)} + '원'"></span>
                 </div>
             </div>
         </div>
