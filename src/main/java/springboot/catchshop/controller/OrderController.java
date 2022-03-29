@@ -72,7 +72,6 @@ public class OrderController {
         }
     }
 
-    // 주문 취소
     @PatchMapping("/orders/{id}")
     public String cancelOrder(@PathVariable("id") Long orderId) {
         orderService.cancelOrder(orderId);

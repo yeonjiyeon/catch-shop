@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import springboot.catchshop.domain.Product;
+import springboot.catchshop.domain.Question;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.repository.ProductRepository;
+import springboot.catchshop.repository.QuestionRepository;
 import springboot.catchshop.session.SessionConst;
 
 import java.io.IOException;
@@ -22,6 +24,7 @@ public class ProductControllerForAdmin {
 
     private final ProductServiceForAdmin productServiceForAdmin;
     private final ProductRepository productRepository;
+    private final QuestionRepository questionRepository;
 
     @GetMapping("/products/admin/{id}")
     public String getAllProducts(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
@@ -88,5 +91,14 @@ public class ProductControllerForAdmin {
 
         productServiceForAdmin.deleteProduct(productId);
         return "redirect:/";
+    }
+
+    // 테스트용
+    @GetMapping("/qna")
+    public String qna(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
+        List<Question> questions = questionRepository.findByProductName("product24");
+        model.addAttribute("questions", questions);
+        return "admin/qna";
     }
 }

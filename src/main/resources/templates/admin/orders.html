@@ -73,6 +73,7 @@
                     <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td>
+                        <a href="#" th:href="@{/orders/{id}/admin (id=${order.id})}" class="btn btn-primary" role="button">주문 상세</a>
                         <form th:if="${order.orderStatus.toString().equals('READY')}" th:action="@{'/orders/' + ${order.id} + '/admin'}" th:method="post">
                             <input type="hidden" name="_method" value="patch">
                             <button class="btn btn-primary">주문 취소</button>

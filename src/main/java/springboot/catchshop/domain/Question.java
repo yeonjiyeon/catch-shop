@@ -88,7 +88,8 @@ public class Question {
 
     }
 
-    public Question(User user, Product product, String category, String contents, String secret, String answered) {
+    public Question(User user, Product product, String category,
+                    String contents, String secret, String answered) {
         this.user = user;
         this.product = product;
         this.category =category;
@@ -97,6 +98,11 @@ public class Question {
         this.answered = answered;
         this.date = LocalDateTime.now();
     }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
 
     public void updateAnswered() {
         this.answered = "답변 완료";
