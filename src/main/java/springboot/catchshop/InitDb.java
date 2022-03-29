@@ -148,6 +148,13 @@ public class InitDb {
 
 
 
+            Review review1 = createReview(user1, product24, "상품 리뷰1", 1);
+            em.persist(review1);
+            Review review2 = createReview(user1, product24, "상품 리뷰2", 2);
+            em.persist(review2);
+            Review review3 = createReview(user1, product24, "상품 리뷰3",3);
+            em.persist(review3);
+
             // author: soohyun last modified: 22.03.19
             // 주문 데이터 생성
             Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 30000L, 3000L);
@@ -220,6 +227,11 @@ public class InitDb {
         private OrderDetail createOrderDetail(Order order, Product product, int orderCount, Long orderPrice) {
             OrderDetail orderDetail = new OrderDetail(order, product, orderCount, orderPrice);
             return orderDetail;
+        }
+
+        private Review createReview(User user, Product product, String contents, int star) {
+            Review review = new Review(user, product, contents, star);
+            return review;
         }
 
     }

@@ -92,16 +92,4 @@ public class ProductController {
         redirectAttributes.addFlashAttribute("msg", id);
     }
 
-
-
-    /**
-     * review 기능
-     * author:김지연
-     */
-    //review 목록 조회
-    @GetMapping("reviews")
-    public String readReview() {
-        log.info("================review============");
-        return "review";
-    }
 }

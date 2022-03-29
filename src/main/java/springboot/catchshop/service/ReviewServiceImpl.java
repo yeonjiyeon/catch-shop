@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.Review;
+import springboot.catchshop.domain.User;
 import springboot.catchshop.dto.ReviewDTO;
 import springboot.catchshop.repository.ReviewRepository;
 
@@ -23,8 +24,8 @@ public class ReviewServiceImpl implements ReviewService{
 
     //모든 상품리뷰 가져오기
     @Override
-    public List<ReviewDTO> getListOfProduct(Long pid) {
-        Product product = Product.builder().id(pid).build();
+    public List<ReviewDTO> getListOfProduct(Long pId) {
+        Product product = Product.builder().id(pId).build();
         List<Review> result = reviewRepository.findByProduct(product);
 
         return result.stream().map(productReview -> entityToDTO(productReview)).collect(Collectors.toList());
@@ -33,8 +34,10 @@ public class ReviewServiceImpl implements ReviewService{
 
     //상품리뷰 추가
     @Override
-    public Long register(ReviewDTO productReviewDTO) {
+    public Long register(ReviewDTO productReviewDTO, User user, Long productId) {
+        productReviewDTO.setPId(productId);
         Review productReview = dtoToEntity(productReviewDTO);
+        productReview.changeUser(user);
         reviewRepository.save(productReview);
         return productReview.getId();
     }
