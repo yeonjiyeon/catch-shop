@@ -73,7 +73,7 @@ class OrderServiceTest {
 
         // given
         CartResponseDto carts = cartService.orderCartList(user.getId());
-        Order order = new Order("imp_123456789", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
+        Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
         Long userId = user.getId();
 
         // when
@@ -83,6 +83,7 @@ class OrderServiceTest {
         // 주문
         Optional<Order> findOrder = orderRepository.findById(saveId);
         assertEquals(findOrder.get().getId(), saveId);
+        assertEquals(findOrder.get().getPayment_id(), "imp_111111111111");
         assertEquals(findOrder.get().getUser(), user);
         assertEquals(findOrder.get().getOrderName(), "name1");
         assertEquals(findOrder.get().getOrderTel(), "01012345678");
@@ -109,7 +110,7 @@ class OrderServiceTest {
 
         // given
         CartResponseDto carts = cartService.orderCartList(user.getId());
-        Order order = new Order("imp_123456789", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
+        Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
         orderService.createOrder(order, carts.getCartList());
 
         // when
@@ -144,7 +145,7 @@ class OrderServiceTest {
 
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
-            Order order = new Order("imp_123456789", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
+            Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
             orderService.createOrder(order, carts.getCartList());
 
             // when
@@ -161,7 +162,7 @@ class OrderServiceTest {
 
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
-            Order order = new Order("imp_123456789", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
+            Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
             orderService.createOrder(order, carts.getCartList());
             order.updateOrderStatus(OrderStatus.DELIVERY);
 
