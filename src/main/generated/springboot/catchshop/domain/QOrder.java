@@ -22,7 +22,7 @@ public class QOrder extends EntityPathBase<Order> {
 
     public static final QOrder order = new QOrder("order1");
 
-    public final QAddress address;
+    public final StringPath address = createString("address");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -35,6 +35,10 @@ public class QOrder extends EntityPathBase<Order> {
     public final EnumPath<OrderStatus> orderStatus = createEnum("orderStatus", OrderStatus.class);
 
     public final StringPath orderTel = createString("orderTel");
+
+    public final StringPath payment_id = createString("payment_id");
+
+    public final StringPath postcode = createString("postcode");
 
     public final NumberPath<Long> shippingFee = createNumber("shippingFee", Long.class);
 
@@ -60,7 +64,6 @@ public class QOrder extends EntityPathBase<Order> {
 
     public QOrder(Class<? extends Order> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.address = inits.isInitialized("address") ? new QAddress(forProperty("address")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
     }
 

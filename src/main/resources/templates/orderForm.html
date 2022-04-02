@@ -86,7 +86,7 @@
 								</tr>
 								<tr class="total-data">
 									<td colspan="3" style="font-weight: bold">최종 결제 금액</td>
-									<td colspan="2" th:text="${carts.totalPayPrice} + '원'"></td>
+									<td colspan="2" id="totalPayPrice" th:text="${carts.totalPayPrice} + '원'"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -116,56 +116,31 @@
 										<div class="form-group">
 											<!-- 이름 -->
 											<label th:for="name" style="font-weight: bold">이름</label>
-											<input type="text" class="form-control" th:field="*{name}" placeholder="이름을 입력하세요">
-											<p class="mt-2" style="color: red;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p><br>
+											<input id="name" type="text" class="form-control" th:field="*{name}" placeholder="이름을 입력하세요"></br>
 
 											<!-- 전화번호 -->
 											<label th:for="telephone" style="font-weight: bold">전화번호</label>
-											<input type="text" class="form-control" th:field="*{telephone}" placeholder="전화번호를 입력하세요">
-											<p class="mt-2" style="color: red;" th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></p><br>
+											<input id="telephone" type="text" class="form-control" th:field="*{telephone}" placeholder="전화번호를 입력하세요"></br>
 
 											<!-- 우편번호 -->
-											<label th:for="postalcode" style="font-weight: bold">우편번호</label>
+											<label th:for="postcode" style="font-weight: bold">우편번호</label>
 											<button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>
-											<input class="form-control" type="text" th:field="*{postalcode}" placeholder="우편번호를 입력하세요">
-											<p class="mt-2" style="color: red;" th:if="${#fields.hasErrors('postalcode')}" th:errors="*{postalcode}"></p><br>
+											<input id="postcode" class="form-control" type="text" th:field="*{postcode}" placeholder="우편번호를 입력하세요"></br>
 
 											<!-- 도로명 주소 -->
-											<label th:for="road" style="font-weight: bold">도로명 주소</label>
-											<input class="form-control" type="text" th:field="*{road}" placeholder="도로명 주소를 입력하세요">
-											<p class="mt-2" style="color: red;" th:if="${#fields.hasErrors('road')}" th:errors="*{road}"></p><br>
-
-											<!-- 상세 주소 -->
-											<label th:for="detail" style="font-weight: bold">상세 주소</label>
-											<input class="form-control" type="text" th:field="*{detail}" placeholder="상세 주소를 입력하세요">
-											<p class="mt-2" style="color: red;" th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}"></p><br>
+											<label th:for="address" style="font-weight: bold">도로명 주소</label>
+											<input id="address" class="form-control" type="text" th:field="*{address}" placeholder="도로명 주소를 입력하세요"></br>
 										</div>
 									</div>
 								</div>
 								</div>
 							</div>
-							<div class="card single-accordion">
-								<div class="card-header" id="headingThree">
-								<h5 class="mb-0">
-									<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-									결제 수단
-									</button>
-								</h5>
-								</div>
-								<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-								<div class="card-body">
-									<div class="card-details">
-										<p>Your card details goes here.</p>
-									</div>
-								</div>
-								</div>
-							</div>
+							</form>
 							<div class="mt-5 text-center">
-								<button type="submit" class="btn-lg" style="border: none; color: white; background-color: #F28123FF">
+								<button onclick="requestPay()" class="btn-lg" style="border: none; color: white; background-color: #F28123FF">
 									주문하기
 								</button>
 							</div>
-							</form>
 						</div>
 					</div>
 				</div>
@@ -176,6 +151,64 @@
 
 	<!-- footer -->
 	<div th:replace="fragments/footer :: footer"/>
+
+	<script>
+		function requestPay() {
+			const name = document.getElementById('name').value;
+			const telephone = document.getElementById('telephone').value;
+			const postcode = document.getElementById('postcode').value;
+			const address = document.getElementById('address').value;
+
+			if (name == '') {
+				alert('이름을 입력하세요.')
+			} else if (telephone == '') {
+				alert('전화번호를 입력하세요.')
+			} else if (postcode == '') {
+				alert('우편번호를 입력하세요.')
+			} else if (address == '') {
+				alert('도로명 주소를 입력하세요.')
+			} else {
+				iamport(name, telephone, postcode, address);
+			}
+		}
+
+		function iamport(name, telephone, postcode, address){
+			IMP.init("imp33495577");
+			IMP.request_pay({
+				pg : 'html5_inicis',
+				pay_method : 'card',
+				merchant_uid: "order_" + new Date().getTime(), // 상점에서 관리하는 주문 번호
+				name : 'Catch Shop',
+				amount : [[${carts.totalPayPrice}]],
+				buyer_email : '',
+				buyer_name : name,
+				buyer_tel : telephone,
+				buyer_addr : address,
+				buyer_postcode : postcode
+			}, async function(rsp) {
+				if (rsp.success) {
+					alert('결제가 완료되었습니다.');
+					// 결제 성공시 주문 정보 저장
+					let response = await fetch('/orders', {
+						method: "post",
+						body: JSON.stringify(rsp),
+						headers: {
+							"Content-Type": "application/json; charset=utf-8"
+						}
+					})
+
+					let result = await response.text();
+					if (result === "ok") { // 주문 성공시 주문 내역 화면으로
+						location.href = "/orders";
+					}
+				} else {
+					var msg = '결제에 실패하였습니다.';
+					msg += '에러내용 : ' + rsp.error_msg;
+					alert(msg);
+				}
+			});
+		}
+	</script>
 	
 	<!-- jquery -->
 	<script src="assets/js/jquery-1.11.3.min.js"></script>
@@ -200,7 +233,10 @@
 
 	<!-- 주소록 api -->
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-	<script src="/assets/js/user-address.js"></script>
+	<script src="/assets/js/order-address.js"></script>
+
+	<!-- iamport.payment.js -->
+	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 
 </body>
 </html>
