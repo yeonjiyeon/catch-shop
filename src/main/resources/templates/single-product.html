@@ -80,10 +80,8 @@
           <p>[[${dto.text}]]</p>
           <div class="single-product-form">
             <form th:action="@{'/carts/' + ${dto.id}}" th:method="post">
-              <input type="number" th:name="count" th:value="1" min="1">
-              &nbsp;&nbsp;
-              <button type="submit" class="btn-lg"
-                      style="border: none; color: white; background-color: #F28123FF">
+              <input type="number" th:name="count" th:value="1" min="1">&nbsp;&nbsp;
+              <button type="submit" class="btn-lg" style="border: none; color: white; background-color: #F28123FF">
                 <i class="fas fa-shopping-cart"></i>&nbsp;장바구니 담기
               </button>
             </form>
