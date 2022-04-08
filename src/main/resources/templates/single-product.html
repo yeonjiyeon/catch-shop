@@ -461,7 +461,7 @@
 												<tr th:each="answer : ${question.answers}">
 													<td th:text="|Re: ${answer.user.role}|" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
 													<td th:text="|Re: ${answer.user.role}|" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="alertPopup(${question.password})" value="prompt"></td>
-													<div id='password'/>
+													<div id='qnaPW'/>
 												</tr>
 												</tbody>
 											</table>
@@ -512,11 +512,11 @@
 		}).filter(':eq(0)').click();
 	});
 
-	function alertPopup(password) {
+	function alertPopup(qnaPW) {
 		let prompt = prompt('비밀번호를 입력하세요');
 		let inputPassword = Number(prompt);
 
-		if (String(inputPassword) != password) {
+		if (String(inputPassword) != qnaPW) {
 			alert('비밀번호가 틀렸습니다!');
 		}
 	}

@@ -83,6 +83,12 @@ public class UserController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/users/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:/";
+    }
+
 
 //     Rest API TODO
 
@@ -194,5 +200,5 @@ public class UserController {
         return "find-pw";
     }
 
-    // TODO 회원탈퇴
+
 }
