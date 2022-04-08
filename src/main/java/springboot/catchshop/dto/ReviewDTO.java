@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class ReviewDTO {
     private Long id;
 
-    private Long pid;//productid
+    private Long pId;//productid
 
    // private String uid;//userid
 

@@ -100,6 +100,10 @@ public class InitDb {
                     address1, Role.USER.toString(), LocalDateTime.now());
             em.persist(user1);
 
+            User user2 = createUser("user2", passwordEncoder.encode("2"), "user2", "01012345678",
+                    address1, Role.USER.toString(), LocalDateTime.now());
+            em.persist(user2);
+
             // author: 강수민 created: 22.02.23
             // 관리자 데이터 생성
             Address address2 = new Address("road2", "detail2", "22222");
@@ -120,9 +124,10 @@ public class InitDb {
             // question 데이터 생성
             Question question1 = createQuestion(user1, product24, "상품문의", "상품 문의입니다", "secret", "답변 완료");
             em.persist(question1);
-            Question question2 = createQuestion(user1, product24, "배송문의", "배송 문의입니다", "secret", "미답변");
+            Question question2 = createQuestion(user2, product24, "배송문의", "배송 문의입니다", "open", "미답변");
             em.persist(question2);
-            Question question3 = createQuestion(user1, product24, "주문문의", "주문 문의입니다", "secret", "답변 완료");
+            Question question3 = createQuestion(user2, product24, "주문문의", "주문 문의입니다", "secret", "답변 완료");
+            question3.updatePassword("1234");
             em.persist(question3);
             Question question4 = createQuestion(user1, product23, "상품문의", "상품 문의입니다", "secret", "답변 완료");
             em.persist(question4);
@@ -147,6 +152,13 @@ public class InitDb {
             em.persist(answer7);
 
 
+
+            Review review1 = createReview(user1, product24, "상품 리뷰1", 1);
+            em.persist(review1);
+            Review review2 = createReview(user1, product24, "상품 리뷰2", 2);
+            em.persist(review2);
+            Review review3 = createReview(user1, product24, "상품 리뷰3",3);
+            em.persist(review3);
 
             // author: soohyun last modified: 22.03.19
             // 주문 데이터 생성
@@ -220,6 +232,11 @@ public class InitDb {
         private OrderDetail createOrderDetail(Order order, Product product, int orderCount, Long orderPrice) {
             OrderDetail orderDetail = new OrderDetail(order, product, orderCount, orderPrice);
             return orderDetail;
+        }
+
+        private Review createReview(User user, Product product, String contents, int star) {
+            Review review = new Review(user, product, contents, star);
+            return review;
         }
 
     }

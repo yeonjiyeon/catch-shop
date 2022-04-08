@@ -61,22 +61,25 @@
                     <th>금액</th>
                     <th>주문 일시</th>
                     <th>주문 상태</th>
-                    <th></th>
-                    <th></th>
+                    <th>주문 취소</th>
+                    <th>주문 상세</th>
                 </tr>
                 </thead>
                 <tbody th:each="order : ${orders}">
                 <tr>
                     <td th:text="${order.id}"></td>
                     <td th:text="${order.user.loginId}"></td>
-                    <td th:text="${order.totalPrice}"></td>
+                    <td th:text="${order.totalPrice + order.shippingFee}"></td>
                     <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${order.orderStatus}"></td>
                     <td>
-                        <a href="#" th:href="@{/orders/{id} (id=${order.id})}" class="btn btn-primary" role="button">주문 상세</a>
+                        <form th:if="${order.orderStatus.toString().equals('READY')}" th:action="@{'/orders/' + ${order.id} + '/admin'}" th:method="post">
+                            <input type="hidden" name="_method" value="patch">
+                            <button class="btn btn-primary">주문 취소</button>
+                        </form>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-primary" role="button">주문 취소</a>
+                        <a th:href="@{'/orders/' + ${order.id} + '/admin'}"><button class="btn btn-primary">주문 상세</button></a>
                     </td>
                 </tr>
                 </tbody>
