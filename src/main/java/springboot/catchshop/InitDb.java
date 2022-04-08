@@ -10,6 +10,7 @@ import springboot.catchshop.domain.*;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
@@ -160,16 +161,16 @@ public class InitDb {
             Review review3 = createReview(user1, product24, "상품 리뷰3",3);
             em.persist(review3);
 
-            // author: soohyun last modified: 22.03.19
+            // author: soohyun last modified: 22.04.02
             // 주문 데이터 생성
-            Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 30000L, 3000L);
+            Order order1 = createOrder(user1, user1.getName(), user1.getTelephone(), "11111", "address1", 30000L, 3000L);
             em.persist(order1);
             OrderDetail orderDetail1 = createOrderDetail(order1, product1, 1, (long) product1.getPrice());
             em.persist(orderDetail1);
             OrderDetail orderDetail2 = createOrderDetail(order1, product2, 2, (long) product2.getPrice());
             em.persist(orderDetail2);
 
-            Order order2 = createOrder(user1, user1.getName(), user1.getTelephone(), user1.getAddress(), 70000L, 0L);
+            Order order2 = createOrder(user1, user1.getName(), user1.getTelephone(), "22222", "address2", 70000L, 0L);
             order2.updateOrderStatus(OrderStatus.DELIVERY);
             em.persist(order2);
             OrderDetail orderDetail3 = createOrderDetail(order2, product3, 3, (long) product3.getPrice());
@@ -224,8 +225,8 @@ public class InitDb {
             return answer;
         }
 
-        private Order createOrder(User user, String orderName, String orderTel, Address address, Long totalPrice, Long shippingFee) {
-            Order order = new Order(user, orderName, orderTel, address, totalPrice, shippingFee);
+        private Order createOrder(User user, String orderName, String orderTel, String postcode, String address, Long totalPrice, Long shippingFee) {
+            Order order = new Order("order_" + new Date().getTime(), user, orderName, orderTel, postcode, address, totalPrice, shippingFee);
             return order;
         }
 

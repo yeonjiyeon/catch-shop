@@ -492,11 +492,11 @@
 		}).filter(':eq(0)').click();
 	});
 
-	function alertPopup(password) {
+	function alertPopup(qnaPW) {
 		let prompt = prompt('비밀번호를 입력하세요');
 		let inputPassword = Number(prompt);
 
-		if (String(inputPassword) != password) {
+		if (String(inputPassword) != qnaPW) {
 			alert('비밀번호가 틀렸습니다!');
 		}
 	}

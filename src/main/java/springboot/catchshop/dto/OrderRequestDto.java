@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 
 /**
  * Order Request Dto (주문시 주문 정보를 담고 있는 Dto)
- * author: soohyun, last modified: 22.03.07
+ * author: soohyun, last modified: 22.04.02
  */
 
 @Data
@@ -20,28 +20,23 @@ import javax.validation.constraints.NotEmpty;
 public class OrderRequestDto {
 
     @NotEmpty(message = "이름을 입력하세요.")
-    private String name; // 수령자 이름
+    private String name; // 구매자 이름
 
     @NotEmpty(message = "전화번호를 입력하세요.")
-    private String telephone; // 수령자 전화번호
+    private String telephone; // 구매자 전화번호
 
-    // 수령지 주소
     @NotEmpty(message = "우편 번호를 입력하세요.")
-    private String postalcode;
+    private String postcode; // 구매자 우편번호
 
     @NotEmpty(message = "도로명 주소를 입력하세요.")
-    private String road;
-
-    @NotEmpty(message = "상세 주소를 입력하세요.")
-    private String detail;
+    private String address; // 구매자 주소
 
     public Order toEntity(User user, Long totalPrice, Long shippingFee) {
-        Address address = new Address(road, detail, postalcode);
-
         return Order.builder()
                 .user(user)
                 .orderName(name)
                 .orderTel(telephone)
+                .postcode(postcode)
                 .address(address)
                 .totalPrice(totalPrice)
                 .shippingFee(shippingFee)
