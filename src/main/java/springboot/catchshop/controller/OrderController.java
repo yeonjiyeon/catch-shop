@@ -10,6 +10,7 @@ import springboot.catchshop.domain.User;
 import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.dto.OrderRequestDto;
 import springboot.catchshop.dto.OrderResponseDto;
+import springboot.catchshop.dto.PaymentDto;
 import springboot.catchshop.service.CartService;
 import springboot.catchshop.service.OrderService;
 import springboot.catchshop.session.SessionConst;
@@ -19,7 +20,7 @@ import java.util.List;
 
 /**
  * Order Controller
- * author: soohyun, last modified: 22.03.22
+ * author: soohyun, last modified: 22.04.02
  */
 
 @Controller
@@ -45,19 +46,14 @@ public class OrderController {
 
     // 주문하기
     @PostMapping("/orders")
-    public String createOrder(Model model, @Valid @ModelAttribute("orderForm") OrderRequestDto form, BindingResult result,
-                        @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
+    @ResponseBody
+    public String createOrder(@RequestBody PaymentDto paymentDto, @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
 
         CartResponseDto carts = cartService.orderCartList(loginUser.getId()); // 주문 가능한 장바구니 목록
+        Order order = paymentDto.toEntity(loginUser, carts.getTotalAllProductPrice(), carts.getShippingFee());
+        orderService.createOrder(order, carts.getCartList());
 
-        if (result.hasErrors()) { // 주문 폼에 에러가 있는 경우
-            model.addAttribute("carts", carts);
-            return "orderForm";
-        }
-
-        Order order = form.toEntity(loginUser, carts.getTotalAllProductPrice(), carts.getShippingFee());
-        orderService.createOrder(order, loginUser.getId(), carts.getCartList());
-        return "redirect:/orders";
+        return "ok";
     }
 
     // 주문 내역 조회
