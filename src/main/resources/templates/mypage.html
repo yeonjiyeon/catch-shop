@@ -124,10 +124,23 @@
                                     class="btn btn-primary">Update</button>
                         </a>
                     </div>
-                </div>
+                </div><br>
             </form>
         </div>
         <!-- 회원정보수정 폼 끝-->
+        <!-- 회원탈퇴 버튼 -->
+        <form id="delete-form" th:action="@{'/users/' + ${user.id}}" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+            <div class="hero-btns" style="margin-top:0px;">
+                <div style="width:300px;margin:0 auto;">
+                    <a style="border-radius: 3px;width:100%;" class="boxed-btn">
+                        <button type="submit"
+                                style="width:100%; border: hidden; text-align: center; background-color: transparent;"
+                                class="btn btn-primary">회원탈퇴</button>
+                    </a>
+                </div>
+            </div><br>
+        </form>
         </div>
     </div>
 </div>

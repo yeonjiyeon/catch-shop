@@ -8,6 +8,7 @@ import springboot.catchshop.domain.User;
 import springboot.catchshop.dto.UpdateUserDto;
 import springboot.catchshop.repository.UserRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 // User Service
@@ -96,5 +97,13 @@ public class UserService {
         user.updatePassword(passwordEncoder.encode(form.getPassword()));
         // DB 반영
         userRepository.save(user);
+    }
+
+    /**
+     * 회원탈퇴
+     */
+    @Transactional
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 }
