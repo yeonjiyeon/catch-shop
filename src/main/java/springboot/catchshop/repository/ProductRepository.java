@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import springboot.catchshop.domain.Product;
 
@@ -32,6 +33,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Queryds
 
     //상품상세조회
     @Query("select p, avg(coalesce(r.star, 0)), count(r) from Product p left outer join Review r on r.product = p where p.id = :id group by p")
-    List<Object[]> getProductWithAll(Long id);
+    List<Object[]> getProductWithAll(@Param("id") Long id);
 
 }
