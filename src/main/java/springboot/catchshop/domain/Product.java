@@ -48,7 +48,7 @@ public class Product extends BaseEntity{
     @JoinColumn(name = "category_id")//카테고리 
     private Category categories;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)//상품
+    @OneToMany(mappedBy = "product")//상품
     private List<Review> reviews = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "product")
@@ -56,7 +56,7 @@ public class Product extends BaseEntity{
 
 
     @Builder
-    public Product(Long id,String name, String text, int price, int stock, String productImg, Category categories){
+    public Product(Long id,String name, String text, int price, int stock, String productImg, Category categories, ProductStatus productStatus){
         this.id = id;
         this.name = name;
         this.text = text;
@@ -64,6 +64,7 @@ public class Product extends BaseEntity{
         this.stock = stock;
         this.productImg = productImg;
         this.categories = categories;
+        this.productStatus = productStatus;
     }
 
     // 관리자용 메서드 - 강수민

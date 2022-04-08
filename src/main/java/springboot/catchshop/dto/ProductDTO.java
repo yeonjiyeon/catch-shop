@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import springboot.catchshop.domain.Category;
 
 import java.time.LocalDateTime;
+import springboot.catchshop.domain.ProductStatus;
 import springboot.catchshop.domain.Review;
 
 @Builder
@@ -26,6 +27,7 @@ public class ProductDTO {
     private String productImg;
     private LocalDateTime regDate, modDate;
     private Category category;
+    private ProductStatus productStatus;
     //private Review review;
 
     //상품의 평균 별점

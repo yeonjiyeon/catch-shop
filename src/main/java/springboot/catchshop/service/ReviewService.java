@@ -43,6 +43,7 @@ public interface ReviewService {
                 .loginId(productReview.getUser().getLoginId())
                 .star(productReview.getStar())
                 .contents(productReview.getContents())
+                .regDate(productReview.getRegDate())
                 .build();
 
         return productReviewDTO;
