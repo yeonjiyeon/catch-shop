@@ -1,6 +1,5 @@
 package springboot.catchshop.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import springboot.catchshop.domain.ProductStatus;
 import springboot.catchshop.domain.Question;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.dto.PageRequestDTO;
@@ -46,11 +46,19 @@ public class ProductController {
     @GetMapping("products")
     public void readProducts(PageRequestDTO pageRequestDTO, Model model) {
         log.info("list : " + pageRequestDTO);
-        //PageResultDTO<ProductDTO, Object[]> result = productService.readProducts(pageRequestDTO);
 
         model.addAttribute("result", productService.readProducts(pageRequestDTO));
-        //model.addAttribute("categoryname", categoryNameList);
+
     }
+
+    /*상품 상태별 조회
+    @GetMapping("products")
+    public void readProductsWithProductStatus(PageRequestDTO pageRequestDTO, Model model,@RequestParam ProductStatus productStatus) {
+        log.info("list : " + pageRequestDTO);
+
+        model.addAttribute("result", productService.readProductsWithProductStatus(pageRequestDTO, productStatus));
+
+    }*/
 
 
 
@@ -76,7 +84,7 @@ public class ProductController {
 //    }
 
     @GetMapping("single-product") //나중에 상세상품-> 관리자 모드로 들어가면 수정도 할 수 있도록 변경하기
-    public void readSingleProduct(long id, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model){
+    public void readSingleProduct(@RequestParam long id, Model model){
         ProductDTO dto = productService.readSingleProduct(id);
         model.addAttribute("dto", dto);
         List<Question> questions = questionRepository.findByProductId(id);

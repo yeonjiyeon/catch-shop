@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.Product;
-import springboot.catchshop.domain.QProduct;
+import springboot.catchshop.domain.ProductStatus;
 import springboot.catchshop.dto.PageRequestDTO;
 import springboot.catchshop.dto.PageResultDTO;
 import springboot.catchshop.dto.ProductDTO;
@@ -64,6 +64,26 @@ public class ProductServiceImpl implements ProductService{
         ));
         return new PageResultDTO<>(result, fn);
     }
+    
+    
+    /*productStatus별 조회
+    @Override
+    public PageResultDTO<ProductDTO, Object[]> readProductsWithProductStatus(PageRequestDTO requestDTO, ProductStatus productStatus) {
+        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());//상품 정렬
+
+
+        Page<Object[]> result = productRepository.getListPageAndProductStatus(pageable, productStatus);
+
+
+        Function<Object[], ProductDTO> fn = (arr -> entityToDto(
+            (Product)arr[0],
+            (Double)arr[1],
+            (Long)arr[2]
+        ));
+        return new PageResultDTO<>(result, fn);
+    }*/
+
+
 
 //    @Override
 //    public List<ProductDTO> searchProducts(String keyword) {
@@ -82,7 +102,7 @@ public class ProductServiceImpl implements ProductService{
     //상품 개별 조회
     @Override
     public ProductDTO readSingleProduct(Long id) {
-        List<Object[]> result = productRepository.getMovieWithAll(id);
+        List<Object[]> result = productRepository.getProductWithAll(id);
         Product product = (Product) result.get(0)[0];
         Double avg = (Double) result.get(0)[1];
         Long reviewCnt = (Long) result.get(0)[2];
