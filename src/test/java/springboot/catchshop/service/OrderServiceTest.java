@@ -77,7 +77,7 @@ class OrderServiceTest {
         Long userId = user.getId();
 
         // when
-        Long saveId = orderService.createOrder(order, carts.getCartList());
+        Long saveId = orderService.createOrder2(order, carts.getCartList());
 
         // then
         // 주문
@@ -111,7 +111,7 @@ class OrderServiceTest {
         // given
         CartResponseDto carts = cartService.orderCartList(user.getId());
         Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
-        orderService.createOrder(order, carts.getCartList());
+        orderService.createOrder2(order, carts.getCartList());
 
         // when
         List<OrderResponseDto> orders = orderService.orderList(user);
@@ -146,7 +146,7 @@ class OrderServiceTest {
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
             Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
-            orderService.createOrder(order, carts.getCartList());
+            orderService.createOrder2(order, carts.getCartList());
 
             // when
             Long cancelId = orderService.cancelOrder(order.getId());
@@ -163,7 +163,7 @@ class OrderServiceTest {
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
             Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
-            orderService.createOrder(order, carts.getCartList());
+            orderService.createOrder2(order, carts.getCartList());
             order.updateOrderStatus(OrderStatus.DELIVERY);
 
             // when

@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import springboot.catchshop.domain.Order;
 import springboot.catchshop.domain.User;
 
+import java.math.BigDecimal;
+
 /**
  * Payment Dto (결제 정보를 담고 있는 Dto)
  * author: soohyun, last modified: 22.04.02
@@ -15,6 +17,8 @@ import springboot.catchshop.domain.User;
 public class PaymentDto {
 
     private String imp_uid; // 결제 번호
+    private int amount;
+    private BigDecimal paid_amount;// 결제 금액
     private String buyer_name; // 구매자 이름
     private String buyer_tel; // 구매자 번호
     private String buyer_postcode; // 구매자 우편번호
