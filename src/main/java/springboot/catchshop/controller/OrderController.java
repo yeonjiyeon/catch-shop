@@ -46,7 +46,7 @@ public class OrderController {
     // 주문하기
     @PostMapping("/orders")
     public String createOrder(Model model, @Valid @ModelAttribute("orderForm") OrderRequestDto form, BindingResult result,
-                        @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
+                              @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
 
         CartResponseDto carts = cartService.orderCartList(loginUser.getId()); // 주문 가능한 장바구니 목록
 
