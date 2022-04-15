@@ -1,15 +1,18 @@
 package springboot.catchshop.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import springboot.catchshop.domain.Order;
 import springboot.catchshop.domain.OrderDetail;
+import springboot.catchshop.domain.Product;
+import springboot.catchshop.domain.User;
+import springboot.catchshop.dto.OrderRequestDto;
 import springboot.catchshop.repository.OrderRepository;
 import springboot.catchshop.service.OrderService;
+import springboot.catchshop.session.SessionConst;
 
 import java.util.List;
 
@@ -24,15 +27,19 @@ import static springboot.catchshop.domain.QOrder.order;
 @RequiredArgsConstructor
 public class OrderControllerForAdmin {
 
-    private final OrderService orderService;
     private final OrderRepository orderRepository;
     private final OrderServiceForAdmin orderServiceForAdmin;
 
     // 전체 주문 조회
     @GetMapping("/orders/admin")
-    public String orderListForAdmin(Model model) {
-        List<Order> orders = orderRepository.orderListForAdmin();
-        model.addAttribute("orders", orders);
+    public String orderListForAdmin(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
+                                 Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+        if (loginUser == null) {
+            return "login";
+        }
+        Page<Order> orderList = orderServiceForAdmin.getAllOrdersWithPaging(page);
+        model.addAttribute("paging", orderList);
+
         return "admin/orders";
     }
 

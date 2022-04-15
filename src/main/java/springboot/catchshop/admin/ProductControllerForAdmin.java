@@ -1,6 +1,7 @@
 package springboot.catchshop.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.Objects;
 
 // 관리자용 Product Controller
 // author: 강수민, created: 22.02.26
-// last modified: 22.02.26
+// last modified: 22.04.15
 @Controller
 @RequiredArgsConstructor
 public class ProductControllerForAdmin {
@@ -26,14 +27,16 @@ public class ProductControllerForAdmin {
     private final ProductRepository productRepository;
     private final QuestionRepository questionRepository;
 
+    // 상품 전체 조회
     @GetMapping("/products/admin/{id}")
     public String getAllProducts(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
-                                 @PathVariable("id") String userId, Model model) {
+                                 Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
         if (loginUser == null) {
             return "login";
         }
-        List<Product> products = productRepository.findAll();
-        model.addAttribute("products", products);
+        Page<Product> productList = productServiceForAdmin.getAllProductsWithPaging(page);
+        model.addAttribute("paging", productList);
+
         return "admin/products";
     }
 
