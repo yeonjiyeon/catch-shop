@@ -26,9 +26,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Queryds
     @Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p group by p")
     Page<Object[]> getListPage(Pageable pageable);
 
-    //평균 상품, 상품별 평점, 리뷰수 구하기(상품 전체 조회)
-    //@Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p group by p where p.productStatus = :productStatus group by p")
-    //Page<Object[]> getListPageAndProductStatus(Pageable pageable, ProductStatus productStatus);
+    //평균 상품, 상품별 평점, 리뷰수 구하기(상품 상태별 조회)
+    @Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p where p.productStatus = :productStatus group by p")
+    Page<Object[]> getListPageAndProductStatus(Pageable pageable, ProductStatus productStatus);
 
 
     //상품상세조회

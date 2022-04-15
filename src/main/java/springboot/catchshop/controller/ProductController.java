@@ -44,21 +44,16 @@ public class ProductController {
 
     //상품 전체 조회
     @GetMapping("products")
-    public void readProducts(PageRequestDTO pageRequestDTO, Model model) {
+    public void readProducts(@RequestParam(value = "productStatus", required = false) ProductStatus productStatus, PageRequestDTO pageRequestDTO, Model model) {
         log.info("list : " + pageRequestDTO);
 
-        model.addAttribute("result", productService.readProducts(pageRequestDTO));
-
-    }
-
-    /*상품 상태별 조회
-    @GetMapping("products")
-    public void readProductsWithProductStatus(PageRequestDTO pageRequestDTO, Model model,@RequestParam ProductStatus productStatus) {
-        log.info("list : " + pageRequestDTO);
 
         model.addAttribute("result", productService.readProductsWithProductStatus(pageRequestDTO, productStatus));
 
-    }*/
+
+    }
+
+
 
 
 

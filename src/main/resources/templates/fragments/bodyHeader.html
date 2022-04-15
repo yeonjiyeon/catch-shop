@@ -43,10 +43,10 @@
               <ul>
                 <li><a href="/products">전체 상품</a>
                 </li>
-                <li><a href="/products">신상품</a>
+                <li><a th:href="@{/products(productStatus='NEW')}">신상품</a>
                 </li>
-                <li><a href="/products">베스트</a></li>
-                <li><a href="/products">특가/혜택</a>
+                <li><a th:href="@{/products(productStatus='BEST')}">베스트</a></li>
+                <li><a th:href="@{/products(productStatus='SALE')}">특가/혜택</a>
                 </li>
                 <li>
                   <div class="header-icons">
