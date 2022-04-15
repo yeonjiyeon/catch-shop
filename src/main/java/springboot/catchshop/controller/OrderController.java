@@ -1,26 +1,32 @@
 package springboot.catchshop.controller;
 
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springboot.catchshop.domain.Order;
 import springboot.catchshop.domain.User;
-import springboot.catchshop.dto.CartResponseDto;
-import springboot.catchshop.dto.OrderRequestDto;
-import springboot.catchshop.dto.OrderResponseDto;
-import springboot.catchshop.dto.PaymentDto;
+import springboot.catchshop.dto.*;
 import springboot.catchshop.service.CartService;
 import springboot.catchshop.service.OrderService;
+import springboot.catchshop.service.PaymentService;
 import springboot.catchshop.session.SessionConst;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Order Controller
- * author: soohyun, last modified: 22.04.02
+ * author: soohyun, last modified: 22.04.09
  */
 
 @Controller
@@ -29,6 +35,7 @@ public class OrderController {
 
     private final CartService cartService;
     private final OrderService orderService;
+    private final PaymentService paymentService;
 
     // 주문 작성 페이지
     @GetMapping("/order")
@@ -47,13 +54,19 @@ public class OrderController {
     // 주문하기
     @PostMapping("/orders")
     @ResponseBody
-    public String createOrder(@RequestBody PaymentDto paymentDto, @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
+    public String payment(@RequestParam("imp_uid") String imp_uid, @RequestParam("paid_amount") BigDecimal paid_amount,
+                                            @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
 
-        CartResponseDto carts = cartService.orderCartList(loginUser.getId()); // 주문 가능한 장바구니 목록
-        Order order = paymentDto.toEntity(loginUser, carts.getTotalAllProductPrice(), carts.getShippingFee());
-        orderService.createOrder(order, carts.getCartList());
+        IamportResponse<Payment> response = paymentService.requestPayment(imp_uid);
 
-        return "ok";
+        if (response != null && paid_amount.equals(response.getResponse().getAmount())) {
+            CartResponseDto carts = cartService.orderCartList(loginUser.getId()); // 주문 가능한 장바구니 목록
+            orderService.createOrder(loginUser, response.getResponse(), carts.getCartList(), carts.getTotalAllProductPrice(), carts.getShippingFee());
+            return "success";
+        } else {
+            paymentService.requestCancel(imp_uid);
+            return "fail";
+        }
     }
 
     // 주문 내역 조회

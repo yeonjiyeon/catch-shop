@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Order Entity
- * author: soohyun, last modified: 22.04.02
+ * author: soohyun, last modified: 22.04.09
  */
 
 @Entity
@@ -28,7 +28,7 @@ public class Order {
     @GeneratedValue
     @Column(name = "order_id")
     private Long id;
-    private String payment_id;
+    private String payment_id; // 결제 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

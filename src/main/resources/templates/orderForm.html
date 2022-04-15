@@ -185,26 +185,29 @@
 				buyer_tel : telephone,
 				buyer_addr : address,
 				buyer_postcode : postcode
-			}, async function(rsp) {
+			}, function(rsp) {
 				if (rsp.success) {
-					alert('결제가 완료되었습니다.');
-					// 결제 성공시 주문 정보 저장
-					let response = await fetch('/orders', {
-						method: "post",
-						body: JSON.stringify(rsp),
-						headers: {
-							"Content-Type": "application/json; charset=utf-8"
+					$.ajax({
+						url: "/orders", // 서버의 결제 정보를 받는 endpoint
+						type: "post",
+						data: {
+							imp_uid: rsp.imp_uid,
+							paid_amount: rsp.paid_amount
+						}
+					}).done(function (data) {
+						console.log(data)
+
+						if(data == "success") {
+							alert("결제가 완료되었습니다.")
+							location.replace("/orders")
+						} else {
+							alert("결제에 실패하였습니다.");
+							location.replace("/carts")
 						}
 					})
-
-					let result = await response.text();
-					if (result === "ok") { // 주문 성공시 주문 내역 화면으로
-						location.href = "/orders";
-					}
 				} else {
-					var msg = '결제에 실패하였습니다.';
-					msg += '에러내용 : ' + rsp.error_msg;
-					alert(msg);
+					alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
+					location.replace("/carts")
 				}
 			});
 		}
