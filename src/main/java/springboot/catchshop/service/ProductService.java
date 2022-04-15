@@ -55,10 +55,8 @@ public interface ProductService {
     Long addProduct(ProductDTO productDTO);
 
     //상품 전체 조회
-    PageResultDTO<ProductDTO, Object[]> readProducts(PageRequestDTO requestDTO);
-
     //상품 상태별 조회
-    //PageResultDTO<ProductDTO, Object[]> readProductsWithProductStatus(PageRequestDTO requestDTO, ProductStatus productStatus);
+    PageResultDTO<ProductDTO, Object[]> readProductsWithProductStatus(PageRequestDTO requestDTO, ProductStatus productStatus);
 
     //상품 검색
     //List<ProductDTO> searchProducts(String keyword);
