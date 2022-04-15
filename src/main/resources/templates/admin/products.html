@@ -69,7 +69,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="product : ${products}">
+                <tr th:each="product : ${paging}">
                     <td th:text="${product.name}"></td>
                     <td><img th:src="${product.productImgPath}" style="width:100px; height:100px;"></td>
                     <td th:text="${product.price}"></td>
@@ -78,12 +78,36 @@
                         <a href="#" th:href="@{/products/admin/{id}/edit (id=${product.id})}" class="btn btn-primary" role="button">수정</a>
                     </td>
                     <td>
-                        <a href="#" th:href="@{/products/admin/{id} (id=${product.id})}" class="btn btn-primary" role="button">삭제</a>
+                        <form th:action="@{/products/admin/{id} (id=${product.id})}" method="post">
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" class="btn btn-primary">삭제</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
             </table><br>
         <!-- 전체 상품 조회 끝 -->
+
+        <!-- 페이징 처리 시작 -->
+        <div th:if="${!paging.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number-1}|}">
+                        <span>prev</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:classappend="${page == paging.number} ? 'active'" class="page-item">
+                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                        <span>next</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 페이징 처리 끝 -->
     </div>
 </div>
 <!-- end single product -->
