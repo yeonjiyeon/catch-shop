@@ -27,7 +27,7 @@ public class OrderService {
     private final CartService cartService;
 
     // 주문 생성
-    public Long createOrder(Order order, Long userId, List<CartInfoDto> carts) {
+    public Long createOrder(Order order, List<CartInfoDto> carts) {
         Order saveOrder = orderRepository.save(order); // 주문 생성
 
         // 주문 상세 생성

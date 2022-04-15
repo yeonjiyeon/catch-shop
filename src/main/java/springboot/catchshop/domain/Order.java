@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Order Entity
- * author: soohyun, last modified: 22.03.07
+ * author: soohyun, last modified: 22.04.02
  */
 
 @Entity
@@ -28,6 +28,7 @@ public class Order {
     @GeneratedValue
     @Column(name = "order_id")
     private Long id;
+    private String payment_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -38,9 +39,8 @@ public class Order {
 
     private String orderName; // 수령자 이름
     private String orderTel; // 수령자 전화번호
-
-    @Embedded
-    private Address address; // 수령지 주소
+    private String postcode; // 우편번호
+    private String address; // 수령 주소
 
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus; // 주문 상태
@@ -53,10 +53,12 @@ public class Order {
 
     // 생성 메서드
     @Builder
-    public Order(User user, String orderName, String orderTel, Address address, Long totalPrice, Long shippingFee) {
+    public Order(String payment_id, User user, String orderName, String orderTel, String postcode, String address, Long totalPrice, Long shippingFee) {
+        this.payment_id = payment_id;
         this.user = user;
         this.orderName = orderName;
         this.orderTel = orderTel;
+        this.postcode = postcode;
         this.address = address;
         this.orderStatus = OrderStatus.READY;
         this.totalPrice = totalPrice;

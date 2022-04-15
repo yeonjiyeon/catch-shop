@@ -14,7 +14,6 @@
 <!-- header -->
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
-
 <!-- search area -->
 <div class="search-area">
     <div class="container">
@@ -69,7 +68,7 @@
                 <h6>[배송 정보]</h6>
                 <span th:text="${'수령자 이름: ' + order.orderName}"></span><br/>
                 <span th:text="${'수령자 전화번호: ' + order.orderTel}"></span><br/>
-                <span th:text="${'배송 주소: (' + order.address.postalcode + ') ' + order.address.road + ' ' + order.address.detail}"></span><br/><br/>
+                <span th:text="${'배송 주소: (' + order.postcode + ') ' + order.address}"></span><br/><br/>
 
                 <h6>[주문 상품]</h6>
                 <div class="total-section">
@@ -133,5 +132,6 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="/resources/js/addressapi.js"></script>
 <script src="/assets/js/user-address.js"></script>
+
 </body>
 </html>

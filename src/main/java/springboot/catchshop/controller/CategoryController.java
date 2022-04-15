@@ -38,6 +38,10 @@ public class CategoryController {
     }
 
     //카테고리 수정
+    @PutMapping("/categories/{name}")
+    @ResponseBody
+    public void updateCategory (@PathVariable String name) {
 
+    }
 
 }
