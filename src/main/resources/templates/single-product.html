@@ -80,15 +80,13 @@
           <p>[[${dto.text}]]</p>
           <div class="single-product-form">
             <form th:action="@{'/carts/' + ${dto.id}}" th:method="post">
-              <input type="number" th:name="count" th:value="1" min="1">
-              &nbsp;&nbsp;
-              <button type="submit" class="btn-lg"
-                      style="border: none; color: white; background-color: #F28123FF">
+              <input type="number" th:name="count" th:value="1" min="1">&nbsp;&nbsp;
+              <button type="submit" class="btn-lg" style="border: none; color: white; background-color: #F28123FF">
                 <i class="fas fa-shopping-cart"></i>&nbsp;장바구니 담기
               </button>
             </form>
             <p>[[${dto.avg}]]</p>
-            <p/>
+
             <p><strong>Categories: </strong>[[${dto.category.name}]]</p>
           </div>
           <h4>Share:</h4>
@@ -155,12 +153,12 @@
     </div>
   </div>
 </div>
-<script src="assets/js/jquery-1.11.3.min.js"></script>
+
+<script src="assets/js/jquery.js"></script>
 <script src="assets/js/starrr.js"></script>
 <link href="assets/css/starrr.css" rel="stylesheet">
 <link rel="stylesheet"
       href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
-
 <script>
   $(document).ready(function(e) {
 
@@ -217,7 +215,7 @@
                 });
 
                 //페이지가 열리면 바로 리뷰 데이터들을 가져와서 사용한다.
-                function getMovieReviews() {
+                function getProductReviews() {
 
                     function formatTime(str){
                         var date = new Date(str);
@@ -235,27 +233,28 @@
                         $.each(arr, function(idx, review){
 
                             console.log(review);
+                            str += '    <div class="card-body" data-id='+review.id+' data-loginId='+review.loginId+'>';
+                            str += '    <h5 class="card-title">'+review.contents+' <span>'+ review.star+'</span></h5>';
+                            str += '    <h6 class="card-subtitle mb-2 text-muted">'+review.name+'</h6>';
+                            str += '    <p class="card-text">'+ formatTime(review.regDate) +'</p>';
+                            str += '    </div>';
 
-                            str += '    <tr class="card-body" data-id='+review.id+' data-loginId='+review.loginId+'>';
-                            str += '    <td class="card-title">'+review.contents+'</td>';
-                            str += '    <td class="card-subtitle mb-2 text-muted1">'+ review.star+'</td>';
-                            str += '    <td class="card-subtitle mb-2 text-muted">'+review.name+'</td>';
-                            str += '    <td class="card-text">'+ formatTime(review.regDate) +'</td>';
-                            str += '    </tr>';
                         });
 
                         $(".reviewList").html(str);
                     });
                 }
 
-                getMovieReviews();
+                getProductReviews();
+
+
 
                  //modify reveiw
 
                 var id;
 
-                $(".reviewList").on("click", ".card-title", function() {
-
+                $(".reviewList").on("click", ".card-body", function() {
+										//console.log("============");
                     $(".reviewSaveBtn").hide();
                     $(".removeBtn , .modifyBtn").show();
 
@@ -267,7 +266,7 @@
 
                     inputContents.val(targetReview.find('.card-title').clone().children().remove().end().text());
 
-                    var star = targetReview.find('.card-subtitle mb-2 text-muted1').html();
+                    var star = targetReview.find('.card-title span').html();
                     $(".starrr a:nth-child("+star+")").trigger('click');
 
                     $('.reviewModal').modal('show');
@@ -318,8 +317,6 @@
                     })
                     reviewModal.modal('hide');
                 });
-
-
             });
 
 
@@ -374,7 +371,7 @@
 			<div class="row">
 				<div class="tab">
 					<ul class="tabnav">
-						<li><a href="#goods-review">후기</a></li>
+						<li><a href="#goods-review">후기 [[${dto.reviewCnt}]] </a></li>
 						<li><a href="#goods-question">문의</a></li>
 					</ul>
 					<div class="tabcontent">
@@ -382,46 +379,27 @@
 							<div class="container">
 								<div class="row">
 									<div class="col-lg-8 col-md-12">
-										<div class="cart-table-wrap">
-											<table class="cart-table">
-												<thead class="cart-table-head">
-												<tr class="table-head-row">
-													<th class="product-image">번호</th>
-													<th class="product-name">제목</th>
-													<th class="product-price">작성자</th>
-													<th class="product-quantity">작성일</th>
-													<th class="product-total">도움</th>
-													<th>조회</th>
-												</tr>
-												</thead>
-												<tbody>
-												<tr class="table-body-row">
-													<td class="product-name">1</td>
-													<td class="product-price">1</td>
-													<td class="product-quantity">1</td>
-													<td class="product-total">1</td>
-													<td>1</td>
-													<td>1</td>
-												</tr>
-												<tr class="table-body-row">
-													<td class="product-name">1</td>
-													<td class="product-price">1</td>
-													<td class="product-quantity">1</td>
-													<td class="product-total">1</td>
-													<td>1</td>
-													<td>1</td>
-												</tr>
-												<tr class="table-body-row">
-													<td class="product-name">1</td>
-													<td class="product-price">1</td>
-													<td class="product-quantity">1</td>
-													<td class="product-total">1</td>
-													<td>1</td>
-													<td>1</td>
-												</tr>
-												</tbody>
-											</table>
+										<button type="button" class="btn btn-info addReviewBtn"
+														style="text-align: center; float: right;">
+											Review Register
+										</button>
+										<!--table class="cart-table">
+											<thead>
+											<tr>
+												<th>내용</th>
+												<th>별점</th>
+												<th>작성자</th>
+												<th>작성 날짜</th>
+											</tr>
+											</thead>
+											<tbody class="list-group reviewList">
+
+											</tbody>
+										</table-->
+										<div class="list-group reviewList">
+
 										</div>
+
 									</div>
 								</div>
 							</div>
@@ -448,9 +426,9 @@
 												<tbody th:each="question : ${questions}">
 												<tr>
 													<!-- 비밀글인 경우 비밀번호 입력 팝업 띄우기, 관리자는 해당 없음 -->
-													<td th:text="${question.id}" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+													<!--td th:text="${question.id}" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
 													<td th:text="${question.id}" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="alertPopup(${question.password})" value="prompt"></td>
-													<div id='password'/>
+													<div id='password'/-->
 
 													<td th:text="${question.category}"></td>
 													<td th:text="${question.user.loginId}"></td>
@@ -458,11 +436,11 @@
 													<!--								<td th:if="${question.secret == 'secret'}" th:text="비밀 글입니다."></td>-->
 													<!--								<td th:unless="${question.secret == 'secret'}" th:text="${question.contents}"></td>-->
 												</tr>
-												<tr th:each="answer : ${question.answers}">
+												<!--tr th:each="answer : ${question.answers}">
 													<td th:text="|Re: ${answer.user.role}|" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
 													<td th:text="|Re: ${answer.user.role}|" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="alertPopup(${question.password})" value="prompt"></td>
 													<div id='password'/>
-												</tr>
+												</tr-->
 												</tbody>
 											</table>
 										</div>
@@ -512,11 +490,11 @@
 		}).filter(':eq(0)').click();
 	});
 
-	function alertPopup(password) {
+	function alertPopup(qnaPW) {
 		let prompt = prompt('비밀번호를 입력하세요');
 		let inputPassword = Number(prompt);
 
-		if (String(inputPassword) != password) {
+		if (String(inputPassword) != qnaPW) {
 			alert('비밀번호가 틀렸습니다!');
 		}
 	}

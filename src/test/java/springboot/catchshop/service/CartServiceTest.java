@@ -8,8 +8,6 @@ import springboot.catchshop.domain.*;
 import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.exception.NotEnoughStockException;
 import springboot.catchshop.repository.CartRepository;
-import springboot.catchshop.repository.ProductRepository;
-import springboot.catchshop.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;

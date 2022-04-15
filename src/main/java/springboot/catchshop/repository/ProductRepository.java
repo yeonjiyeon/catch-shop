@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import springboot.catchshop.domain.Product;
 
@@ -19,12 +20,19 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Queryds
     List<Product> findAll();
     Optional<Product> findById(Long id);
 
-    List<Product> findByProductStatus(ProductStatus productStatus);
 
+
+    //평균 상품, 상품별 평점, 리뷰수 구하기(상품 전체 조회)
     @Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p group by p")
     Page<Object[]> getListPage(Pageable pageable);
 
+    //평균 상품, 상품별 평점, 리뷰수 구하기(상품 전체 조회)
+    //@Query("select p, avg(coalesce(r.star, 0)), count(distinct r) from Product p left outer join Review r on r.product = p group by p where p.productStatus = :productStatus group by p")
+    //Page<Object[]> getListPageAndProductStatus(Pageable pageable, ProductStatus productStatus);
+
+
+    //상품상세조회
     @Query("select p, avg(coalesce(r.star, 0)), count(r) from Product p left outer join Review r on r.product = p where p.id = :id group by p")
-    List<Object[]> getMovieWithAll(Long id);
+    List<Object[]> getProductWithAll(@Param("id") Long id);
 
 }

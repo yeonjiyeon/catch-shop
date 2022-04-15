@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * OrderService Test
- * author: soohyun, last modified: 22.03.11
+ * author: soohyun, last modified: 22.04.02
  */
 
 @SpringBootTest
@@ -73,20 +73,22 @@ class OrderServiceTest {
 
         // given
         CartResponseDto carts = cartService.orderCartList(user.getId());
-        Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
+        Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
         Long userId = user.getId();
 
         // when
-        Long saveId = orderService.createOrder(order, userId, carts.getCartList());
+        Long saveId = orderService.createOrder(order, carts.getCartList());
 
         // then
         // 주문
         Optional<Order> findOrder = orderRepository.findById(saveId);
         assertEquals(findOrder.get().getId(), saveId);
+        assertEquals(findOrder.get().getPayment_id(), "imp_111111111111");
         assertEquals(findOrder.get().getUser(), user);
         assertEquals(findOrder.get().getOrderName(), "name1");
         assertEquals(findOrder.get().getOrderTel(), "01012345678");
-        assertEquals(findOrder.get().getAddress(), address);
+        assertEquals(findOrder.get().getPostcode(), "11111");
+        assertEquals(findOrder.get().getAddress(), "address1");
         assertEquals(findOrder.get().getOrderStatus(), OrderStatus.READY);
         assertEquals(findOrder.get().getTotalPrice(), 10000);
         assertEquals(findOrder.get().getShippingFee(), 3000);
@@ -108,8 +110,8 @@ class OrderServiceTest {
 
         // given
         CartResponseDto carts = cartService.orderCartList(user.getId());
-        Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
-        orderService.createOrder(order, user.getId(), carts.getCartList());
+        Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
+        orderService.createOrder(order, carts.getCartList());
 
         // when
         List<OrderResponseDto> orders = orderService.orderList(user);
@@ -119,7 +121,8 @@ class OrderServiceTest {
         assertEquals(orders.size(), 1);
         assertEquals(orders.get(0).getOrderName(), "name1");
         assertEquals(orders.get(0).getOrderTel(), "01012345678");
-        assertEquals(orders.get(0).getAddress(), address);
+        assertEquals(orders.get(0).getPostcode(), "11111");
+        assertEquals(orders.get(0).getAddress(), "address1");
         assertEquals(orders.get(0).getOrderStatus(), OrderStatus.READY);
         assertEquals(orders.get(0).getTotalPrice(), 10000);
         assertEquals(orders.get(0).getShippingFee(), 3000);
@@ -142,8 +145,8 @@ class OrderServiceTest {
 
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
-            Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
-            orderService.createOrder(order, user.getId(), carts.getCartList());
+            Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
+            orderService.createOrder(order, carts.getCartList());
 
             // when
             Long cancelId = orderService.cancelOrder(order.getId());
@@ -159,8 +162,8 @@ class OrderServiceTest {
 
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
-            Order order = new Order(user, "name1", "01012345678", address, carts.getTotalAllProductPrice(), carts.getShippingFee());
-            orderService.createOrder(order, user.getId(), carts.getCartList());
+            Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
+            orderService.createOrder(order, carts.getCartList());
             order.updateOrderStatus(OrderStatus.DELIVERY);
 
             // when

@@ -6,6 +6,7 @@ package springboot.catchshop.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springboot.catchshop.domain.Product;
+import springboot.catchshop.domain.ProductStatus;
 import springboot.catchshop.dto.PageRequestDTO;
 import springboot.catchshop.dto.PageResultDTO;
 import springboot.catchshop.dto.ProductDTO;
@@ -24,6 +25,7 @@ public interface ProductService {
                 .stock(productDTO.getStock())
                 .productImg(productDTO.getProductImg())
                 .categories(productDTO.getCategory())
+                .productStatus(productDTO.getProductStatus())
                 .build();
         return entity;
     }
@@ -39,6 +41,7 @@ public interface ProductService {
                 .stock(product.getStock())
                 .productImg(product.getProductImg())
                 .category(product.getCategories())
+                .productStatus(product.getProductStatus())
                 .build();
 
         dto.setAvg(avg);
@@ -53,6 +56,9 @@ public interface ProductService {
 
     //상품 전체 조회
     PageResultDTO<ProductDTO, Object[]> readProducts(PageRequestDTO requestDTO);
+
+    //상품 상태별 조회
+    //PageResultDTO<ProductDTO, Object[]> readProductsWithProductStatus(PageRequestDTO requestDTO, ProductStatus productStatus);
 
     //상품 검색
     //List<ProductDTO> searchProducts(String keyword);
