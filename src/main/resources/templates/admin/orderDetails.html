@@ -62,7 +62,7 @@
                     <h6>[배송 정보]</h6>
                     <span th:text="${'수령자 이름: ' + orderDetails[0].order.orderName}"></span><br/>
                     <span th:text="${'수령자 전화번호: ' + orderDetails[0].order.orderTel}"></span><br/>
-                    <span th:text="${'배송 주소: (' + orderDetails[0].order.address.postalcode + ') ' + orderDetails[0].order.address.road + ' ' + orderDetails[0].order.address.detail}"></span><br/><br/>
+                    <span th:text="${'배송 주소: (' + orderDetails[0].order.postcode + ') ' + orderDetails[0].order.address}"></span><br/><br/>
 
                     <h6>[주문 상품]</h6>
                     <div class="total-section">

@@ -423,24 +423,24 @@
                                                     <th>작성 날짜</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody th:each="question : ${questions}">
-                                                <tr>
-                                                    <!-- 비밀글인 경우 비밀번호 입력 팝업 띄우기, 관리자는 해당 없음 -->
-                                                    <td th:text="${question.id}" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
-                                                    <td th:text="${question.id}" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:attr="onclick=|alertPopup('*${question.password}')|" value="prompt"></td>
+<!--                                                <tbody th:each="question : ${questions}">-->
+<!--                                                <tr>-->
+<!--                                                    &lt;!&ndash; 비밀글인 경우 비밀번호 입력 팝업 띄우기, 관리자는 해당 없음 &ndash;&gt;-->
+<!--                                                    <td th:text="${question.id}" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>-->
+<!--                                                    <td th:text="${question.id}" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:attr="onclick=|alertPopup('*${question.password}')|" value="prompt"></td>-->
 
-                                                    <td th:text="${question.category}"></td>
-                                                    <td th:text="${question.user.loginId}"></td>
-                                                    <td th:text="${#temporals.format(question.date, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                                    <!--								<td th:if="${question.secret == 'secret'}" th:text="비밀 글입니다."></td>-->
-                                                    <!--								<td th:unless="${question.secret == 'secret'}" th:text="${question.contents}"></td>-->
-                                                </tr>
-                                                <tr th:each="answer : ${question.answers}">
-                                                    <td th:text="|Re: ${answer.user.role}|" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
-                                                    <td th:text="|Re: ${answer.user.role}|" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:attr="onclick=|alertPopup('*${question.password}')|" value="prompt"></td>
-                                                    <div id='password'/>
-                                                </tr>
-                                                </tbody>
+<!--                                                    <td th:text="${question.category}"></td>-->
+<!--                                                    <td th:text="${question.user.loginId}"></td>-->
+<!--                                                    <td th:text="${#temporals.format(question.date, 'yyyy-MM-dd HH:mm:ss')}"></td>-->
+<!--                                                    &lt;!&ndash;								<td th:if="${question.secret == 'secret'}" th:text="비밀 글입니다."></td>&ndash;&gt;-->
+<!--                                                    &lt;!&ndash;								<td th:unless="${question.secret == 'secret'}" th:text="${question.contents}"></td>&ndash;&gt;-->
+<!--                                                </tr>-->
+<!--                                                <tr th:each="answer : ${question.answers}">-->
+<!--                                                    <td th:text="|Re: ${answer.user.role}|" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>-->
+<!--                                                    <td th:text="|Re: ${answer.user.role}|" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:attr="onclick=|alertPopup('*${question.password}')|" value="prompt"></td>-->
+<!--                                                    <div id='password'/>-->
+<!--                                                </tr>-->
+<!--                                                </tbody>-->
                                             </table>
                                         </div>
                                     </div>

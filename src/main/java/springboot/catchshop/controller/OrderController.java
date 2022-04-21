@@ -60,8 +60,8 @@ public class OrderController {
         IamportResponse<Payment> response = paymentService.requestPayment(imp_uid);
 
         if (response != null && paid_amount.equals(response.getResponse().getAmount())) {
-            CartResponseDto carts = cartService.orderCartList(loginUser.getId()); // 주문 가능한 장바구니 목록
-            orderService.createOrder(loginUser, response.getResponse(), carts.getCartList(), carts.getTotalAllProductPrice(), carts.getShippingFee());
+            PaymentDto paymentDto = new PaymentDto(response.getResponse());
+            orderService.createOrder(loginUser, paymentDto);
             return "success";
         } else {
             paymentService.requestCancel(imp_uid);
@@ -81,6 +81,7 @@ public class OrderController {
         }
     }
 
+    // 주문 취소
     @PatchMapping("/orders/{id}")
     public String cancelOrder(@PathVariable("id") Long orderId) {
         orderService.cancelOrder(orderId);

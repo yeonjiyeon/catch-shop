@@ -51,12 +51,6 @@ public class OrderControllerForAdmin {
         return "admin/orderDetails";
     }
 
-//     public String getOrderDetails(Model model, @PathVariable("id") Long orderId) {
-//         Order order = orderRepository.findById(orderId).orElse(null);
-//         model.addAttribute("order", order);
-//         return "admin/orderDetails";
-//     }
-
      // 주문 취소
      @PatchMapping("/orders/{id}/admin")
      public String cancelOrderForAdmin(@PathVariable("id") Long orderId) {

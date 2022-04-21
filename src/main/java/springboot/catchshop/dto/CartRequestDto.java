@@ -2,7 +2,6 @@ package springboot.catchshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import springboot.catchshop.domain.Cart;
 import springboot.catchshop.domain.Product;
 

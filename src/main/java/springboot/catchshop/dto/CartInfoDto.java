@@ -1,13 +1,13 @@
 package springboot.catchshop.dto;
 
+import lombok.Data;
+import springboot.catchshop.domain.Cart;
+import springboot.catchshop.domain.Product;
+
 /**
  * Cart Info Dto (장바구니 정보를 담고 있는 Dto)
  * author: soohyun, last modified: 22.03.07
  */
-
-import lombok.Data;
-import springboot.catchshop.domain.Cart;
-import springboot.catchshop.domain.Product;
 
 @Data
 public class CartInfoDto {
