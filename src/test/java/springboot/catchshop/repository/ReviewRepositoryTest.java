@@ -1,6 +1,8 @@
-package springboot.catchshop.service;
+package springboot.catchshop.repository;
 
-import com.mysema.commons.lang.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -11,25 +13,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.stylesheets.LinkStyle;
 import springboot.catchshop.domain.Address;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.Review;
 import springboot.catchshop.domain.User;
-import springboot.catchshop.dto.ProductDTO;
 import springboot.catchshop.dto.ReviewDTO;
-import springboot.catchshop.repository.ReviewRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import springboot.catchshop.service.ReviewService;
 
 @SpringBootTest
 @Transactional
-public class ReviewServiceTest {
+public class ReviewRepositoryTest {
     @Autowired
     ReviewRepository reviewRepository;
-    @Autowired
-    ReviewService reviewService;
     @Autowired
     EntityManager em;
 
@@ -51,39 +46,53 @@ public class ReviewServiceTest {
         em.persist(product);
     }
 
+    
+    @DisplayName("날짜 테스트")
+    @Test
+    public void BaseTimeEntityTest(){
+        //given
+        LocalDateTime now = LocalDateTime.now();
+        reviewRepository.save(new Review());
+
+        //when
+        List<Review> reviews = reviewRepository.findAll();
+
+        //then
+        Review review = reviews.get(0);
+        System.out.println(">>>>>>>>registerDate = " + review.getRegDate());
+
+        //assertEquals();
+        assertNotEquals(review.getRegDate(), now);
+    }
 
     
     @Test
     public void 리뷰_등록(){
         //given
-        ReviewDTO reviewDTO = ReviewDTO.builder()
-            .id(10000L).contents("contents1")
-            .star(5)
-            .build();
+        Review review = Review.builder().id(10000L).contents("contents1").star(5).build();
 
         //when
-        Long registerID = reviewService.register(reviewDTO, user, product.getId());
-
+        Review saveReview = reviewRepository.save(review);
+        Optional<Review> findReview = reviewRepository.findById(saveReview.getId());
 
         //then
-        assertThat(registerID).isEqualTo(10000L);
+        assertThat(saveReview.getId()).isEqualTo(findReview.get().getId());
     }
 
     
     @Test
-    public void 리뷰_조회(){
+    public void 리뷰_전체_조회(){
         //given
-        ReviewDTO reviewDTO = ReviewDTO.builder()
-            .id(10000L).contents("contents1")
-            .star(5)
-            .build();
-        Long registerID = reviewService.register(reviewDTO, user, product.getId());
+        Review review = Review.builder().id(10000L).contents("contents1").star(5).build();
+        Review saveReview = reviewRepository.save(review);
+
 
         //when
-        List<ReviewDTO> listProduct = reviewService.getListOfProduct(product.getId());
+        List<Review> allReview = reviewRepository.findAll();
 
         //then
-        assertThat(listProduct.size()).isEqualTo(1);
+        assertThat(allReview.size()).isEqualTo(4);
+
     }
 
     
@@ -92,16 +101,14 @@ public class ReviewServiceTest {
         //given
         Review review = Review.builder().id(10000L).contents("contents1").star(5).build();
         Review saveReview = reviewRepository.save(review);
-        //Optional<Review> findReview = reviewRepository.findById(saveReview.getId());
 
         //when
-        ReviewDTO reviewDTO = ReviewDTO.builder().id(saveReview.getId()).contents("contents2")
-            .star(saveReview.getStar()).build();
-        reviewService.modify(reviewDTO);
-        Optional<Review> findReview2 = reviewRepository.findById(saveReview.getId());
+        Optional<Review> findReview = reviewRepository.findById(saveReview.getId());
+        findReview.get().changeContents("contents2");
+        reviewRepository.save(review);
 
         //then
-        assertThat(findReview2.get().getContents()).isEqualTo("contents2");
+        assertThat(review.getContents()).isEqualTo("contents2");
     }
 
     
@@ -110,14 +117,13 @@ public class ReviewServiceTest {
         //given
         Review review = Review.builder().id(10000L).contents("contents1").star(5).build();
         Review saveReview = reviewRepository.save(review);
-        Optional<Review> findReview = reviewRepository.findById(saveReview.getId());
 
         //when
-        reviewService.remove(findReview.get().getId());
+        Optional<Review> findReview = reviewRepository.findById(saveReview.getId());
+        reviewRepository.deleteById(findReview.get().getId());
 
         //then
-        Optional<Review> findReview2 = reviewRepository.findById(findReview.get().getId());
-        assertThat(findReview2).isEqualTo(Optional.empty());
+        assertThat(findReview).isEqualTo(Optional.empty());
 
 
     }

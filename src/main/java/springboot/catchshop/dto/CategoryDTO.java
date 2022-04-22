@@ -39,7 +39,6 @@ public class CategoryDTO {
     public Category toEntity () {
         return Category.builder()
                 .level(level)
-                .name(name)
                 .build();
     }
 }
