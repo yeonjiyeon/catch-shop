@@ -50,7 +50,6 @@
 
 <div class="single-product mt-150 mb-150">
     <div class="container">
-
         <!-- 전체 qna 조회 시작  -->
         <div>
             <table class="cart-table">
@@ -71,43 +70,83 @@
                     <td th:text="${question.category}"></td>
                     <td th:text="${question.user.name}"></td>
                     <td th:text="${question.user.loginId}"></td>
-                    <td th:text="${question.contents}"></td>
+                    <td th:text="${question.content}"></td>
                     <td th:text="${question.answered}"></td>
                     <td>
-                        <a href="#" th:href="@{/questions/{id}/answers (id=${question.id})}" class="btn btn-primary" role="button">답변하기</a>
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newAnswerModal" th:data-id="${question.id}">답변하기</button>
                     </td>
                 </tr>
-                <tr th:each="answer : ${question.answers}">
-                    <td th:text="|Re: ${answer.contents}|" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+                <tr th:each="answer : ${question.answerList}">
+                    <td th:text="|Re: ${answer.content}|" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
                 </tr>
                 </tbody>
             </table><br>
             <!-- 전체 qna 조회 끝 -->
         </div>
     </div>
+</div>
 
-    <!-- footer -->
-    <div th:replace="fragments/footer :: footer"/>
+<!-- 신규 답변 등록 Modal 시작 -->
+<div class="modal fade" id="newAnswerModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">답변 등록하기</h4>
+            </div>
 
-    <!-- jquery -->
-    <script src="/assets/js/jquery-1.11.3.min.js"></script>
-    <!-- bootstrap -->
-    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-    <!-- count down -->
-    <script src="/assets/js/jquery.countdown.js"></script>
-    <!-- isotope -->
-    <script src="/assets/js/jquery.isotope-3.0.6.min.js"></script>
-    <!-- waypoints -->
-    <script src="/assets/js/waypoints.js"></script>
-    <!-- owl carousel -->
-    <script src="/assets/js/owl.carousel.min.js"></script>
-    <!-- magnific popup -->
-    <script src="/assets/js/jquery.magnific-popup.min.js"></script>
-    <!-- mean menu -->
-    <script src="/assets/js/jquery.meanmenu.min.js"></script>
-    <!-- sticker js -->
-    <script src="/assets/js/sticker.js"></script>
-    <!-- main js -->
-    <script src="/assets/js/main.js"></script>
+            <!-- 답변 작성 폼 시작 -->
+            <form method="post" id="newAnswerForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <textarea class="form-control" id="new-content" th:name="new-content"></textarea>
+                    </div><br><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary">등록</button>
+                </div>
+            </form>
+            <!-- 답변 작성 폼 끝 -->
+        </div>
+    </div>
+</div>
+<!-- 새로운 답변 등록 Modal 끝 -->
+
+<!-- footer -->
+<div th:replace="fragments/footer :: footer"/>
+
+<!-- jquery -->
+<script src="/assets/js/jquery-1.11.3.min.js"></script>
+<!-- bootstrap -->
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<!-- count down -->
+<script src="/assets/js/jquery.countdown.js"></script>
+<!-- isotope -->
+<script src="/assets/js/jquery.isotope-3.0.6.min.js"></script>
+<!-- waypoints -->
+<script src="/assets/js/waypoints.js"></script>
+<!-- owl carousel -->
+<script src="/assets/js/owl.carousel.min.js"></script>
+<!-- magnific popup -->
+<script src="/assets/js/jquery.magnific-popup.min.js"></script>
+<!-- mean menu -->
+<script src="/assets/js/jquery.meanmenu.min.js"></script>
+<!-- sticker js -->
+<script src="/assets/js/sticker.js"></script>
+<!-- main js -->
+<script src="/assets/js/main.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#newAnswerModal').on('show.bs.modal', function (e
+        ) {
+            // 게시글 신규 등록 모달 값 초기화
+            $(".modal-body #new-content").val('');
+            $(".modal-content #newAnswerForm").attr("action", "/questions/" + $(e.relatedTarget).data('id') + "/answers");
+
+        });
+    });
+</script>
 </body>
 </html>

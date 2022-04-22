@@ -1,4 +1,4 @@
-package springboot.catchshop.admin;
+package springboot.catchshop.admin.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

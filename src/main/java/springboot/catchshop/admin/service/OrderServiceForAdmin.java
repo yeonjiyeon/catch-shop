@@ -1,4 +1,4 @@
-package springboot.catchshop.admin;
+package springboot.catchshop.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +11,7 @@ import springboot.catchshop.domain.Order;
 import springboot.catchshop.domain.OrderStatus;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.repository.OrderRepository;
+import springboot.catchshop.service.PaymentService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 public class OrderServiceForAdmin {
 
     private final OrderRepository orderRepository;
+    private final PaymentService paymentService;
 
     // 주문 전체 조회 + 페이징
     @Transactional(readOnly = true)
@@ -40,6 +42,7 @@ public class OrderServiceForAdmin {
                 () -> new IllegalStateException("해당 주문이 존재하지 않습니다."));
         if (order.getOrderStatus() == OrderStatus.READY) {
             order.updateOrderStatus(OrderStatus.CANCEL);
+            paymentService.requestCancel(order.getPayment_id());
         }
     }
 

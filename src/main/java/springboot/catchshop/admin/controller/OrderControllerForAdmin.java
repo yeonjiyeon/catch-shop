@@ -1,22 +1,18 @@
-package springboot.catchshop.admin;
+package springboot.catchshop.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import springboot.catchshop.admin.service.OrderServiceForAdmin;
 import springboot.catchshop.domain.Order;
 import springboot.catchshop.domain.OrderDetail;
-import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.User;
-import springboot.catchshop.dto.OrderRequestDto;
 import springboot.catchshop.repository.OrderRepository;
-import springboot.catchshop.service.OrderService;
 import springboot.catchshop.session.SessionConst;
 
 import java.util.List;
-
-import static springboot.catchshop.domain.QOrder.order;
 
 // 관리자용 Order Controller
 // author: 강수민, created: 22.03.20
