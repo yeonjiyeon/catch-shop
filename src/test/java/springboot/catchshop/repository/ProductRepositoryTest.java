@@ -2,6 +2,7 @@ package springboot.catchshop.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,7 @@ import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.QProduct;
 
 import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,22 +35,20 @@ public class ProductRepositoryTest {
     @Test
     public void 상품_등록(){
         //given
-        Long id = 1L;
-        String name ="productA";
+        Product productA = Product.builder()
+            .id(500L)
+            .name("productA")
+            .build();
 
-        productRepository.save(Product.builder()
-                .id(id)
-                .name(name)
-                .build());
+        Product saveProduct = productRepository.save(productA);
 
         //when
-        List<Product> productList = productRepository.findAll();
-
+        Optional<Product> product = productRepository.findById(saveProduct.getId());
+        //System.out.println("product!!!!"+product);
 
         //then
-        Product product = productList.get(0);
-        Assertions.assertThat(product.getId()).isEqualTo(id);
-        Assertions.assertThat(product.getName()).isEqualTo(name);
+        assertThat(product.get().getId()).isEqualTo(saveProduct.getId());
+        assertThat(product.get().getName()).isEqualTo("productA");
     }
 
     @Test
@@ -70,12 +68,13 @@ public class ProductRepositoryTest {
         List<Product> result = productRepository.findAll();
 
         //then
-        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(26);
 
     }
 
     @Test
     public void testQuery_작성(){
+        //given
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
         QProduct qProduct = QProduct.product;
         String keyWord = "1";
@@ -89,24 +88,38 @@ public class ProductRepositoryTest {
     @Test
     public void 상품_수정(){
         //given
-
+        Product productA = Product.builder()
+            .id(500L)
+            .name("productA")
+            .build();
+        Product saveProduct = productRepository.save(productA);
 
         //when
-
+        Optional<Product> product = productRepository.findById(saveProduct.getId());
+        product.get().changeName("productB");
+        productRepository.save(productA);
 
         //then
+        assertThat(product.get().getName()).isEqualTo("productB");
 
     }
 
     @Test
     public void 상품_삭제(){
         //given
+        Product productA = Product.builder()
+            .id(500L)
+            .name("productA")
+            .build();
+        Product saveProduct = productRepository.save(productA);
 
 
         //when
-
+        productRepository.deleteById(saveProduct.getId());
+        Optional<Product> findProduct = productRepository.findById(saveProduct.getId());
 
         //then
+        assertThat(findProduct).isEqualTo(Optional.empty());
 
     }
 
