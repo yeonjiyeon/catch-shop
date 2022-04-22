@@ -1,18 +1,17 @@
 package springboot.catchshop.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Getter
-@Setter
 @Entity
-public class Answer {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Answer extends BaseEntity {
 
     @GeneratedValue
     @Id
@@ -29,37 +28,18 @@ public class Answer {
     @JoinColumn(name = "user_id") // 답변 작성자 번호
     private User user;
 
-    private String contents;
-    private LocalDateTime date;
+    private String content;
 
-//    //==연관 관계 편의 메서드==//
-//    public void setUser(User user) {
-//        this.user = user;
-//        user.getAnswers().add(this);
-//    }
-
-    //==생성 메서드==//
-    public void setAnswer(User user, Question question, String contents) {
+    public Answer(User user, Question question, String content) {
         this.user = user;
         this.question = question;
-        this.contents = contents;
-        this.date = LocalDateTime.now();
-    }
-
-    public Answer() {
-
-    }
-
-    public Answer(User user, Question question, String contents) {
-        this.user = user;
-        this.question = question;
-        this.contents = contents;
-        this.date = LocalDateTime.now();
+        this.content = content;
+        user.getAnswerList().add(this);
+        question.getAnswerList().add(this);
     }
 
     public void updateAnswer(String contents) {
-        this.contents = contents;
-        this.date = LocalDateTime.now();
+        this.content = contents;
     }
 
 }

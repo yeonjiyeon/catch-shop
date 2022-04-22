@@ -31,6 +31,7 @@ public class InitDb {
         private final EntityManager em;
         private final PasswordEncoder passwordEncoder;
 
+        @Transactional
         public void dbInit() {
 //            Category fruit = createCategory("fruit", 0);
 //            em.persist(fruit);
@@ -98,18 +99,18 @@ public class InitDb {
             // 회원 데이터 생성
             Address address1 = new Address("road1", "detail1", "11111");
             User user1 = createUser("user1", passwordEncoder.encode("1"), "user1", "01012345678",
-                    address1, Role.USER.toString(), LocalDateTime.now());
+                    "user1@catchshop.ac.kr", address1, Role.USER.toString());
             em.persist(user1);
 
             User user2 = createUser("user2", passwordEncoder.encode("2"), "user2", "01012345678",
-                    address1, Role.USER.toString(), LocalDateTime.now());
+                    "user2@catchshop.ac.kr", address1, Role.USER.toString());
             em.persist(user2);
 
             // author: 강수민 created: 22.02.23
             // 관리자 데이터 생성
             Address address2 = new Address("road2", "detail2", "22222");
             User admin1 = createUser("admin1", passwordEncoder.encode("1"), "admin1", "01012345678",
-                    address2, Role.ADMIN.toString(), LocalDateTime.now());
+                    "admin1@catchshop.ac.kr", address2, Role.ADMIN.toString());
             em.persist(admin1);
 
             // author: soohyun last modified: 22.03.05
@@ -123,36 +124,43 @@ public class InitDb {
 
             // author: 강수민 created: 22.03.15
             // question 데이터 생성
-            Question question1 = createQuestion(user1, product24, "상품문의", "상품 문의입니다", "secret", "답변 완료");
+            Question question1 = createQuestion(user1, product24, "상품문의", "상품 문의입니다", true, "1111");
             em.persist(question1);
-            Question question2 = createQuestion(user2, product24, "배송문의", "배송 문의입니다", "open", "미답변");
+            Question question2 = createQuestion(user2, product24, "배송문의", "배송 문의입니다", false, null);
             em.persist(question2);
-            Question question3 = createQuestion(user2, product24, "주문문의", "주문 문의입니다", "secret", "답변 완료");
+            Question question3 = createQuestion(user2, product24, "주문문의", "주문 문의입니다", true, "3333");
             question3.updatePassword("1234");
             em.persist(question3);
-            Question question4 = createQuestion(user1, product23, "상품문의", "상품 문의입니다", "secret", "답변 완료");
+            Question question4 = createQuestion(user1, product23, "상품문의", "상품 문의입니다", true, "4444");
             em.persist(question4);
-            Question question5 = createQuestion(user1, product23, "배송문의", "배송 문의입니다", "secret", "답변 완료");
+            Question question5 = createQuestion(user1, product23, "배송문의", "배송 문의입니다", true, "5555");
             em.persist(question5);
 
             // author: 강수민 created: 22.03.16
             // answer 데이터 생성
-            Answer answer1 = createAnswer(admin1, question1, "답변입니다.");
+            Answer answer1 = createAnswer(admin1, question1, "답변1입니다.");
             em.persist(answer1);
-            Answer answer2 = createAnswer(admin1, question1, "답변입니다.");
+            Answer answer2 = createAnswer(admin1, question1, "답변2입니다.");
             em.persist(answer2);
-            Answer answer3 = createAnswer(admin1, question1, "답변입니다.");
+            Answer answer3 = createAnswer(admin1, question1, "답변3입니다.");
             em.persist(answer3);
-            Answer answer4 = createAnswer(admin1, question3, "답변입니다.");
+            Answer answer4 = createAnswer(admin1, question3, "답변4입니다.");
             em.persist(answer4);
-            Answer answer5 = createAnswer(admin1, question4, "답변입니다.");
+            Answer answer5 = createAnswer(admin1, question4, "답변5입니다.");
             em.persist(answer5);
-            Answer answer6 = createAnswer(admin1, question5, "답변입니다.");
+            Answer answer6 = createAnswer(admin1, question5, "답변6입니다.");
             em.persist(answer6);
-            Answer answer7 = createAnswer(admin1, question5, "답변입니다.");
+            Answer answer7 = createAnswer(admin1, question5, "답변7입니다.");
             em.persist(answer7);
 
-
+            question1.updateAnswered();
+            em.persist(question1);
+            question3.updateAnswered();
+            em.persist(question3);
+            question4.updateAnswered();
+            em.persist(question4);
+            question5.updateAnswered();
+            em.persist(question5);
 
             Review review1 = createReview(user1, product24, "상품 리뷰1", 1);
             em.persist(review1);
@@ -194,10 +202,10 @@ public class InitDb {
 
         // modified by 강수민, 22.02.15 - setter 삭제
         private User createUser(String loginId, String password, String name, String telephone,
-                                Address address, String role, LocalDateTime joindate) {
+                                String email, Address address, String role) {
 
             User user = new User(loginId, password, name, telephone,
-                    address, role, joindate);
+                    email, address, role);
             return user;
         }
 
@@ -214,14 +222,14 @@ public class InitDb {
             return category;
         }
       
-        private Question createQuestion(User user, Product product, String category, String contents,
-                                        String secret, String answered) {
-            Question question = new Question(user, product, category, contents, secret, answered);
+        private Question createQuestion(User user, Product product, String category, String content,
+                                        Boolean secret, String password) {
+            Question question = new Question(user, product, category, content, secret, password);
             return question;
         }
 
-        private Answer createAnswer(User user, Question question, String contents) {
-            Answer answer = new Answer(user, question, contents);
+        private Answer createAnswer(User user, Question question, String content) {
+            Answer answer = new Answer(user, question, content);
             return answer;
         }
 

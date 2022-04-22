@@ -1,4 +1,4 @@
-package springboot.catchshop.admin;
+package springboot.catchshop.admin.dto;
 
 import lombok.Data;
 import lombok.Getter;

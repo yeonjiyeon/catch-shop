@@ -32,7 +32,7 @@ class UserServiceTest {
         // given
         JoinDto form = new JoinDto("userA", "A", "강유저", "010-1234-5678",
                 "건강시 행복구 사랑동", "부자아파트", "12345",
-                Role.USER.toString(), LocalDateTime.now());
+                "user1@catchshop.ac.kr", Role.USER.toString());
 
         User user = form.toEntity();
 
@@ -46,13 +46,11 @@ class UserServiceTest {
     @Test
     void 아이디중복확인() throws Exception {
         // given
-        JoinDto userA = new JoinDto("userA", "A", "강유저", "010-1234-5678",
-                "건강시 행복구 사랑동", "부자아파트", "12345",
-                Role.USER.toString(), LocalDateTime.now());
+        JoinDto userA = new JoinDto("userA", "A", "강유저", "010-1234-5678", "userA@catchshop.ac.kr",
+                "건강시 행복구 사랑동", "부자아파트", "12345", Role.USER.toString());
 
-        JoinDto userB = new JoinDto("userA", "A", "강유저", "010-1234-5678",
-                "건강시 행복구 사랑동", "부자아파트", "12345",
-                Role.USER.toString(), LocalDateTime.now());
+        JoinDto userB = new JoinDto("userA", "A", "강유저", "010-1234-5678", "userB@catchshop.ac.kr",
+                "건강시 행복구 사랑동", "부자아파트", "12345", Role.USER.toString());
 
         // when
         userService.join(userA.toEntity());
@@ -72,7 +70,7 @@ class UserServiceTest {
         // given
         Address address1 = new Address("road1", "detail1", "11111");
         User user1 = new User("user1", passwordEncoder.encode("1"), "user1",
-                "01012345678", address1, Role.USER.toString(), LocalDateTime.now());
+                "01012345678", "user1@catchshop.ac.kr", address1, Role.USER.toString());
 
         // 수정 전
         assertEquals("01012345678", user1.getTelephone());

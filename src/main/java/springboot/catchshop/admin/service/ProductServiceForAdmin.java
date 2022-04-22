@@ -1,4 +1,4 @@
-package springboot.catchshop.admin;
+package springboot.catchshop.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springboot.catchshop.admin.dto.ProductDto;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.repository.ProductRepository;
 import springboot.catchshop.repository.ReviewRepository;

@@ -75,10 +75,10 @@
                     <td th:text="${product.price}"></td>
                     <td th:text="${product.stock}"></td>
                     <td>
-                        <a href="#" th:href="@{/products/admin/{id}/edit (id=${product.id})}" class="btn btn-primary" role="button">수정</a>
+                        <a href="#" th:href="@{/products/{id}/admin/edit (id=${product.id})}" class="btn btn-primary" role="button">수정</a>
                     </td>
                     <td>
-                        <form th:action="@{/products/admin/{id} (id=${product.id})}" method="post">
+                        <form th:action="@{/products/{id}/admin (id=${product.id})}" method="post">
                             <input type="hidden" name="_method" value="delete">
                             <button type="submit" class="btn btn-primary">삭제</button>
                         </form>

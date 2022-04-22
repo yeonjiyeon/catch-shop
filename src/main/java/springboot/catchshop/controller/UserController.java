@@ -1,6 +1,9 @@
 package springboot.catchshop.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +23,7 @@ import java.time.LocalDateTime;
 
 // User Controller
 // author: 강수민, created: 22.02.01
-// last modified: 22.02.24
+// last modified: 22.04.20
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -28,6 +31,21 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+
+    // 카카오 로그인
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(String code, HttpServletRequest request) {
+        User loginUser = userService.kakaoLogin(code);
+
+        // 세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성
+        HttpSession session = request.getSession();
+        // 세션에 로그인 회원 정보 보관
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+        session.setAttribute(SessionConst.ROLE, loginUser.getRole()); // 사용자 권한 정보
+        session.setAttribute(SessionConst.ID, loginUser.getId().toString()); // 사용자 ID
+
+        return "redirect:/";
+    }
 
     // 회원 전체 조회 - 관리자 기능
     @GetMapping("/users")
@@ -45,9 +63,8 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(form.getPassword());
 
         JoinDto joinDto = new JoinDto(form.getLoginId(), encodedPassword,
-                form.getName(), form.getTelephone(),
-                form.getRoad(), form.getDetail(), form.getPostalcode(),
-                form.getRole(), LocalDateTime.now());
+                form.getName(), form.getTelephone(), form.getEmail(),
+                form.getRoad(), form.getDetail(), form.getPostalcode(), form.getRole());
 
         User user = joinDto.toEntity();
         userService.join(user);
@@ -88,9 +105,6 @@ public class UserController {
         userService.deleteUser(id);
         return "redirect:/";
     }
-
-
-//     Rest API TODO
 
     @GetMapping("/login")
     public String login(@ModelAttribute("loginDto") LoginDto form) {
