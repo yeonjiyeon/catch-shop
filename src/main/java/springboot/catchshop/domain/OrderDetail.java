@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderDetail {
+public class OrderDetail extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "orderdetail_id")
@@ -33,6 +33,8 @@ public class OrderDetail {
     private int orderCount; // 주문 수량
     private Long orderPrice; // 주문 금액
 
+    private Long totalPrice; // 주문 수량 * 주문 금액 - 수민 추가
+
     // 생성 메서드
     @Builder
     public OrderDetail(Order order, Product product, int orderCount, Long orderPrice) {
@@ -40,6 +42,11 @@ public class OrderDetail {
         this.product = product;
         this.orderCount = orderCount;
         this.orderPrice = orderPrice;
+        this.totalPrice = orderCount * orderPrice;
         order.getOrderDetailList().add(this);
+    }
+
+    public void calTotalPrice(Long totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

@@ -1,10 +1,12 @@
-package springboot.catchshop.admin;
+package springboot.catchshop.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import springboot.catchshop.admin.dto.ProductDto;
+import springboot.catchshop.admin.service.ProductServiceForAdmin;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.domain.Question;
 import springboot.catchshop.domain.User;
@@ -61,7 +63,7 @@ public class ProductControllerForAdmin {
     }
 
     // 상품 수정
-    @GetMapping("/products/admin/{id}/edit")
+    @GetMapping("/products/{id}/admin/edit")
     public String updateProductForAdmin(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
                                         @PathVariable("id") Long productId, Model model,
                                         @ModelAttribute("productDto") ProductDto dto) {
@@ -73,7 +75,7 @@ public class ProductControllerForAdmin {
         return "admin/update-product";
     }
 
-    @PutMapping("/products/admin/{id}/edit")
+    @PutMapping("/products/{id}/admin/edit")
     public String updateProductForAdmin(@SessionAttribute(name = SessionConst.ROLE, required = false) String role,
                                         @PathVariable("id") Long productId,
                                         @ModelAttribute ProductDto dto) throws IOException {
@@ -85,7 +87,7 @@ public class ProductControllerForAdmin {
     }
 
     // 상품 삭제
-    @DeleteMapping("/products/admin/{id}")
+    @DeleteMapping("/products/{id}/admin")
     public String deleteProductForAdmin(@SessionAttribute(name = SessionConst.ROLE, required = false) String role,
                                         @PathVariable("id") Long productId) {
         if (!Objects.equals(role, "ADMIN")) { // 권한없음
