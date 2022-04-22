@@ -1,5 +1,7 @@
 package springboot.catchshop.service;
 
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * Order Service
- * author: soohyun, last modified: 22.03.26
+ * author: soohyun, last modified: 22.04.09
  */
 
 @Service
@@ -25,9 +27,36 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final CartService cartService;
+    private final PaymentService paymentService;
 
     // 주문 생성
-    public Long createOrder(Order order, List<CartInfoDto> carts) {
+    public Long createOrder(User loginUser, Payment payment, List<CartInfoDto> carts, Long totalPrice, Long shippingFee) {
+
+        Order order = Order.builder()
+                .payment_id(payment.getImpUid())
+                .user(loginUser)
+                .orderName(payment.getBuyerName())
+                .orderTel(payment.getBuyerTel())
+                .postcode(payment.getBuyerPostcode())
+                .address(payment.getBuyerAddr())
+                .totalPrice(totalPrice)
+                .shippingFee(shippingFee)
+                .build();
+
+        Order saveOrder = orderRepository.save(order); // 주문 생성
+
+        // 주문 상세 생성
+        for(CartInfoDto cart: carts) {
+            Product product = cart.getProduct();
+            OrderDetail orderDetail = new OrderDetail(saveOrder, product, cart.getCartCount(), (long) product.getPrice());
+            orderDetailRepository.save(orderDetail);
+            product.removeStock(cart.getCartCount()); // 해당 상품 재고량 감소
+            cartService.deleteCart(cart.getId()); // 장바구니에서 해당 상품 삭제
+        }
+        return order.getId();
+    }
+
+    public Long createOrder2(Order order, List<CartInfoDto> carts) {
         Order saveOrder = orderRepository.save(order); // 주문 생성
 
         // 주문 상세 생성
@@ -39,7 +68,6 @@ public class OrderService {
             cartService.deleteCart(cart.getId()); // 장바구니에서 해당 상품 삭제
 
         }
-
         return order.getId();
     }
 
@@ -58,6 +86,7 @@ public class OrderService {
         // 주문 상태가 '준비중'일 경우 '취소'로 변경
         if (order.getOrderStatus() == OrderStatus.READY) {
             order.updateOrderStatus(OrderStatus.CANCEL);
+            paymentService.requestCancel(order.getPayment_id());
         }
 
         return order.getId();

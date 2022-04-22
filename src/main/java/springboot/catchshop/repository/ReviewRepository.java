@@ -21,5 +21,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("delete from Review ur where ur.user = :user")
     void deleteByUser(User user);
 
+    @Modifying
+    @Query("delete from Review p where p.product = :product")
+    void deleteByProduct(Product product);
 
 }

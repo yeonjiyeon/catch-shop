@@ -49,12 +49,16 @@ public class ProductServiceImpl implements ProductService{
 
     //상품 전체 조회
     @Override
-    public PageResultDTO<ProductDTO, Object[]> readProducts(PageRequestDTO requestDTO) {
+    public PageResultDTO<ProductDTO, Object[]> readProductsWithProductStatus(PageRequestDTO requestDTO, ProductStatus productStatus) {
         Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());//상품 정렬
-
+        Page<Object[]> result;
         //BooleanBuilder booleanBuilder = getSearch(requestDTO);
+        if(productStatus != null){
+            result = productRepository.getListPageAndProductStatus(pageable, productStatus);
+        }else{
+            result = productRepository.getListPage(pageable);
+        }
 
-        Page<Object[]> result = productRepository.getListPage(pageable);
 
 
         Function<Object[], ProductDTO> fn = (arr -> entityToDto(
@@ -66,22 +70,8 @@ public class ProductServiceImpl implements ProductService{
     }
     
     
-    /*productStatus별 조회
-    @Override
-    public PageResultDTO<ProductDTO, Object[]> readProductsWithProductStatus(PageRequestDTO requestDTO, ProductStatus productStatus) {
-        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());//상품 정렬
+    //productStatus별 조회
 
-
-        Page<Object[]> result = productRepository.getListPageAndProductStatus(pageable, productStatus);
-
-
-        Function<Object[], ProductDTO> fn = (arr -> entityToDto(
-            (Product)arr[0],
-            (Double)arr[1],
-            (Long)arr[2]
-        ));
-        return new PageResultDTO<>(result, fn);
-    }*/
 
 
 
