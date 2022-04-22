@@ -83,17 +83,15 @@
                 <!-- 연락처 -->
                 <div class="form-group" style="width:300px;margin:0 auto;">
                     <label th:for="telephone">연락처</label>
-                    <input type="text" name="telephone" class="form-control" th:value="${user.telephone}"
-                           th:class="${#fields.hasErrors('telephone')}? 'form-control fieldError' : 'form-control'">
+                    <input type="text" name="telephone" class="form-control" th:value="${user.telephone}">
                     <p th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Incorrect date</p><br>
                 </div>
 
                 <!-- 우편번호 -->
                 <div class="form-group" style="width:300px;margin:0 auto;">
                     <label th:for="postalcode">우편번호</label>
-                    <input type="text" name="postalcode" class="form-control" th:value="${user.address.postalcode}"
-                           th:class="${#fields.hasErrors('postalcode')}? 'form-control fieldError' : 'form-control'"
-                           id="postalcode" readonly="readonly">
+                    <input type="text" name="postalcode" class="form-control" id="postalcode" readonly="readonly"
+                           th:class="${#fields.hasErrors('postalcode')}? 'form-control fieldError' : 'form-control'">
                     <p th:if="${#fields.hasErrors('postalcode')}" th:errors="*{postalcode}">Incorrect date</p>
                     <button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button><br><br>
                 </div>
@@ -101,16 +99,15 @@
                 <!-- 도로명 주소 -->
                 <div class="form-group" style="width:300px;margin:0 auto;">
                     <label th:for="road">도로명 주소</label>
-                    <input type="text" name="road" class="form-control" th:value="${user.address.road}"
-                           th:class="${#fields.hasErrors('road')}? 'form-control fieldError' : 'form-control'"
-                           id="road" readonly="readonly">
+                    <input type="text" name="road" id="road" readonly="readonly" class="form-control"
+                           th:class="${#fields.hasErrors('road')}? 'form-control fieldError' : 'form-control'">
                     <p th:if="${#fields.hasErrors('road')}" th:errors="*{road}">Incorrect date</p><br>
                 </div>
 
                 <!-- 상세 주소 -->
                 <div class="form-group" style="width:300px;margin:0 auto;">
                     <label th:for="detail">상세 주소</label>
-                    <input type="text" name="detail" class="form-control" th:value="${user.address.detail}"
+                    <input type="text" name="detail" class="form-control"
                            th:class="${#fields.hasErrors('detail')}? 'form-control fieldError' : 'form-control'">
                     <p th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}">Incorrect date</p><br>
                 </div>

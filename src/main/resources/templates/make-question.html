@@ -79,7 +79,7 @@
             <div class="form-group">
                 <label for="content" class="qna_label">내용</label>
                 <textarea class="form-control" rows="5" id="content"
-                          name="content"  th:field="*{contents}"
+                          name="content" th:field="*{content}"
                           placeholder="내용을 입력하세요"></textarea>
                 <div id="content_cnt" style="float:right; color:orange;">0 / 200</div>
             </div><br>
@@ -89,7 +89,7 @@
                 <label for="img" class="form-label">첨부 이미지</label>
                 <input type="file" class="form-control" th:field="*{questionImg}"
                        onchange="imgPreview(img, event.target.files[0])"><br><br>
-                <img id="img" src="/assets/img/test_img.png" style="float:left;">
+                <img id="img" src="/assets/img/test_img.png" alt="" style="float:left;">
             </div><br><br>
 
             <!-- Q&A 등록 버튼 시작 -->

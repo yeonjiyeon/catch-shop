@@ -74,9 +74,15 @@
 								</div>
 							</form>
 							<!-- 로그인 폼 끝-->
-							
+
+<!--							<button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=7baf94300a3b84507f4904214230d743&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">-->
+<!--								카카오 로그인-->
+<!--							</button>-->
+
 							<!-- 회원가입, ID/PW 찾기 버튼 시작 -->
-							<a href="users" style="border-radius: 3px; width:300px;margin:0 auto;padding-bottom:10px;" class="bordered-btn">Join</a>
+							<a href="https://kauth.kakao.com/oauth/authorize?client_id=7baf94300a3b84507f4904214230d743&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code">
+								<img src="/assets/img/kakao_login_medium_wide.png"/></a><br>
+							<a href="users" style="border-radius: 3px; width:300px;margin:0 auto;padding-bottom:10px;" class="bordered-btn">Join</a><br>
 							<div style="width:300px;margin:0 auto;">
 								<a href="find-id" style="border-radius: 3px;width:49%;float:left;margin-left:0px;" class="bordered-btn">Find ID</a>
 								<a href="find-pw" style="border-radius: 3px;width:49%;float:right;margin-left:0px;" class="bordered-btn">Find PW</a>

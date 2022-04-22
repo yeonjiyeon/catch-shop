@@ -75,6 +75,14 @@
                     <td th:text="${member.address.detail}"></td>
                     <td th:text="${member.address.postalcode}"></td>
                 </tr>
+                <tr th:each="kakaoMember : ${pagingKakao}">
+                    <td th:text="${kakaoMember.name}"></td>
+                    <td th:text="${kakaoMember.kakaoId}"></td>
+                    <td th:text="${kakaoMember.telephone}"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 </tbody>
             </table><br>
             <!-- 회원 조회 끝 -->

@@ -1,12 +1,20 @@
 package springboot.catchshop.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
 import springboot.catchshop.dto.UpdateUserDto;
 import springboot.catchshop.repository.UserRepository;
+import springboot.catchshop.security.KakaoOAuth2;
+import springboot.catchshop.security.KakaoUserInfo;
+import springboot.catchshop.security.UserDetailsImpl;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +28,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final KakaoOAuth2 kakaoOAuth2;
+    private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
 
     /**
      * 회원가입
@@ -40,6 +50,50 @@ public class UserService {
                 .ifPresent(u -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+    }
+
+    /**
+     * 카카오 로그인
+     */
+    @Transactional
+    public User kakaoLogin(String authorizedCode) {
+        // 카카오 OAuth2 를 통해 카카오 사용자 정보 조회
+        KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
+        Long kakaoId = userInfo.getId();
+        String nickname = userInfo.getNickname();
+        String email = userInfo.getEmail();
+
+        // DB 에 중복된 Kakao Id 가 있는지 확인
+        User kakaoUser = userRepository.findByKakaoId(kakaoId).orElse(null);
+
+        if (kakaoUser == null) {
+            // 카카오 이메일과 동일한 이메일을 가진 회원이 있는지 확인
+            User sameEmailUser = userRepository.findByEmail(email).orElse(null);
+            if (sameEmailUser != null) {
+                kakaoUser = sameEmailUser;
+                // 카카오 이메일과 동일한 이메일 회원이 있는 경우
+                // 카카오 Id 를 회원정보에 저장
+                kakaoUser.updateKakaoId(kakaoId);
+            } else {
+                // 카카오 정보로 회원가입
+                // username = 카카오 nickname
+                // password = 카카오 Id + ADMIN TOKEN
+                String password = kakaoId + ADMIN_TOKEN;
+                String encodedPassword = passwordEncoder.encode(password);
+                // ROLE = 사용자
+                String role = Role.USER.toString();
+
+                kakaoUser = new User(nickname, encodedPassword, email, role, kakaoId);
+            }
+            userRepository.save(kakaoUser);
+        }
+
+        // 강제 로그인 처리
+        UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return kakaoUser;
     }
 
     /**

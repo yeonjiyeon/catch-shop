@@ -1,11 +1,10 @@
 package springboot.catchshop.domain;
 
 import lombok.*;
-import springboot.catchshop.admin.ProductDto;
+import springboot.catchshop.admin.dto.ProductDto;
 import springboot.catchshop.exception.NotEnoughStockException;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +50,8 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product")//상품
     private List<Review> reviews = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "product")
-//    private List<Question> questions = new ArrayList<>();
-
+    @OneToMany(mappedBy = "product")
+    private List<Question> questionList = new ArrayList<>();
 
     @Builder
     public Product(Long id,String name, String text, int price, int stock, String productImg, Category categories, ProductStatus productStatus){

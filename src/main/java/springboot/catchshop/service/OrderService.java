@@ -49,6 +49,7 @@ public class OrderService {
         for(CartInfoDto cart: carts) {
             Product product = cart.getProduct();
             OrderDetail orderDetail = new OrderDetail(saveOrder, product, cart.getCartCount(), (long) product.getPrice());
+            orderDetail.calTotalPrice(orderDetail.getOrderCount() * orderDetail.getOrderPrice());
             orderDetailRepository.save(orderDetail);
             product.removeStock(cart.getCartCount()); // 해당 상품 재고량 감소
             cartService.deleteCart(cart.getId()); // 장바구니에서 해당 상품 삭제
@@ -63,6 +64,7 @@ public class OrderService {
         for(CartInfoDto cart: carts) {
             Product product = cart.getProduct();
             OrderDetail orderDetail = new OrderDetail(saveOrder, product, cart.getCartCount(), (long) product.getPrice());
+            orderDetail.calTotalPrice(orderDetail.getOrderCount() * orderDetail.getOrderPrice());
             orderDetailRepository.save(orderDetail);
             product.removeStock(cart.getCartCount()); // 해당 상품 재고량 감소
             cartService.deleteCart(cart.getId()); // 장바구니에서 해당 상품 삭제
