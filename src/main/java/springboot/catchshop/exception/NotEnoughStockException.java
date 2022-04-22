@@ -1,5 +1,8 @@
 package springboot.catchshop.exception;
-
+/**
+ * NotEnoughStockException
+ * author:김지연
+ */
 public class NotEnoughStockException extends RuntimeException {
 
     public NotEnoughStockException() {

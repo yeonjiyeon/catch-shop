@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<style>
+    /*tab css*/
+    .tab{float:left; width:900px; }
+    .tabnav{font-size:0; width:900px; border:1px solid #ddd;}
+    .tabnav li{display: inline-block;  height:46px; text-align:center; border-right:1px solid #ddd;}
+    .tabnav li a:before{content:""; position:absolute; left:0; top:0px; width:100%; height:3px; }
+    .tabnav li a.active:before{background:#7ea21e;}
+    .tabnav li a.active{border-bottom:1px solid #fff;}
+    .tabnav li a{ position:relative; display:block; background: #f8f8f8; color: #000; padding:0 30px; line-height:46px; text-decoration:none; font-size:16px;}
+    .tabnav li a:hover,
+    .tabnav li a.active{background:#fff; color:#7ea21e; }
+    .tabcontent{padding: 20px; height:244px; border:1px solid #ddd; border-top:none;}
+</style>
+<body>
+
+<!--PreLoader-->
+<div class="loader">
+    <div class="loader-inner">
+        <div class="circle"></div>
+    </div>
+</div>
+<!--PreLoader Ends-->
+
+<!-- header -->
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<!-- end header -->
+
+
+<!-- search area -->
+<div class="search-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                <div class="search-bar">
+                    <div class="search-bar-tablecell">
+                        <h3>Search For:</h3>
+                        <input type="text" placeholder="Keywords">
+                        <button type="submit">Search <i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end search arewa -->
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Catch Shop</p>
+                    <h1>Q&A</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+
+<!-- more products -->
+<div class="more-products mb-150">
+    <div class="container">
+
+        <!--게시판 모음 -->
+        <div class="row">
+            <div class="tab">
+                <ul class="tabnav">
+                    <li><a href="#goods-review">후기</a></li>
+                    <li><a href="#goods-question">문의</a></li>
+                </ul>
+                <div class="tabcontent">
+                    <div class="goods-review" id="goods-review">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-12">
+                                    <div class="cart-table-wrap">
+                                        <table class="cart-table">
+                                            <thead class="cart-table-head">
+                                            <tr class="table-head-row">
+                                                <th class="product-image">번호</th>
+                                                <th class="product-name">제목</th>
+                                                <th class="product-price">작성자</th>
+                                                <th class="product-quantity">작성일</th>
+                                                <th class="product-total">도움</th>
+                                                <th>조회</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="table-body-row">
+                                                <td class="product-name">1</td>
+                                                <td class="product-price">1</td>
+                                                <td class="product-quantity">1</td>
+                                                <td class="product-total">1</td>
+                                                <td>1</td>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="product-name">1</td>
+                                                <td class="product-price">1</td>
+                                                <td class="product-quantity">1</td>
+                                                <td class="product-total">1</td>
+                                                <td>1</td>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="product-name">1</td>
+                                                <td class="product-price">1</td>
+                                                <td class="product-quantity">1</td>
+                                                <td class="product-total">1</td>
+                                                <td>1</td>
+                                                <td>1</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goods-question" id="goods-question">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-12">
+                                    <!-- 문의 등록 페이지 이동 버튼 -->
+<!--                                    <div class="cart-buttons" style="text-align: center; float: right;">-->
+<!--                                        <a href="#" th:href="@{/qna}" class="boxed-btn btn-lg black">+</a>-->
+<!--                                    </div><br><br>-->
+
+                                    <div>
+                                        <table class="cart-table">
+                                            <thead>
+                                            <tr>
+                                                <th>번호</th>
+                                                <th>카테고리</th>
+                                                <th>작성자</th>
+                                                <th>작성 날짜</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody th:each="question : ${questions}">
+                                            <tr>
+                                                <!-- 비밀글인 경우 비밀번호 입력 팝업 띄우기, 관리자는 해당 없음 -->
+                                                <td th:text="${question.id}" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+                                                <td th:text="${question.id}" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:attr="onclick=|alertPopup('*${question.password}')|" value="prompt"></td>
+
+                                                <td th:text="${question.category}"></td>
+                                                <td th:text="${question.user.loginId}"></td>
+                                                <td th:text="${#temporals.format(question.date, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                                <!--								<td th:if="${question.secret == 'secret'}" th:text="비밀 글입니다."></td>-->
+                                                <!--								<td th:unless="${question.secret == 'secret'}" th:text="${question.contents}"></td>-->
+                                            </tr>
+                                            <tr th:each="answer : ${question.answers}">
+                                                <td th:text="|Re: ${answer.user.role}|" th:if="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+                                                <td th:text="|Re: ${answer.user.role}|" th:unless="${question.secret == 'open' or loginUser.role == 'ADMIN'}" th:attr="onclick=|alertPopup('*${question.password}')|" value="prompt"></td>
+                                                <div id='password'/>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end more products -->
+
+
+<!-- footer -->
+<div th:replace="fragments/footer :: footer"/>
+
+
+<!-- jquery -->
+<script src="/assets/js/jquery-1.11.3.min.js"></script>
+<!-- bootstrap -->
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<!-- count down -->
+<script src="/assets/js/jquery.countdown.js"></script>
+<!-- isotope -->
+<script src="/assets/js/jquery.isotope-3.0.6.min.js"></script>
+<!-- waypoints -->
+<script src="/assets/js/waypoints.js"></script>
+<!-- owl carousel -->
+<script src="/assets/js/owl.carousel.min.js"></script>
+<!-- magnific popup -->
+<script src="/assets/js/jquery.magnific-popup.min.js"></script>
+<!-- mean menu -->
+<script src="/assets/js/jquery.meanmenu.min.js"></script>
+<!-- sticker js -->
+<script src="/assets/js/sticker.js"></script>
+<!-- main js -->
+<script src="/assets/js/main.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.tabcontent > div').hide();
+        $('.tabnav a').click(function () {
+            $('.tabcontent > div').hide().filter(this.hash).fadeIn();
+            $('.tabnav a').removeClass('active');
+            $(this).addClass('active');
+            return false;
+        }).filter(':eq(0)').click();
+    });
+
+    function alertPopup(password) {
+        let prompt = prompt('비밀번호를 입력하세요');
+        let inputPassword = Number(prompt);
+
+        if (String(inputPassword) != password) {
+            alert('비밀번호가 틀렸습니다!');
+        }
+    }
+</script>
+</body>
+</html>

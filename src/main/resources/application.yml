@@ -1,19 +1,48 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/catchshop
+    url: jdbc:h2:mem:./catch-shopdb;
+#    url: jdbc:h2:tcp://localhost/~/catchshop
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 30MB
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      default_batch_fetch_size:1000:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          show_sql: true
-          format_sql: true
+        #show_sql: true
+        format_sql: true
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+
+server:
+  servlet:
+    session:
+      timeout: 1800
+      tracking-modes: cookie

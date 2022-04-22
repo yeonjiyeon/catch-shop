@@ -5,108 +5,200 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import springboot.catchshop.form.JoinForm;
-import springboot.catchshop.form.LoginForm;
-import springboot.catchshop.domain.Address;
+import org.springframework.web.bind.annotation.*;
+import springboot.catchshop.dto.*;
 import springboot.catchshop.domain.Role;
 import springboot.catchshop.domain.User;
+import springboot.catchshop.service.MailService;
 import springboot.catchshop.service.UserService;
+import springboot.catchshop.session.SessionConst;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
+// User Controller
+// author: 강수민, created: 22.02.01
+// last modified: 22.02.24
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
-    // 회원가입
-    @GetMapping("/join")
-    public String join(Model model) {
-        model.addAttribute("joinForm", new JoinForm());
-        return "join"; // templates/join.html 렌더링
+    // 회원 전체 조회 - 관리자 기능
+    @GetMapping("/users")
+    public String getAllUsers(@ModelAttribute("joinDto") JoinDto form) {
+        return "join";
     }
 
-    @PostMapping("/join")
-    public String join(@Valid JoinForm form, BindingResult result) {
+    // 회원 가입
+    @PostMapping("/users")
+    public String join(@Valid @ModelAttribute JoinDto form, BindingResult result) {
         if (result.hasErrors()) {
             return "join";
         }
 
-        User user = new User();
-        user.setLoginId(form.getLoginId());
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
 
-        // 비밀번호 인코딩
-//        String password = passwordEncoder.encode(form.getPassword());
-        user.setPassword(form.getPassword());
+        JoinDto joinDto = new JoinDto(form.getLoginId(), encodedPassword,
+                form.getName(), form.getTelephone(),
+                form.getRoad(), form.getDetail(), form.getPostalcode(),
+                form.getRole(), LocalDateTime.now());
 
-        user.setName(form.getName());
-        user.setTelephone(form.getTelephone());
-        Address address = new Address(form.getRoad(), form.getDetail(), form.getPostalcode());
-        user.setAddress(address);
-        user.setRole(Role.USER);
-        user.setJoindate(LocalDateTime.now());
-
+        User user = joinDto.toEntity();
         userService.join(user);
         return "redirect:/";
     }
 
-    // 로그인
-    @GetMapping("/login")
-    public String login(@ModelAttribute("loginForm") LoginForm form) {
-        return "login"; // templates/login.html 렌더링
+    // 회원 가입 페이지 - 권한 설정 라디오 박스 값 전달
+    @ModelAttribute("roles")
+    public Role[] roles() {
+        return Role.values();
     }
 
+    // 회원 정보 상세 조회
+    @GetMapping("/users/{id}")
+    public String getOneUser(@ModelAttribute("updateUserDto") UpdateUserDto form,
+                             @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
+                             Model model, @PathVariable String id) {
+        model.addAttribute("user", loginUser);
+        return "mypage"; // templates/mypage.html 렌더링
+    }
+
+    // 회원 정보 수정
+    @PutMapping("/users/{id}")
+    public String updateUser(@Valid @ModelAttribute UpdateUserDto form, BindingResult result,
+                             @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
+                             @PathVariable String id) {
+
+        if (result.hasErrors()) {
+            return "mypage";
+        }
+
+        userService.updateUser(loginUser, form);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/users/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:/";
+    }
+
+
+//     Rest API TODO
+
+    @GetMapping("/login")
+    public String login(@ModelAttribute("loginDto") LoginDto form) {
+        return "login";
+    }
+
+    // 로그인
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletResponse response) {
+    public String login(@Valid @ModelAttribute LoginDto form, BindingResult bindingResult,
+                        HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "login";
         }
-        User loginUser = userService.login(form.getLoginId(), form.getPassword());
+
+        LoginDto loginDto = new LoginDto(form.getLoginId(), form.getPassword());
+        User loginUser = userService.login(loginDto.getLoginId(), loginDto.getPassword());
 
         if (loginUser == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "login";
         }
 
-        // 로그인 성공 처리
-
-        // 쿠키에 시간 정보를 주지 않으면 세션 쿠키 (브라우저 종료시 모두 종료)
-        Cookie idCookie = new Cookie("user_id", String.valueOf(loginUser.getId()));
-        response.addCookie(idCookie);
+        // 세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성
+        HttpSession session = request.getSession();
+        // 세션에 로그인 회원 정보 보관
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+        session.setAttribute(SessionConst.ROLE, loginUser.getRole()); // 사용자 권한 정보
+        session.setAttribute(SessionConst.ID, loginUser.getId().toString()); // 사용자 ID
 
         return "redirect:/";
     }
 
+    /**
+     * 로그아웃
+     * author: 강수민
+     * last modified: 22.02.08
+     */
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        expireCookie(request, response, "user_id");
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
         return "redirect:/";
     }
 
-    private void expireCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+    /**
+     * 아이디 찾기
+     * author: 강수민
+     * last modified: 22.02.08
+     */
+    @GetMapping("/find-id")
+    public String findId(@ModelAttribute("findIdDto") FindIdDto form) {
+        return "find-id"; // templates/find-id.html 렌더링
+    }
 
-        Cookie[] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            cookies[i].setMaxAge(0);
-            response.addCookie(cookies[i]);
+    @PostMapping("/find-id")
+    public String findId(@Valid @ModelAttribute FindIdDto form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "find-id";
         }
+
+        User user = userService.findId(form.getName(), form.getTelephone());
+
+        if (user == null) {
+            bindingResult.reject("findIdFail", "일치하는 사용자가 없습니다.");
+            return "find-id";
+        }
+
+        model.addAttribute("userId", user.getLoginId());
+        return "find-id";
     }
 
-    // 아이디, 비밀번호 찾기
-    @GetMapping("/findidpw")
-    public String findidpw() {
-        return "find-id-pw"; // templates/find-id-pw.html 렌더링
+    /**
+     * 비밀번호 찾기
+     * author: 강수민
+     * last modified: 22.02.08
+     */
+    @GetMapping("/find-pw")
+    public String findPw(@ModelAttribute("findPwDto") FindPwDto form) {
+        return "find-pw"; // templates/find-pw.html 렌더링
     }
+
+    @PostMapping("/find-pw")
+    public String findPw(@Valid @ModelAttribute FindPwDto form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "find-pw";
+        }
+
+        User user = userService.findPw(form.getLoginId());
+
+        if (user == null) {
+            bindingResult.reject("findPwFail", "일치하는 사용자가 없습니다.");
+            return "find-pw";
+        }
+
+        // 임시 비밀번호 생성 및 저장
+        String newPassword = userService.updatePw(user);
+
+        // 임시 비밀번호 발급 메일 전송
+        MailDto mailDto = new MailDto(form.getEmail(),
+                "캐치샵 임시 비밀번호 발급 메일입니다.",
+                "임시 비밀번호는 " + newPassword + " 입니다.");
+        String success = mailService.sendMail(mailDto);
+
+        model.addAttribute("success", success);
+        return "find-pw";
+    }
+
+
 }

@@ -2,6 +2,9 @@ package springboot.catchshop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
+import springboot.catchshop.admin.ProductServiceForAdmin;
+import springboot.catchshop.dto.QuestionDto;
 
 import javax.persistence.*;
 
@@ -12,7 +15,6 @@ import java.util.List;
 import static javax.persistence.FetchType.*;
 
 @Getter
-@Setter
 @Entity
 public class Question {
 
@@ -23,35 +25,86 @@ public class Question {
 
     // fk
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id") // 질문 작성자 번호
+    @JoinColumn(name = "user_id") // 작성자 번호
     private User user;
 
-    private QuestionCategory category;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "product_id") // 상품 번호
+    private Product product;
+
+    private String category;
     private String contents;
 
-    @Enumerated(value = EnumType.STRING)
-    private QuestionStatus secret; // 비밀글 여부
+    private String imgName; // 이미지명
+    private String imgPath; // 이미지 경로
+
+    private String secret; // 비밀글 여부
 
     private String password;
     private LocalDateTime date;
 
-    @Enumerated(value = EnumType.STRING)
-    private QuestionStatus answered; // 답변 여부
+    private String answered; // 답변 여부
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 
-    //==연관 관계 편의 메서드==//
-    public void setUser(User user) {
-        this.user = user;
-        user.getQuestions().add(this);
-    }
+    //==연관 관계 편의 메서드==//=
+//    public void setUser(User user) {
+//        this.user = user;
+//        user.getQuestions().add(this);
+//    }
+
+//    public void setProduct(Product product) {
+//        this.product = product;
+//        product.getQuestions().add(this);
+//    }
 
     //==생성 메서드==//
-    public static Question createQuestion(User user) {
-        Question question = new Question();
-        question.setUser(user);
-        question.setDate(LocalDateTime.now());
-        return question;
+    public void setQuestion(User user, Product product, QuestionDto dto) {
+//        this.setUser(user);
+//        this.setProduct(product);
+        this.user = user;
+        this.product = product;
+        this.category = dto.getCategory();
+        this.contents = dto.getContents();
+
+        if (dto.getSecret()) {
+            this.secret = "secret";
+            this.password = dto.getPassword();
+        } else {
+            this.secret = "open";
+        }
+
+        this.date = LocalDateTime.now();
+        this.answered = "미답변";
+    }
+
+    public void updateImageInfo(String imgName) {
+        this.imgName = imgName;
+        this.imgPath = "/files/" + imgName;
+    }
+
+    public Question() {
+
+    }
+
+    public Question(User user, Product product, String category,
+                    String contents, String secret, String answered) {
+        this.user = user;
+        this.product = product;
+        this.category =category;
+        this.contents = contents;
+        this.secret = secret;
+        this.answered = answered;
+        this.date = LocalDateTime.now();
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+
+    public void updateAnswered() {
+        this.answered = "답변 완료";
     }
 }
