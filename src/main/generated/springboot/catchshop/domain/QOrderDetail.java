@@ -22,7 +22,12 @@ public class QOrderDetail extends EntityPathBase<OrderDetail> {
 
     public static final QOrderDetail orderDetail = new QOrderDetail("orderDetail");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 
     public final QOrder order;
 
@@ -31,6 +36,11 @@ public class QOrderDetail extends EntityPathBase<OrderDetail> {
     public final NumberPath<Long> orderPrice = createNumber("orderPrice", Long.class);
 
     public final QProduct product;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
+
+    public final NumberPath<Long> totalPrice = createNumber("totalPrice", Long.class);
 
     public QOrderDetail(String variable) {
         this(OrderDetail.class, forVariable(variable), INITS);
