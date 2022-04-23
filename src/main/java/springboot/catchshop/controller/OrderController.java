@@ -54,7 +54,7 @@ public class OrderController {
     // 주문하기
     @PostMapping("/orders")
     @ResponseBody
-    public String payment(@RequestParam("imp_uid") String imp_uid, @RequestParam("paid_amount") BigDecimal paid_amount,
+    public String createOrder(@RequestParam("imp_uid") String imp_uid, @RequestParam("paid_amount") BigDecimal paid_amount,
                                             @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser) {
 
         IamportResponse<Payment> response = paymentService.requestPayment(imp_uid);
