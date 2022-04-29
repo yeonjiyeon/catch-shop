@@ -37,17 +37,14 @@ public class AnswerService {
 
     // 답변 수정
     @Transactional
-    public void updateAnswer(Long answerId, String content) {
-        Answer answer = answerRepository.findById(answerId).orElse(null);
-        assert answer != null;
+    public void updateAnswer(Answer answer, String content) {
         answer.updateAnswer(content);
         answerRepository.save(answer);
     }
 
     // 답변 삭제
     @Transactional
-    public void deleteAnswer(Long answerId) {
-        Answer answer = answerRepository.findById(answerId).orElseThrow( () -> new IllegalArgumentException("답변이 존재하지 않습니다."));
+    public void deleteAnswer(Answer answer) {
         answerRepository.delete(answer);
     }
 }

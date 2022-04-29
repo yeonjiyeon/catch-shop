@@ -75,4 +75,7 @@ public class Question extends BaseEntity {
         this.answered = "답변 완료";
     }
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

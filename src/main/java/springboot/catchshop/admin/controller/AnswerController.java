@@ -34,11 +34,11 @@ public class AnswerController {
     // 답변 수정
    @PutMapping("/answers/{id}")
    public String updateAnswer(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
-                              @PathVariable("id") Long answerId, @RequestParam("new-content") String content) {
+                              @PathVariable("id") Long answerId, @RequestParam("new-content-answer") String content) {
        Answer answer = answerRepository.findById(answerId).orElseThrow( () -> new IllegalArgumentException("답변이 존재하지 않습니다."));
        if (loginUser != null) {
-           answerService.updateAnswer(answerId, content);
-           return "redirect:/questions/"+answer.getQuestion().getId();
+           answerService.updateAnswer(answer, content);
+           return "redirect:/questions";
        } else {
            return "redirect:/login";
        }
@@ -49,8 +49,8 @@ public class AnswerController {
     public String deleteAnswer(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser, @PathVariable("id") Long answerId) {
         Answer answer = answerRepository.findById(answerId).orElseThrow( () -> new IllegalArgumentException("답변이 존재하지 않습니다."));
         if (loginUser != null) {
-            answerService.deleteAnswer(answerId);
-            return "redirect:/questions/"+answer.getQuestion().getId();
+            answerService.deleteAnswer(answer);
+            return "redirect:/questions";
         } else {
             return "redirect:/login";
         }

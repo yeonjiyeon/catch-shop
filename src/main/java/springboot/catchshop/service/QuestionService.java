@@ -42,4 +42,17 @@ public class QuestionService {
         return question;
     }
 
+    // 문의 수정
+    @Transactional
+    public Question updateQuestion(Question question, String content) {
+        question.updateContent(content);
+        questionRepository.save(question);
+        return question;
+    }
+
+    // 문의 삭제
+    @Transactional
+    public void deleteQuestion(Question question) {
+        questionRepository.delete(question);
+    }
 }
