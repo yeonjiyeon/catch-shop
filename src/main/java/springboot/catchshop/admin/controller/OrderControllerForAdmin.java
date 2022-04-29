@@ -17,7 +17,7 @@ import java.util.List;
 // 관리자용 Order Controller
 // author: 강수민, created: 22.03.20
 // last modified: 22.03.20
-// author: soohyun, last modified: 22.03.26
+// author: soohyun, last modified: 22.04.24
 
 @Controller
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class OrderControllerForAdmin {
     public String orderListForAdmin(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) User loginUser,
                                  Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
         if (loginUser == null) {
-            return "login";
+            return "redirect:/login";
         }
         Page<Order> orderList = orderServiceForAdmin.getAllOrdersWithPaging(page);
         model.addAttribute("paging", orderList);

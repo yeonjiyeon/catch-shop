@@ -22,15 +22,15 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public static final QQuestion question = new QQuestion("question");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final StringPath answered = createString("answered");
 
-    public final ListPath<Answer, QAnswer> answers = this.<Answer, QAnswer>createList("answers", Answer.class, QAnswer.class, PathInits.DIRECT2);
+    public final ListPath<Answer, QAnswer> answerList = this.<Answer, QAnswer>createList("answerList", Answer.class, QAnswer.class, PathInits.DIRECT2);
 
     public final StringPath category = createString("category");
 
-    public final StringPath contents = createString("contents");
-
-    public final DateTimePath<java.time.LocalDateTime> date = createDateTime("date", java.time.LocalDateTime.class);
+    public final StringPath content = createString("content");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -38,9 +38,15 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public final StringPath imgPath = createString("imgPath");
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
+
     public final StringPath password = createString("password");
 
     public final QProduct product;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
     public final StringPath secret = createString("secret");
 
