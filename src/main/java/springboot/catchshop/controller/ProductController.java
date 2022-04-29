@@ -95,4 +95,12 @@ public class ProductController {
         redirectAttributes.addFlashAttribute("msg", id);
     }
 
+    @GetMapping("/products/{id}")
+    public String singleProduct(@PathVariable("id") Long productId, Model model) {
+        ProductDTO dto = productService.readSingleProduct(productId);
+        model.addAttribute("dto", dto);
+        List<Question> questions = questionRepository.findByProductId(productId);
+        model.addAttribute("questions", questions);
+        return "single-product";
+    }
 }

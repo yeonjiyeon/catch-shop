@@ -43,6 +43,7 @@ public class UserController {
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
         session.setAttribute(SessionConst.ROLE, loginUser.getRole()); // 사용자 권한 정보
         session.setAttribute(SessionConst.ID, loginUser.getId().toString()); // 사용자 ID
+        session.setAttribute(SessionConst.LOGIN_ID, loginUser.getLoginId()); // 사용자 로그인 ID
 
         return "redirect:/";
     }
@@ -133,6 +134,7 @@ public class UserController {
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
         session.setAttribute(SessionConst.ROLE, loginUser.getRole()); // 사용자 권한 정보
         session.setAttribute(SessionConst.ID, loginUser.getId().toString()); // 사용자 ID
+        session.setAttribute(SessionConst.LOGIN_ID, loginUser.getLoginId()); // 사용자 로그인 ID
 
         return "redirect:/";
     }

@@ -64,6 +64,7 @@
                     <th>상세 주소</th>
                     <th>우편 번호</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -74,6 +75,8 @@
                     <td th:text="${member.address.road}"></td>
                     <td th:text="${member.address.detail}"></td>
                     <td th:text="${member.address.postalcode}"></td>
+                    <td th:if="${member.role} == 'USER'"><a href="#" th:href="@{/members/{id}/orders (id=${member.id})}" class="btn btn-primary" role="button">주문내역</a></td>
+                    <td th:if="${member.role} == 'USER'"><a href="#" th:href="@{/members/{id}/questions (id=${member.id})}" class="btn btn-primary" role="button">문의내역</a></td>
                 </tr>
                 <tr th:each="kakaoMember : ${pagingKakao}">
                     <td th:text="${kakaoMember.name}"></td>
@@ -82,6 +85,8 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td th:if="${member.role} == 'USER'"><a href="#" th:href="@{/members/{id}/orders (id=${member.id})}" class="btn btn-primary" role="button">주문내역</a></td>
+                    <td th:if="${member.role} == 'USER'"><a href="#" th:href="@{/members/{id}/questions (id=${member.id})}" class="btn btn-primary" role="button">문의내역</a></td>
                 </tr>
                 </tbody>
             </table><br>

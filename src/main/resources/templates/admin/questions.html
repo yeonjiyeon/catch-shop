@@ -62,6 +62,7 @@
                     <th>내용</th>
                     <th>답변 여부</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody th:each="question : ${questions}">
@@ -75,9 +76,25 @@
                     <td>
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newAnswerModal" th:data-id="${question.id}">답변하기</button>
                     </td>
+                    <td>
+                        <form th:action="@{/questions/{id} (id=${question.id})}" method="post">
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" class="btn btn-info btn-lg">삭제</button>
+                        </form>
+                    </td>
                 </tr>
                 <tr th:each="answer : ${question.answerList}">
                     <td th:text="|Re: ${answer.content}|" th:onclick="|location.href='@{/questions/{id} (id=${question.id})}'|"></td>
+                    <td>
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#updateAnswerModal"
+                                th:data-id="${answer.id}" th:data-content="${answer.content}">수정</button>
+                    </td>
+                    <td>
+                        <form th:action="@{/answers/{id} (id=${answer.id})}" method="post">
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" class="btn btn-info btn-lg">삭제</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table><br>
@@ -114,6 +131,36 @@
 </div>
 <!-- 새로운 답변 등록 Modal 끝 -->
 
+<!-- 답변 수정 Modal 시작 -->
+<div class="modal fade" id="updateAnswerModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">답변 수정하기</h4>
+            </div>
+
+            <!-- 답변 수정 폼 시작 -->
+            <form method="post" id="answerUpdateForm" >
+                <input type="hidden" name="_method" value="put">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <textarea class="form-control" id="new-content-answer" th:name="new-content-answer"></textarea>
+                    </div><br><br>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary">수정</button>
+                </div>
+            </form>
+            <!-- 답변 수정 폼 끝 -->
+        </div>
+    </div>
+</div>
+<!-- 답변 수정 Modal 끝 -->
+
 <!-- footer -->
 <div th:replace="fragments/footer :: footer"/>
 
@@ -146,6 +193,12 @@
             $(".modal-content #newAnswerForm").attr("action", "/questions/" + $(e.relatedTarget).data('id') + "/answers");
 
         });
+
+        $('#updateAnswerModal').on('show.bs.modal', function (e) {
+            $(".modal-content #answerUpdateForm").attr("action", "/answers/" + $(e.relatedTarget).data('id'));
+            $(".modal-body #new-content-answer").val($(e.relatedTarget).data('content'));
+        });
+
     });
 </script>
 </body>
