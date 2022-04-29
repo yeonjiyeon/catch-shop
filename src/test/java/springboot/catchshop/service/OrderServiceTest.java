@@ -11,6 +11,7 @@ import springboot.catchshop.domain.*;
 import springboot.catchshop.dto.CartResponseDto;
 import springboot.catchshop.dto.OrderDetailDto;
 import springboot.catchshop.dto.OrderResponseDto;
+import springboot.catchshop.dto.PaymentDto;
 import springboot.catchshop.repository.*;
 
 import javax.persistence.EntityManager;
@@ -19,10 +20,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static springboot.catchshop.domain.QOrder.order;
 
 /**
  * OrderService Test
- * author: soohyun, last modified: 22.04.02
+ * author: soohyun, last modified: 22.04.21
  */
 
 @SpringBootTest
@@ -45,7 +47,7 @@ class OrderServiceTest {
 
         // 사용자 생성
         address = new Address("road1", "detail1", "11111");
-        user = new User("user1", "user1", "user1", "01012345678", address, "USER", LocalDateTime.now());
+        user = new User("user1", "user1", "user1", "01012345678", "user1@catchshop.ac.kr", address, "USER");
         em.persist(user);
 
         // 상품 생성
@@ -73,11 +75,10 @@ class OrderServiceTest {
 
         // given
         CartResponseDto carts = cartService.orderCartList(user.getId());
-        Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
-        Long userId = user.getId();
+        PaymentDto paymentDto = new PaymentDto("imp_111111111111", "name1", "01012345678", "11111", "address1");
 
         // when
-        Long saveId = orderService.createOrder2(order, carts.getCartList());
+        Long saveId = orderService.createOrder(user, paymentDto);
 
         // then
         // 주문
@@ -110,8 +111,8 @@ class OrderServiceTest {
 
         // given
         CartResponseDto carts = cartService.orderCartList(user.getId());
-        Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
-        orderService.createOrder2(order, carts.getCartList());
+        PaymentDto paymentDto = new PaymentDto("imp_111111111111", "name1", "01012345678", "11111", "address1");
+        orderService.createOrder(user, paymentDto);
 
         // when
         List<OrderResponseDto> orders = orderService.orderList(user);
@@ -145,15 +146,16 @@ class OrderServiceTest {
 
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
-            Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
-            orderService.createOrder2(order, carts.getCartList());
+            PaymentDto paymentDto = new PaymentDto("imp_111111111111", "name1", "01012345678", "11111", "address1");
+            Long orderId = orderService.createOrder(user, paymentDto);
+            Optional<Order> findOrder = orderRepository.findById(orderId);
 
             // when
-            Long cancelId = orderService.cancelOrder(order.getId());
+            Long cancelId = orderService.cancelOrder(orderId);
 
             // then
-            assertEquals(cancelId, order.getId());
-            assertEquals(order.getOrderStatus(), OrderStatus.CANCEL);
+            assertEquals(cancelId, orderId);
+            assertEquals(findOrder.get().getOrderStatus(), OrderStatus.CANCEL);
         }
 
         @Test
@@ -162,16 +164,17 @@ class OrderServiceTest {
 
             // given
             CartResponseDto carts = cartService.orderCartList(user.getId());
-            Order order = new Order("imp_111111111111", user, "name1", "01012345678", "11111", "address1", carts.getTotalAllProductPrice(), carts.getShippingFee());
-            orderService.createOrder2(order, carts.getCartList());
-            order.updateOrderStatus(OrderStatus.DELIVERY);
+            PaymentDto paymentDto = new PaymentDto("imp_111111111111", "name1", "01012345678", "11111", "address1");
+            Long orderId = orderService.createOrder(user, paymentDto);
+            Optional<Order> findOrder = orderRepository.findById(orderId);
+            findOrder.get().updateOrderStatus(OrderStatus.DELIVERY);
 
             // when
-            Long cancelId = orderService.cancelOrder(order.getId());
+            Long cancelId = orderService.cancelOrder(orderId);
 
             // then
-            assertEquals(cancelId, order.getId());
-            assertEquals(order.getOrderStatus(), OrderStatus.DELIVERY);
+            assertEquals(cancelId, orderId);
+            assertEquals(findOrder.get().getOrderStatus(), OrderStatus.DELIVERY);
         }
     }
 }

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import springboot.catchshop.admin.ProductServiceForAdmin;
+import springboot.catchshop.admin.service.ProductServiceForAdmin;
 import springboot.catchshop.domain.Product;
 import springboot.catchshop.repository.ProductRepository;
 

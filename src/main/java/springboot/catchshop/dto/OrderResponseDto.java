@@ -28,6 +28,7 @@ public class OrderResponseDto {
     private Long totalPrice; // 최종 상품 금액
     private Long shippingFee; // 배송비
 
+    // 생성 메서드
     public OrderResponseDto(Order order) {
         this.id = order.getId();
         this.orderDetailList = order.getOrderDetailList().stream().map(d -> new OrderDetailDto(d)).collect(Collectors.toList());

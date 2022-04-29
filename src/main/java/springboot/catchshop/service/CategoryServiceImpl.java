@@ -37,13 +37,13 @@ public class CategoryServiceImpl implements CategoryService {
             if (!categoryRepository.existsByName("fruit")){
                 categoryRepository.save(rootCategory);
             }
-            category.setParent(rootCategory);
-            category.setLevel(1);
+            category.changeParent(rootCategory);
+            category.changeLevel(1);
         }else {//부모 카테고리가 있는 경우
             String parent = categoryDTO.getParent();
             Category parentCategory = categoryRepository.findByName(parent)
                     .orElseThrow(() -> new IllegalStateException("부모 카테고리 없음 예외"));
-            category.setParent(parentCategory);
+            category.changeParent(parentCategory);
             parentCategory.getChild().add(category);
         }
 
@@ -88,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
             if (!parentCategory.getName().equals("fruit")){
                 parentCategory.getChild().remove(category);
             }
-            category.setName("Deleted category");
+            category.changeName("Deleted category");
         }
 
 
@@ -100,7 +100,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Long updateCategory(Long id, CategoryDTO categoryDTO) {
         Category category = findCategory(id);
 
-        category.setName(categoryDTO.getName());
+        category.changeName(categoryDTO.getName());
 
         return category.getId();
     }

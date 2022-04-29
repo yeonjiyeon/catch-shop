@@ -3,7 +3,6 @@ package springboot.catchshop.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import springboot.catchshop.domain.Address;
 import springboot.catchshop.domain.Order;
 import springboot.catchshop.domain.User;
 

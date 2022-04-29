@@ -1,14 +1,10 @@
 package springboot.catchshop.service;
 
-import com.siot.IamportRestClient.response.IamportResponse;
-import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.catchshop.domain.*;
-import springboot.catchshop.dto.CartInfoDto;
-import springboot.catchshop.dto.OrderRequestDto;
-import springboot.catchshop.dto.OrderResponseDto;
+import springboot.catchshop.dto.*;
 import springboot.catchshop.repository.*;
 
 import java.util.List;
@@ -16,7 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * Order Service
- * author: soohyun, last modified: 22.04.09
+ * author: soohyun, last modified: 22.04.21
  */
 
 @Service
@@ -29,32 +25,51 @@ public class OrderService {
     private final CartService cartService;
     private final PaymentService paymentService;
 
-    // 주문 생성
-    public Long createOrder(User loginUser, Payment payment, List<CartInfoDto> carts, Long totalPrice, Long shippingFee) {
+    // 주문 생성 (결제 시스템 포함)
+    public Long createOrder(User loginUser, PaymentDto paymentDto) {
+
+        CartResponseDto carts = cartService.orderCartList(loginUser.getId()); // 주문 가능한 장바구니 목록
 
         Order order = Order.builder()
-                .payment_id(payment.getImpUid())
+                .payment_id(paymentDto.getImpUid())
                 .user(loginUser)
-                .orderName(payment.getBuyerName())
-                .orderTel(payment.getBuyerTel())
-                .postcode(payment.getBuyerPostcode())
-                .address(payment.getBuyerAddr())
-                .totalPrice(totalPrice)
-                .shippingFee(shippingFee)
+                .orderName(paymentDto.getBuyerName())
+                .orderTel(paymentDto.getBuyerTel())
+                .postcode(paymentDto.getBuyerPostcode())
+                .address(paymentDto.getBuyerAddr())
+                .totalPrice(carts.getTotalAllProductPrice())
+                .shippingFee(carts.getShippingFee())
                 .build();
 
         Order saveOrder = orderRepository.save(order); // 주문 생성
 
         // 주문 상세 생성
-        for(CartInfoDto cart: carts) {
+        for(CartInfoDto cart: carts.getCartList()) {
             Product product = cart.getProduct();
             OrderDetail orderDetail = new OrderDetail(saveOrder, product, cart.getCartCount(), (long) product.getPrice());
+            orderDetail.calTotalPrice(orderDetail.getOrderCount() * orderDetail.getOrderPrice());
             orderDetailRepository.save(orderDetail);
             product.removeStock(cart.getCartCount()); // 해당 상품 재고량 감소
             cartService.deleteCart(cart.getId()); // 장바구니에서 해당 상품 삭제
         }
         return order.getId();
     }
+
+    // 주문 생성 (결제 시스템 제외)
+//    public Long createOrder2(Order order, List<CartInfoDto> carts) {
+//        Order saveOrder = orderRepository.save(order); // 주문 생성
+//
+//        // 주문 상세 생성
+//        for(CartInfoDto cart: carts) {
+//            Product product = cart.getProduct();
+//            OrderDetail orderDetail = new OrderDetail(saveOrder, product, cart.getCartCount(), (long) product.getPrice());
+//            orderDetailRepository.save(orderDetail);
+//            product.removeStock(cart.getCartCount()); // 해당 상품 재고량 감소
+//            cartService.deleteCart(cart.getId()); // 장바구니에서 해당 상품 삭제
+//
+//        }
+//        return order.getId();
+//    }
 
     public Long createOrder2(Order order, List<CartInfoDto> carts) {
         Order saveOrder = orderRepository.save(order); // 주문 생성
@@ -63,6 +78,7 @@ public class OrderService {
         for(CartInfoDto cart: carts) {
             Product product = cart.getProduct();
             OrderDetail orderDetail = new OrderDetail(saveOrder, product, cart.getCartCount(), (long) product.getPrice());
+            orderDetail.calTotalPrice(orderDetail.getOrderCount() * orderDetail.getOrderPrice());
             orderDetailRepository.save(orderDetail);
             product.removeStock(cart.getCartCount()); // 해당 상품 재고량 감소
             cartService.deleteCart(cart.getId()); // 장바구니에서 해당 상품 삭제

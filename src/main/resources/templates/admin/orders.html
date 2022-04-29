@@ -50,44 +50,49 @@
 
 <div class="single-product mt-150 mb-150">
     <div class="container">
-
-        <!-- 전체 주문 조회 시작  -->
-        <div>
-            <table class="cart-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>주문자</th>
-                    <th>금액</th>
-                    <th>주문 일시</th>
-                    <th>주문 상태</th>
-                    <th>주문 취소</th>
-                    <th>주문 상세</th>
-                </tr>
-                </thead>
-                <tbody th:each="order : ${paging}">
-                <tr>
-                    <td th:text="${order.id}"></td>
-                    <td th:text="${order.user.loginId}"></td>
-                    <td th:text="${order.totalPrice + order.shippingFee}"></td>
-                    <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <td th:text="${order.orderStatus}"></td>
-                    <td>
-                        <form th:if="${order.orderStatus.toString().equals('READY')}" th:action="@{'/orders/' + ${order.id} + '/admin'}" th:method="post">
-                            <input type="hidden" name="_method" value="patch">
-                            <button class="btn btn-primary">주문 취소</button>
-                        </form>
-                    </td>
-                    <td>
-                        <a th:href="@{'/orders/' + ${order.id} + '/admin'}"><button class="btn btn-primary">주문 상세</button></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table><br>
+            <!-- 전체 주문 조회 시작  -->
+            <div class="cart-table-wrap">
+                <table class="cart-table">
+                    <thead class="cart-table-head">
+                    <tr class="table-head-row">
+                        <th>번호</th>
+                        <th>주문자</th>
+                        <th>금액</th>
+                        <th>주문 일시</th>
+                        <th>주문 상태</th>
+                        <th>주문 변경</th>
+                        <th>주문 상세</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="order : ${paging}">
+                    <tr>
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${order.user.loginId}"></td>
+                        <td th:text="${order.totalPrice + order.shippingFee}"></td>
+                        <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${order.orderStatus}"></td>
+                        <td>
+                            <form th:if="${order.orderStatus.toString().equals('READY')}" th:action="@{'/orders/' + ${order.id} + '/admin/status'}" th:method="post">
+                                <input type="hidden" name="_method" value="patch">
+                                <button class="btn btn-primary">배송 완료</button>
+                            </form>
+                            <br>
+                            <form th:if="${order.orderStatus.toString().equals('READY')}" th:action="@{'/orders/' + ${order.id} + '/admin'}" th:method="post">
+                                <input type="hidden" name="_method" value="patch">
+                                <button class="btn btn-primary">주문 취소</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a th:href="@{'/orders/' + ${order.id} + '/admin'}"><button class="btn btn-primary">주문 상세</button></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- 전체 주문 조회 끝 -->
 
             <!-- 페이징 처리 시작 -->
-            <div th:if="${!paging.isEmpty()}">
+            <div class="mt-5 mb-5" th:if="${!paging.isEmpty()}">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
                         <a class="page-link" th:href="@{|?page=${paging.number-1}|}">
@@ -106,7 +111,6 @@
                 </ul>
             </div>
             <!-- 페이징 처리 끝 -->
-        </div>
     </div>
 
     <!-- footer -->

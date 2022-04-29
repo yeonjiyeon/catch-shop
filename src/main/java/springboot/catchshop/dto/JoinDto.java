@@ -27,6 +27,9 @@ public class JoinDto {
     private String telephone;
 
     @NotEmpty(message = "필수 항목입니다.")
+    private String email;
+
+    @NotEmpty(message = "필수 항목입니다.")
     private String road;
 
     @NotEmpty(message = "필수 항목입니다.")
@@ -43,29 +46,29 @@ public class JoinDto {
 
     }
 
-    public JoinDto(String loginId, String password, String name, String telephone,
-                   String road, String detail, String postalcode,
-                   String role, LocalDateTime joindate) {
+    public JoinDto(String loginId, String password, String name, String telephone, String email,
+                   String road, String detail, String postalcode, String role) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.telephone = telephone;
+        this.email = email;
         this.road = road;
         this.detail = detail;
         this.postalcode = postalcode;
         this.role = role;
-        this.joindate = joindate;
     }
 
     public User toEntity() {
-        return User.builder()
-                .loginId(loginId)
-                .password(password)
-                .name(name)
-                .telephone(telephone)
-                .address(new Address(road, detail, postalcode))
-                .role(role)
-                .joindate(joindate)
-                .build();
+        return new User(loginId, password, name, telephone, email, new Address(road, detail, postalcode), role);
+//        return User.builder()
+//                .loginId(loginId)
+//                .password(password)
+//                .name(name)
+//                .telephone(telephone)
+//                .address(new Address(road, detail, postalcode))
+//                .role(role)
+//                .joindate(joindate)
+//                .build();
     }
 }

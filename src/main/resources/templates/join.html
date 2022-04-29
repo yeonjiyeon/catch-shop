@@ -85,6 +85,14 @@
 				<p th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Incorrect date</p><br>
 			</div>
 
+			<!-- 이메일 -->
+			<div class="form-group" style="width:300px;margin:0 auto;">
+				<label th:for="email">이메일</label>
+				<input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요"
+					   th:class="${#fields.hasErrors('email')}? 'form-control fieldError' : 'form-control'">
+				<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect date</p><br>
+			</div>
+
 			<!-- 우편번호 -->
 			<div class="form-group" style="width:300px;margin:0 auto;">
 				<label th:for="postalcode">우편번호</label>

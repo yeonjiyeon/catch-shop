@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
  */
 @NoArgsConstructor
 @Entity
-@Getter @Setter
+@Getter
 public class Category {
 
     @Id @GeneratedValue
@@ -49,8 +49,19 @@ public class Category {
     //==연관관계 메서드==//
     public void addChildCategory(Category child) {
         this.child.add(child);
-        child.setParent(this);
+        child.changeParent(this);
     }
 
 
+    public void changeParent(Category parentCategory) {
+        this.parent = parentCategory;
+    }
+
+    public void changeLevel(int level) {
+        this.level = level;
+    }
+
+    public void changeName(String categoryName) {
+        this.name = categoryName;
+    }
 }

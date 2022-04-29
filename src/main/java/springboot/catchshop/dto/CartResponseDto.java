@@ -1,7 +1,6 @@
 package springboot.catchshop.dto;
 
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.List;
 
