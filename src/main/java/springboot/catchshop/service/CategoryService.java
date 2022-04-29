@@ -4,19 +4,19 @@ import springboot.catchshop.dto.CategoryDTO;
 
 import java.util.List;
 import java.util.Map;
+import springboot.catchshop.dto.CategoryRequestDTO;
 
 public interface CategoryService {
 
     //카테고리 등록
-    public Long saveCategory (CategoryDTO categoryDTO);
+    public void saveCategory (CategoryRequestDTO requestDTO);
 
 
     //카테고리 조회
-    public List<CategoryDTO> getCategory(String name);
+    public List<CategoryDTO> readAll();
 
     //카테고리 삭제
-    public void deleteCategory (Long id);
+    public void delete(Long id);
 
-    //카테고리 수정
-    public Long updateCategory (Long id, CategoryDTO categoryDTO);
+
 }

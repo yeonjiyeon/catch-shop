@@ -61,6 +61,8 @@ public class User extends BaseEntity {
         this.kakaoId = kakaoId;
     }
 
+
+
     public void updatePassword(String password) {
         this.password = password;
     }

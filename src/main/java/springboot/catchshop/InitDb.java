@@ -2,6 +2,7 @@ package springboot.catchshop;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +12,16 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.Date;
+import springboot.catchshop.repository.CategoryRepository;
 
 @Component
 @RequiredArgsConstructor
 public class InitDb {
 
     private final InitService initService;
+
+
+
 
     @PostConstruct
     public void init() {
@@ -30,20 +35,15 @@ public class InitDb {
 
         private final EntityManager em;
         private final PasswordEncoder passwordEncoder;
-
+        private final CategoryRepository categoryRepository;
         @Transactional
         public void dbInit() {
-//            Category fruit = createCategory("fruit", 0);
-//            em.persist(fruit);
-            Category strawberry = createCategory("strawberry",1);
-            em.persist(strawberry);
-            Category berry = createCategory("berry", 1);
-            em.persist(berry);
-            Category lemon = createCategory("lemon",1);
-            em.persist(lemon);
-            Category kiwi = createCategory("kiwi",1);
-            em.persist(kiwi);
-
+            Category fruit = categoryRepository.save(new Category("fruit", null));
+            Category strawberry = categoryRepository.save(new Category("strawberry", fruit));
+            Category berry = categoryRepository.save(new Category("berry", fruit));
+            Category lemon = categoryRepository.save(new Category("lemon", fruit));
+            Category kiwi = categoryRepository.save(new Category("kiwi", fruit));
+            Category vegetable = categoryRepository.save(new Category("vegetable", null));
 
 
             Product product1 = createProduct("product1", "/assets/img/products/product-img-1.jpg", "/assets/img/products/product-img-1.jpg", 10000, 100,strawberry, ProductStatus.BEST);
@@ -214,13 +214,7 @@ public class InitDb {
             return cart;
         }
 
-        private Category createCategory(String name, Integer level) {
-            Category category = Category.builder()
-                    .name(name)
-                    .level(level)
-                    .build();
-            return category;
-        }
+
       
         private Question createQuestion(User user, Product product, String category, String content,
                                         Boolean secret, String password) {
@@ -250,13 +244,5 @@ public class InitDb {
 
     }
 
-//    private Category createCategory1(String name, Category parent, Integer level) {
-//        Category category = Category.builder()
-//                .name(name)
-//                .parent(parent)
-//                .level(level)
-//                .build();
-//        return category;
-//    }
 }
 
