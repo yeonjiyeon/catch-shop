@@ -22,19 +22,31 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final QAddress address;
 
-    public final ListPath<Answer, QAnswer> answers = this.<Answer, QAnswer>createList("answers", Answer.class, QAnswer.class, PathInits.DIRECT2);
+    public final ListPath<Answer, QAnswer> answerList = this.<Answer, QAnswer>createList("answerList", Answer.class, QAnswer.class, PathInits.DIRECT2);
+
+    public final StringPath email = createString("email");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final DateTimePath<java.time.LocalDateTime> joindate = createDateTime("joindate", java.time.LocalDateTime.class);
+    public final NumberPath<Long> kakaoId = createNumber("kakaoId", Long.class);
 
     public final StringPath loginId = createString("loginId");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 
     public final StringPath name = createString("name");
 
     public final StringPath password = createString("password");
+
+    public final ListPath<Question, QQuestion> questionList = this.<Question, QQuestion>createList("questionList", Question.class, QQuestion.class, PathInits.DIRECT2);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
     public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
 

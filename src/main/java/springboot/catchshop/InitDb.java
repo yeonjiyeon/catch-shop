@@ -228,7 +228,7 @@ public class InitDb {
         }
 
         private Order createOrder(User user, String orderName, String orderTel, String postcode, String address, Long totalPrice, Long shippingFee) {
-            Order order = new Order("order_" + new Date().getTime(), user, orderName, orderTel, postcode, address, totalPrice, shippingFee);
+            Order order = new Order("imp_" + new Date().getTime(), user, orderName, orderTel, postcode, address, totalPrice, shippingFee);
             return order;
         }
 

@@ -41,6 +41,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final EnumPath<ProductStatus> productStatus = createEnum("productStatus", ProductStatus.class);
 
+    public final ListPath<Question, QQuestion> questionList = this.<Question, QQuestion>createList("questionList", Question.class, QQuestion.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 

@@ -41,8 +41,9 @@ public class ReviewServiceTest {
     public void beforeEach() {
         // 사용자 생성
         address = new Address("road1", "detail1", "11111");
+
         user = new User("user1", "user1", "user1", "01012345678", "a@naver.com",address, "사용자");
-        em.persist(user);
+
 
         // 상품 생성
         product = new Product();
