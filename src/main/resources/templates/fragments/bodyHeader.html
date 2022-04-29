@@ -20,10 +20,11 @@
               <ul>
                 <li><a href="#" th:href="@{/sales}">Sales</a></li>
                 <li><a href="#" th:href="@{/products/admin/{id} (id=${session.id})}">Products</a></li>
+                <li><a href="/categories">Category</a></li>
                 <li><a href="#" th:href="@{/orders/admin}">Orders</a></li>
                 <li><a href="/members">Members</a></li>
                 <li><a href="#" th:href="@{/questions}">Q&A</a></li>
-                <li><a href="/">Review</a></li>
+                <li><a href="#" th:href="@{/reviews/admin}">Review</a></li>
                 <li>
                   <div class="header-icons">
                     <a class="shopping-cart" th:if="${session.loginUser == null}" href="/login"><i class="far fa-heart"></i></a>
