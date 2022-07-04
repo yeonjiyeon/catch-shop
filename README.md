@@ -35,7 +35,9 @@ https://www.erdcloud.com/d/uB4zEJP2xk8iDkDGo
 </br>
 
 ## 4. 핵심 기능
-
+- 회원
+- 상품
+- 주문
 </br>
 
 ## 5. 트러블 슈팅
