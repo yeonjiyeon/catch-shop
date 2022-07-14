@@ -6,7 +6,7 @@
 </br>
 
 ## 1. 제작 기간 & 참여 인원
-- 2021년 12월 28일 ~ 2월
+- 2021년 1월 ~4월
 - 팀 프로젝트: Back 3명
 
 </br>
@@ -25,7 +25,7 @@
   
 #### `Tool`
   - IntelliJ IDEA
-  - Git
+  - SourceTree
 
 </br>
 
@@ -41,3 +41,4 @@ https://www.erdcloud.com/d/uB4zEJP2xk8iDkDGo
 </br>
 
 ## 5. 트러블 슈팅
+- N + 1 문제
